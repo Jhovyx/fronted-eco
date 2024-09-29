@@ -13,8 +13,8 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { ReservationLimitComponent } from './pages/admin/reservation-limit/reservation-limit.component';
 import { NosotrosComponent } from './pages/usuario/nosotros/nosotros.component';
 import { PromocionesListComponent } from './pages/usuario/promociones/promociones.component';
-import { DestinosComponent } from './pages/usuario/destinos/destinos.component';
 import { BoletaComponent } from './pages/usuario/boleta/boleta.component';
+import { TripComponent } from './pages/usuario/trips/trip.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },//pordefecto
@@ -31,7 +31,7 @@ const routes: Routes = [
   { path: 'profile', component: ProfileComponent },//perfil del usuario
   { path: 'promociones-list', component: PromocionesListComponent },//lista de promociones
   { path: 'nosotros', component: NosotrosComponent },//info de nosotros
-  { path: 'destinos', component: DestinosComponent },//lista de destinos
+  { path: 'destinos', component: TripComponent },//lista de destinos
   { path: 'boleta', component: BoletaComponent },//boleta
 ];
 

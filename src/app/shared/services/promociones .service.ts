@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import { Carousel } from "../interfaces/promociones.interface";
 
 @Injectable({
     providedIn: 'root'

@@ -1,0 +1,5 @@
+.btn:hover img {
+    opacity: 0.5; /* Optionally, make the image semi-transparent */
+    transform: scale(1.02); /* Agranda la imagen en 2% */
+    transition: opacity 0.3s ease;
+}

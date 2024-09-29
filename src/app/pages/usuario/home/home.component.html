@@ -156,13 +156,15 @@
   <!--=====================================================-->
 <!--lugares mas visited-->
 
-<div class="text-center d-flex align-items-center justify-content-center" style="margin-bottom: 20px;">
+<app-trip></app-trip>
+
+<div class="d-none text-center d-flex align-items-center justify-content-center" style="margin-bottom: 20px;">
     <div class=" fs-3 p-3 bg-dark" style="border-radius: 10px;">
       <p class="m-0 p-0 text-white"><b>DESTINOS MÁS VISITADOS</b></p>
     </div>
   </div>
   
-  <div class="container">
+  <div class="container d-none">
     <div class="row">
       <div *ngFor="let destino of filteredDestinos" class="col-md-3 p-3 d-flex align-items-center justify-content-center">
         <div class="card mb-3 p-0 border-0" style="width: 200px; height: auto;">

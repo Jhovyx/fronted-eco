@@ -1,4 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { DestinosResponse, Trip } from '../interfaces/trip.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -63,5 +65,15 @@ export class InventoryService {
     if (index !== -1) {
       this.trips[index] = { ...this.trips[index], ...updatedTrip };
     }
+  }
+
+  constructor(private http : HttpClient){}
+  private apiBackend = 'http://localhost:3000'//backend
+  async FinAllTrips(pagActual: number, limit: number) {
+      try{
+        return await this.http.post<DestinosResponse>(`${this.apiBackend}/destinos`, {pagActual, limit}).toPromise()
+      } catch (error){
+        return null
+      }
   }
 }

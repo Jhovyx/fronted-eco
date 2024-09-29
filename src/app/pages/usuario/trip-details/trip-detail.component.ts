@@ -1,4 +1,5 @@
-import { Component } from "@angular/core";
+import { Component  } from "@angular/core";
+import { Trip } from "../../../shared/interfaces/trip.interface";
 
 @Component({
   selector: 'app-trip-detail',
@@ -6,6 +7,14 @@ import { Component } from "@angular/core";
   styleUrls: ['./trip-detail.component.css']
 })
 
-export class TripDetailComponet {
-
+export class TripDetailComponet  {
+  trip?: Trip
+  detailReserva: boolean = false
+  UpdateSElectTrip(tripxd: Trip): Trip{
+  this.detailReserva = false
+  return this.trip = tripxd
+  }
+  TougleReservaDetail(){
+    this.detailReserva = !this.detailReserva
+  }
 }
