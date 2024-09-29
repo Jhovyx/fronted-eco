@@ -1,0 +1,74 @@
+<button class="btn btn-secondary mb-4" onclick="window.history.back()">Regresar</button>
+
+<div class="container mt-5">
+    <h2 class="mb-4">Actividades de Usuarios</h2>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Correo</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Tipo de Actividad</th>
+                    <th>Hora de Actividad</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let activity of activities">
+                    <td>{{ activity.id }}</td>
+                    <td>{{ activity.email }}</td>
+                    <td>{{ activity.firstName }}</td>
+                    <td>{{ activity.lastName }}</td>
+                    <td>{{ activity.activityType }}</td>
+                    <td>{{ activity.activityTime | date: 'short' }}</td>
+                    <td>
+                        <button class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#activityModal" (click)="selectActivity(activity)">
+                            <i class="bi bi-eye"></i> Ver
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal for Activity Details -->
+<div class="modal fade" id="activityModal" tabindex="-1" aria-labelledby="activityModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="activityModalLabel">Detalles de la Actividad</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <dl class="row">
+                    <dt class="col-sm-4">ID:</dt>
+                    <dd class="col-sm-8">{{ selectedActivity?.id }}</dd>
+
+                    <dt class="col-sm-4">Correo:</dt>
+                    <dd class="col-sm-8">{{ selectedActivity?.email }}</dd>
+
+                    <dt class="col-sm-4">Nombre:</dt>
+                    <dd class="col-sm-8">{{ selectedActivity?.firstName }}</dd>
+
+                    <dt class="col-sm-4">Apellido:</dt>
+                    <dd class="col-sm-8">{{ selectedActivity?.lastName }}</dd>
+
+                    <dt class="col-sm-4">Tipo de Actividad:</dt>
+                    <dd class="col-sm-8">{{ selectedActivity?.activityType }}</dd>
+
+                    <dt class="col-sm-4">Hora de Actividad:</dt>
+                    <dd class="col-sm-8">{{ selectedActivity?.activityTime | date: 'short' }}</dd>
+
+                    <dt class="col-sm-4">Descripción:</dt>
+                    <dd class="col-sm-8">{{ selectedActivity?.description }}</dd>
+                </dl>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

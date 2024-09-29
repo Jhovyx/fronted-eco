@@ -1,0 +1,17 @@
+<form>
+  <div class="mb-3">
+    <label for="email" class="form-label">Correo Electrónico:</label>
+    <input type="email" class="form-control" id="email" name="email" [(ngModel)]="email" required>
+  </div>
+  <div class="mb-3">
+    <label for="password" class="form-label">Contraseña:</label>
+    <input type="password" class="form-control" id="password" name="password" [(ngModel)]="password" required>
+  </div>
+</form>
+<div class="d-flex align-items-center justify-content-center">
+  <button class="btn btn-primary" (click)="login()" [disabled]="isLoading">
+    <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+    <span *ngIf="!isLoading">ACCEDER</span>
+    <span *ngIf="isLoading">Accediendo...</span>
+  </button>
+</div>

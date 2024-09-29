@@ -1,0 +1,60 @@
+:host {
+  display: block;
+}
+
+.header-container {
+  position: relative;
+  text-align: center;
+  width: 100%;
+}
+.header-logo {
+  width: 100%;
+  height: 40vh; /* Altura de la imagen aproximadamente 5 centímetros */
+  object-fit: cover; /* Asegura que la imagen cubra toda el área del contenedor */
+}
+.header-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff; /* Color blanco */
+  font-size: 3vw; /* Ajusta el tamaño del texto */
+  font-family: 'Montserrat', sans-serif; /* Fuente de Google Fonts */
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.7); /* Sombra para hacer el texto más legible */
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente para mejorar la legibilidad */
+  border-radius: 10px;
+  animation: fadeIn 1.5s ease-out, glow 1.5s infinite alternate;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.7), 0 0 20px #00FFAB, 0 0 30px #00FFAB, 0 0 40px #00FFAB;
+  }
+  to {
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.7), 0 0 30px #00FFAB, 0 0 40px #00FFAB, 0 0 50px #00FFAB;
+  }
+}
+
+/* Hacer el texto responsive */
+@media (max-width: 768px) {
+  .header-text {
+    font-size: 4vw;
+  }
+}
+
+@media (max-width: 576px) {
+  .header-text {
+    font-size: 5vw;
+  }
+}

@@ -1,0 +1,278 @@
+
+<!-- Filtro -->
+<div class="d-flex align-items-center justify-content-center m-2 text-center">
+  <div class="rounded bg-primary opacity-75 p-2">
+    <div class="row">
+      <div class="col">
+        <div class="input-group mb-3">
+          <label class="input-group-text" for="originInput">ORIGEN</label>
+          <span class="input-group-text">
+            <i class="bi bi-geo-alt-fill"></i>
+          </span>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="originInput" 
+            placeholder="Escribe para buscar..."
+            (input)="onOriginChange($event)" 
+            list="origenList"
+          >
+        </div>
+        <datalist id="origenList">
+          <option *ngFor="let ciudad of filteredCiudades.slice(0, 5)" [value]="ciudad" class="itemxd">{{ ciudad }}</option>
+        </datalist>
+      </div>
+
+      <div class="col">
+        <div class="input-group mb-3">
+          <label class="input-group-text" for="destinationInput">DESTINO</label>
+          <span class="input-group-text">
+            <i class="bi bi-search"></i>
+          </span>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="destinationInput" 
+            placeholder="Escribe para buscar..."
+            (input)="onDestinationChange($event)"  
+            list="destinoList"
+          >
+        </div>
+        <datalist id="destinoList">
+          <option *ngFor="let ciudad of filteredCiudades.slice(0, 5)" [value]="ciudad" class="itemxd">{{ ciudad }}</option>
+        </datalist>
+      </div>
+
+      <div class="col">
+        <div class="input-group mb-3">
+          <label class="input-group-text" for="dateInput">FECHA</label>
+          <input 
+            type="date" 
+            class="form-control" 
+            id="dateInput" 
+            [min]="minDate"
+            (input)="onDateChange($event)" 
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--=====================================================-->
+  <!--promociones title-->
+  <div class="text-center d-none" style="margin-top: 20px;">
+    <div class="promo-text fs-1 p-3" style="border-radius: 10px;">
+        <p class="m-0 p-0">PROMOCIONES</p>
+        <div class="box"></div> <!-- Barra justo debajo del texto -->
+    </div>
+  </div>
+  
+  <!--promociones cintainer-->
+  <div class="carousel d-none">
+    <div class="carousel__contenedor">
+      <button aria-label="Anterior" class="carousel__anterior" >
+        <i class="fas fa-chevron-left"></i>
+      </button>
+  
+      <div class="carousel__lista">
+        <div class="carousel__elemento">
+          <a class="btn btn-danger border-0 p-0 m-0" data-bs-toggle="modal" data-bs-target="#tripDetailModal">
+            <img style="border-radius: 5px;" src="
+            https://media.istockphoto.com/id/458569733/es/foto/city-square-en-ayacucho-per%C3%BA.jpg?s=612x612&w=0&k=20&c=8eVqNlaNJLdHYIpPoI8HQ-rOvfi9EKkCl4rkEwYa9bc=
+            " [alt]="">
+          </a>
+          <p style="margin-top: -50px;" class="text-white fs-3"><b>Lima </b></p>
+          <a class="btn btn-primary" style="margin-top: 2px; margin-bottom: 2px;">Reservar</a>
+        </div>
+        <div class="carousel__elemento">
+            <a class="btn btn-danger border-0 p-0 m-0" data-bs-toggle="modal" data-bs-target="#tripDetailModal">
+              <img style="border-radius: 5px;" src="
+              https://media.istockphoto.com/id/458569733/es/foto/city-square-en-ayacucho-per%C3%BA.jpg?s=612x612&w=0&k=20&c=8eVqNlaNJLdHYIpPoI8HQ-rOvfi9EKkCl4rkEwYa9bc=
+              " [alt]="">
+            </a>
+            <p style="margin-top: -50px;" class="text-white fs-3"><b>Lima </b></p>
+            <a class="btn btn-primary" style="margin-top: 2px; margin-bottom: 2px;">Reservar</a>
+          </div>
+          <div class="carousel__elemento">
+            <a class="btn btn-danger border-0 p-0 m-0" data-bs-toggle="modal" data-bs-target="#tripDetailModal">
+              <img style="border-radius: 5px;" src="
+              https://media.istockphoto.com/id/458569733/es/foto/city-square-en-ayacucho-per%C3%BA.jpg?s=612x612&w=0&k=20&c=8eVqNlaNJLdHYIpPoI8HQ-rOvfi9EKkCl4rkEwYa9bc=
+              " [alt]="">
+            </a>
+            <p style="margin-top: -50px;" class="text-white fs-3"><b>Lima </b></p>
+            <a class="btn btn-primary" style="margin-top: 2px; margin-bottom: 2px;">Reservar</a>
+          </div>
+          <div class="carousel__elemento">
+            <a class="btn btn-danger border-0 p-0 m-0" data-bs-toggle="modal" data-bs-target="#tripDetailModal">
+              <img style="border-radius: 5px;" src="
+              https://media.istockphoto.com/id/458569733/es/foto/city-square-en-ayacucho-per%C3%BA.jpg?s=612x612&w=0&k=20&c=8eVqNlaNJLdHYIpPoI8HQ-rOvfi9EKkCl4rkEwYa9bc=
+              " [alt]="">
+            </a>
+            <p style="margin-top: -50px;" class="text-white fs-3"><b>Lima </b></p>
+            <a class="btn btn-primary" style="margin-top: 2px; margin-bottom: 2px;">Reservar</a>
+          </div>
+          <div class="carousel__elemento">
+            <a class="btn btn-danger border-0 p-0 m-0" data-bs-toggle="modal" data-bs-target="#tripDetailModal">
+              <img style="border-radius: 5px;" src="
+              https://media.istockphoto.com/id/458569733/es/foto/city-square-en-ayacucho-per%C3%BA.jpg?s=612x612&w=0&k=20&c=8eVqNlaNJLdHYIpPoI8HQ-rOvfi9EKkCl4rkEwYa9bc=
+              " [alt]="">
+            </a>
+            <p style="margin-top: -50px;" class="text-white fs-3"><b>Lima </b></p>
+            <a class="btn btn-primary" style="margin-top: 2px; margin-bottom: 2px;">Reservar</a>
+          </div>
+      </div>
+  
+      <button aria-label="Siguiente" class="carousel__siguiente">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+  
+    <div role="tablist" class="carousel__indicadores"></div>
+  </div>
+  
+  <!-- Modal details Promociones -->
+  <div class="modal fade d-none" id="tripDetailModal" tabindex="-1" aria-labelledby="tripDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="tripDetailModalLabel" style="text-align: center; width: 100%;">DETALLES DE LA PROMOCIÓN</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+  
+          <app-promociones-detail></app-promociones-detail>
+
+          <div class="d-flex align-items-center justify-content-center ">
+            <button type="button" class="btn m-2 btn-primary">Reservar</button>
+            <button type="button" class="btn m-2 btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!--=====================================================-->
+<!--lugares mas visited-->
+
+<div class="text-center d-flex align-items-center justify-content-center" style="margin-bottom: 20px;">
+    <div class=" fs-3 p-3 bg-dark" style="border-radius: 10px;">
+      <p class="m-0 p-0 text-white"><b>DESTINOS MÁS VISITADOS</b></p>
+    </div>
+  </div>
+  
+  <div class="container">
+    <div class="row">
+      <div *ngFor="let destino of filteredDestinos" class="col-md-3 p-3 d-flex align-items-center justify-content-center">
+        <div class="card mb-3 p-0 border-0" style="width: 200px; height: auto;">
+          <div class="card-body border-0 m-0 p-0">
+            <a style="border-radius: 10px;" data-bs-toggle="modal" data-bs-target="#tripDetailModall" class="btn btn-warning border-0 p-0 m-0">
+              <img style="width: 198px; height: 200px; margin: 0px; padding: 0px; border-radius: 10px;" [src]="destino.image" alt="">
+            </a>
+            <div class="d-flex align-items-center justify-content-center">
+              <a href="#" class="btn btn-primary" style="margin-top: 2px; margin-bottom: 2px;">Reservar</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal details lugares mas visitados -->
+  <div class="modal fade" id="tripDetailModall" tabindex="-1" aria-labelledby="tripDetailModalLabell" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="tripDetailModalLabell" style="text-align: center; width: 100%;">DETALLES DEL LUGAR</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+  
+          <app-trip-detail></app-trip-detail>
+
+          <div class="d-flex align-items-center justify-content-center ">
+            <button type="button" class="btn m-2 btn-primary">Reservar</button>
+            <button type="button" class="btn m-2 btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!--========================================-->
+
+<!--servicios-->
+
+<div class="text-center d-flex align-items-center justify-content-center" style="margin-bottom: 20px;">
+    <div class=" fs-4 p-3 bg-dark" style="border-radius: 10px;">
+      <p class="m-0 p-0 text-white"><b>SERVICIOS</b>
+      <br> CALIDAD, PUNTUALIDAD Y SEGURIDAD
+      </p>
+    </div>
+  </div>
+  
+  <div class="container">
+    <div class="row d-flex align-items-center justify-content-center">
+      <div class="col-md-3 p-3 d-flex align-items-center justify-content-center">
+        <div class="card mb-3 p-0 border-0" style="width: 200px; height: auto;">
+          <div class="card-body border-0 m-0 p-0">
+            <a style="border-radius: 10px;" data-bs-toggle="modal" data-bs-target="#tripDetailModala" class="btn btn-primary border-0 p-0 m-0">
+              <img style="width: 198px; height: 200px; margin: 0px; padding: 0px; border-radius: 10px;" src="
+                https://www.movilbus.pe/wp-content/uploads/2019/02/eje-1.jpg
+              " alt="">
+            </a>
+            <div class="d-flex align-items-center justify-content-center">
+              <p style="margin-top: -50px;" class="text-white fs-3"><b>Escapadas</b></p><br>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal detail modal -->
+  <div class="modal fade" id="tripDetailModala" tabindex="-1" aria-labelledby="tripDetailModalLabela" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-primary">
+          <h5 class="modal-title text-white" id="tripDetailModalLabela" style="text-align: center; width: 100%;">DETALLES DEL SERVICIO</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+  
+          <div class="">
+            <h6>Descripción</h6>
+            <p>Escapadas de fin de semana perfectas para desconectar y disfrutar de un breve viaje. Nuestros paquetes están diseñados para que aproveches al máximo tu tiempo libre.</p>
+            
+            <h6>Destinos Populares</h6>
+            <ul>
+                <li>Playa: Relájate en las costas de Huanchaco.</li>
+                <li>Montaña: Aventúrate en Cañoncillo.</li>
+                <li>Ciudad: Explora la cultura y gastronomía de la sierra y la costa.</li>
+            </ul>
+
+            <h6>Duración</h6>
+            <p>Nuestros paquetes están disponibles para escapadas de 2 a 3 días.</p>
+
+            <h6>Actividades Incluidas</h6>
+            <ul>
+                <li>Tours guiados por los principales puntos de interés.</li>
+                <li>Desayunos y cenas en restaurantes locales.</li>
+                <li>Transporte desde el lugar de origen hasta el destino y viceversa.</li>
+            </ul>
+
+            <h6>Precios</h6>
+            <p>Desde $199 por persona, dependiendo del destino y las actividades seleccionadas.</p>
+        </div>
+          
+          <div class="d-flex align-items-center justify-content-center">
+            <button type="button" class="btn m-3 btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-whatsapp></app-whatsapp>

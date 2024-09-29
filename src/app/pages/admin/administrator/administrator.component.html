@@ -1,0 +1,61 @@
+<div class="d-flex align-items-center justify-content-center">
+  <div class="d-flex" style="width: auto;">
+
+    <div class="col-md-6 m-3">
+      <div class="container border-black rounded border">
+        <h2 class="text-center"><b>Crear Administrador</b></h2>
+        <h2 class="text-center d-none"><b>Actualizar Administrador</b></h2>
+        <form>
+          <div class="mb-3">
+            <label for="username" class="form-label">Nombre de Usuario</label>
+            <input type="text" id="username" class="form-control" name="username" required>
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Correo</label>
+            <input type="email" id="email" class="form-control" name="email" required>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <input type="password" id="password" class="form-control"  name="password" required>
+          </div>
+          <div class="mb-3 d-flex align-items-center justify-content-center">
+            <button type="button" class="btn btn-primary">Registrar</button>
+            <button type="button" class="d-none btn btn-primary">Actualizar</button>
+          </div>
+        </form>
+      </div>      
+    </div>
+
+    <div class="col-md-10">
+      <h2 class="text-center"><b>Administradores</b></h2>
+      <div class="container m-3 overflow-auto" style="max-height: 300px;">
+        <table class="table table-sm border-0">
+          <thead>
+            <tr class="table-primary border border-rounded" style="position: sticky; top: 0;">
+              <th scope="col">Nombre</th>
+              <th scope="col">Correo</th>
+              <th scope="col">Opciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Hilder</td>
+              <td>hilder&#64;gmail.com</td>
+              <td class="text-center m-0 p-0">
+                <button class="btn btn-outline-danger border-0 text-black" style="margin-right: 4px;">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+                <button class="btn btn-outline-warning border-0 text-black" style="margin-left: 4px;">
+                  <i class="bi bi-pencil"></i>
+                </button>
+              </td>
+            </tr>
+            
+            <!-- Añadir más filas según sea necesario -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>

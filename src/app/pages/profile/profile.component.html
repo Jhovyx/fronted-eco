@@ -1,0 +1,153 @@
+<!-- Contenedor principal -->
+<div class="container d-flex align-items-center justify-content-center mt-5 profile-container">
+    <div class="text-center">
+        <h2 class="mb-4">Bienvenido, {{ user.name }} {{ user.surname }}</h2>
+        <img class="profile-img mb-4" [src]="user.profile_picture_url || 'default-profile.png'" alt="perfil-foto">
+        
+        <!-- Sección de perfil del usuario -->
+        <div class="row">
+            <!-- Tarjeta de información personal -->
+            <div class="col-md-6">
+                <div class="card profile-card mx-auto" style="width: 350px; height: 250px;">
+                    <div class="card-header bg-primary text-white text-center">
+                        <b>Datos Personales</b>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group mb-4">
+                            <li class="list-group-item">Nombre: <span>{{ user.name }}</span></li>
+                            <li class="list-group-item">Apellidos: <span>{{ user.surname }}</span></li>
+                            <li class="list-group-item">Documento: <span>{{ user.document_type }}</span></li>
+                            <li class="list-group-item">N° Documento: <span>{{ user.document_number }}</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tarjeta de información de contacto -->
+            <div class="col-md-6">
+                <div class="card profile-card mx-auto" style="width: 350px; height: 250px;">
+                    <div class="card-header bg-primary text-white text-center">
+                        <b>Datos de Contacto</b>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group mb-4">
+                            <li class="list-group-item">Teléfono: <span>{{ user.phone_number }}</span></li>
+                            <li class="list-group-item">Correo: <span>{{ user.email }}</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center mt-4">
+            <button data-bs-toggle="modal" data-bs-target="#updateModal" class="btn fs-5 m-1 border-0 btn-primary text-white">
+                Actualizar Datos
+            </button>
+            <button data-bs-toggle="modal" data-bs-target="#changePasswordModal" class="btn fs-5 m-1 border-0 bg-secondary text-black">
+                Cambiar Contraseña
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Actualizar Datos -->
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title text-white" id="updateModalLabel" style="text-align: center; width: 100%;">Actualizar Datos</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="name">Nombre</label>
+                        <input type="text" class="form-control" id="name" [(ngModel)]="user.name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="surname">Apellidos</label>
+                        <input type="text" class="form-control" id="surname" [(ngModel)]="user.surname" name="surname" required>
+                    </div>
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col">
+                                <label for="inputDocumentType" class="form-label">Tipo de Documento:</label>
+                                <select class="form-select" id="inputDocumentType" [(ngModel)]="user.document_type" name="document_type">
+                                    <option value="">--Seleccionar--</option>
+                                    <option value="DNI">DNI</option>
+                                    <option value="PASAPORTE">PASAPORTE</option>
+                                    <option value="RUC">RUC</option>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <label for="inputDocumentNumber" class="form-label">N° de Documento:</label>
+                                <input type="text" class="form-control" id="inputDocumentNumber" [(ngModel)]="user.document_number" name="document_number" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Teléfono</label>
+                        <input type="text" class="form-control" id="phone" [(ngModel)]="user.phone_number" name="phone_number" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="mail">Correo</label>
+                        <input type="email" class="form-control" id="mail" [(ngModel)]="user.email" name="email" required>
+                    </div>
+                    <div class="form-group mt-3 text-center">
+                        <div class="image-preview d-flex align-items-center justify-content-center" *ngIf="imagePreview">
+                            <img style="max-width: 100px; max-height: 100px; border-radius: 10px; margin-bottom: 2px;" [src]="imagePreview" alt="Vista previa de la imagen">
+                        </div>
+                        <label>
+                            <i class="fas fa-upload"></i> Foto
+                        </label>
+                        <input id="file-upload" type="file" accept=".jpg, .jpeg, .png, .webp" (change)="onFileChange($event)">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer d-flex align-items-center justify-content-center">
+                <button type="submit" class="btn m-2 btn-primary" (click)="updateProfile()" [disabled]="isLoading">
+                    <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    <span *ngIf="!isLoading">Guardar cambios</span>
+                    <span *ngIf="isLoading">Actulizando...</span>
+                </button>
+                <button type="button" class="btn m-2 btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Cambiar Contraseña -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title text-white" id="changePasswordModalLabel" style="text-align: center; width: 100%;">Cambiar Contraseña</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-5">
+                <form >
+                    <div class="form-group">
+                        <label for="oldPassword">Contraseña Actual</label>
+                        <input type="password" class="form-control" id="oldPassword" [(ngModel)]="oldPassword" name="currentPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword">Nueva Contraseña</label>
+                        <input type="password" class="form-control" id="newPassword" [(ngModel)]="newPassword" name="newPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmNewPassword">Confirmar Nueva Contraseña</label>
+                        <input type="password" class="form-control" id="confirmNewPassword" [(ngModel)]="confirmNewPassword" name="confirmNewPassword" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer d-flex align-items-center justify-content-center">
+                <button type="submit" class="btn m-2 btn-primary" (click)="updatePassword()" [disabled]="isLoading">
+                    <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    <span *ngIf="!isLoading">Guardar cambios</span>
+                    <span *ngIf="isLoading">Actulizando...</span>
+                </button>
+                <button type="button" class="btn m-3 btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

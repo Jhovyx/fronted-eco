@@ -1,0 +1,130 @@
+/* Estilos para la imagen del encabezado */
+.header-image img {
+  width: 100%; /* La imagen ocupa el 100% del ancho de su contenedor */
+  height: auto; /* La altura se ajusta automáticamente para mantener la proporción de la imagen */
+}
+
+/* Estilos para la cuadrícula de viajes */
+.travel-grid {
+  display: flex; /* Utiliza Flexbox para alinear las tarjetas de viaje */
+  flex-wrap: wrap; /* Permite que las tarjetas se envuelvan en la siguiente línea si no hay espacio */
+  justify-content: center; /* Centra las tarjetas en el eje horizontal */
+  gap: 20px; /* Espacio entre las tarjetas de viaje */
+  padding: 20px; /* Relleno alrededor de la cuadrícula de viajes */
+}
+
+/* Estilos para cada tarjeta individual de viaje */
+.travel-card {
+  width: calc(25% - 20px); /* Ancho calculado como el 25% del contenedor menos el espacio entre tarjetas */
+  box-sizing: border-box; /* Incluye el relleno y el borde en el ancho y la altura total del elemento */
+  border: 1px solid #ccc; /* Borde sólido con color gris claro */
+  border-radius: 4px; /* Bordes redondeados */
+  overflow: hidden; /* Oculta cualquier contenido que se desborde del borde redondeado */
+  text-align: center; /* Alinea el texto al centro dentro de la tarjeta */
+  background-color: white; /* Fondo blanco para la tarjeta */
+}
+
+/* Estilos para las imágenes dentro de las tarjetas de viaje */
+.travel-card img {
+    width: 100%; /* La imagen ocupa el ancho completo de su contenedor (la tarjeta) */
+    height: auto; /* La altura se ajusta automáticamente para mantener la proporción de la imagen */
+}
+
+/* Estilos para la descripción dentro de las tarjetas de viaje */
+.description {
+    padding: 10px; /* Relleno interno alrededor del texto de descripción */
+}
+
+/* Aumentar el espacio entre los botones en 'action-buttons'*/
+.action-buttons button {
+    margin-right: 10px; /* Ajusta el valor del margen a la derecha según tus necesidades, añade espacio entre botones*/
+}
+
+/**/
+
+
+.travel-card {
+  cursor: pointer;
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.travel-card:hover {
+  box-shadow: 0 4px 8px rgb(21, 132, 113);
+}
+
+
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; /* Cambio de fuente */
+            background-color: #f4f4f4; /* Fondo más claro */
+            color: #333; /* Texto oscuro */
+        }
+
+        .container {
+            margin-top: 50px;
+            position: relative; /* Para posicionar los botones relativos a este contenedor */
+        }
+
+        .search-bar {
+            background-color: #ffffff; /* Fondo blanco */
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .form-label {
+            font-weight: bold;
+            color: #007bff; /* Azul brillante */
+        }
+
+        .form-control {
+          border-radius: 5px;
+      }
+
+        .btn-primary {
+            background-color: #007bff; /* Azul brillante */
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3; /* Azul oscuro al pasar el ratón */
+        }
+
+        .action-buttons {
+          /* Posicionamiento de los botones */
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          z-index: 999; /* Asegura que estén sobre los viajes */
+      }
+
+      
+
+        .travel-card {
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .travel-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .travel-card .card-body {
+            padding: 20px;
+        }
+
+        .travel-card .card-text {
+            color: #555; /* Texto gris oscuro */
+        }
+  
+      
+
+
+
+
+
+
+

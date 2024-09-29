@@ -1,0 +1,141 @@
+.header-image {
+    background-image: url('https://www.shutterstock.com/image-photo/coffee-area-landscape-colombia-260nw-1071018992.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 200px;
+    position: relative;
+}
+.header-image h1 {
+    color: white;
+    position: absolute;
+    bottom: 10px;
+    left: 20px;
+}
+.header-image .logo {
+    width: 150px;
+    position: absolute;
+    top: 10px;
+    left: 20px;
+}
+
+.info-container {
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.container {
+    width: 80%;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    position: relative;
+}
+
+h1, h2, h3 {
+    text-align: center;
+    color: #333;
+}
+
+input[type="text"], input[type="date"], input[type="time"], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+button {
+   
+    color: white;
+    padding: 12px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 48%;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.col-25 {
+    flex: 25%;
+}
+
+.col-75 {
+    flex: 75%;
+}
+
+.col-25, .col-75 {
+    padding: 0 10px;
+}
+
+.reservation-example {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px;
+    position: relative;
+    background-color: #e9ecef;
+}
+
+.custom-checkbox {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.custom-checkbox input[type="checkbox"] {
+    display: none;
+}
+
+.custom-checkbox label {
+    position: relative;
+    padding-left: 25px;
+    cursor: pointer;
+}
+
+.custom-checkbox label:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #007bff;
+    border-radius: 4px;
+    background-color: #fff;
+}
+
+.custom-checkbox input[type="checkbox"]:checked + label:after {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 3px;
+    width: 6px;
+    height: 12px;
+    border: solid #007bff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}

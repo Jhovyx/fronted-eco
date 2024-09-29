@@ -1,0 +1,155 @@
+
+/* --- --- CAROUSEL --- --- */
+.carousel__contenedor {
+	position: relative;
+}
+
+.carousel__anterior,
+  .carousel__siguiente {
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 40px;
+	height: 40px;
+	border: none;
+	top: 40%;
+	cursor: pointer;
+	background: rgba(0, 0, 0, 0.2); 
+	color: white;
+	border-radius: 50%;
+	z-index: 1; 
+  }
+  
+  .carousel__anterior {
+	left: 10px;
+  }
+  
+  .carousel__siguiente {
+	right: 10px;
+  }
+  
+  .carousel__anterior:hover,
+  .carousel__siguiente:hover {
+	transition: 3s;
+	background: rgba(0, 0, 0, 0.7); 
+  }
+
+.carousel__lista {
+	overflow: hidden;
+}
+
+.carousel__elemento {
+	text-align: center;
+    margin: 10px;
+}
+
+.carousel__indicadores .glider-dot {
+	display: block;
+	width: 30px;
+	height: 4px;
+	background: #fff;
+	opacity: .2;
+	border-radius: 0;
+}
+
+.carousel__indicadores .glider-dot:hover {
+	opacity: .5;
+}
+
+.carousel__indicadores .glider-dot.active {
+	opacity: 1;
+}
+
+@media screen and (max-width: 800px) {
+	body {
+		padding: 40px 0;
+	}
+
+	.contenido-principal {
+		flex-direction: column;
+	}
+
+	.contenido-principal > * {
+		width: 100%;
+	}
+}
+
+.btn:hover img {
+    opacity: 0.5; /* Optionally, make the image semi-transparent */
+    transform: scale(1.02); /* Agranda la imagen en 2% */
+    transition: opacity 0.3s ease;
+}
+
+
+/*promociones text*/
+.promo-text {
+    position: relative;
+    display: inline-block;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ff0000; /* Color inicial del texto */
+    animation: color-change 20s linear infinite; /* Animación de cambio de color */
+    animation-delay: 2.5s; /* El color cambiará después de la animación de la barra */
+}
+
+/* Animación para cambiar colores del texto */
+@keyframes color-change {
+    0% {
+        color: #ff0000; /* Rojo */
+    }
+    25% {
+        color: #00ff00; /* Verde */
+    }
+    50% {
+        color: #0000ff; /* Azul */
+    }
+    75% {
+        color: #ffff00; /* Amarillo */
+    }
+    100% {
+        color: #ff0000; /* Rojo */
+    }
+}
+
+.box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+    border-bottom: 4px solid black; /* Barra negra con grosor de 4px */
+    width: 0; /* Inicialmente oculta */
+    height: 0;
+	margin-top: 20px;
+    animation: box-anim 20s linear infinite; /* Animación de la barra */
+}
+
+/* Animación para la barra debajo del texto */
+@keyframes box-anim {
+    0%, 100% {
+        width: 0;
+        height: 0;
+    }
+    10% {
+        width: 30%;
+        height: 0;
+    }
+    30% {
+        width: 30vw;
+        height: 4px; /* Establece la altura de la barra a 4px */
+    }
+    80% {
+        width: 30vw;
+        height: 4px;
+    }
+    100% {
+        width: 0;
+        height: 0;
+    }
+}
+
+/*search*/
+.itemxd:hover {
+    background-color: #0d6efd;
+}

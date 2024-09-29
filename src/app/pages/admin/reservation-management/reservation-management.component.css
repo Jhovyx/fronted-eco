@@ -1,0 +1,90 @@
+/* :host {
+  display: block;
+}
+Estilos para el modal 
+.modal-content {
+  border-radius: 10px;
+  border: 1px solid #dee2e6;
+}
+
+.modal-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.modal-title {
+  font-weight: bold;
+}
+
+.table {
+  margin-bottom: 0;
+}
+
+.table-bordered th, .table-bordered td {
+  border: 1px solid #dee2e6;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: #f9f9f9;
+}
+
+.table thead th {
+  background-color: #e9ecef;
+  font-weight: bold;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #004085;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+  border-color: #545b62;
+}
+ */
+
+ .table th, .table td {
+  text-align: center;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.modal-content {
+  border-radius: 8px;
+}
+
+.modal-header {
+  background-color: #343a40;
+  color: #fff;
+}
+
+.btn-primary, .btn-danger {
+  border-radius: 4px;
+}
+
+.btn-primary {
+  background-color: #007bff;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+}
+
+@media (max-width: 768px) {
+  .modal-dialog {
+    max-width: 100%;
+  }
+}

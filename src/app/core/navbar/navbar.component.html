@@ -1,0 +1,236 @@
+
+<!--nabvar-->
+  <nav class="d-flex nav-links justify-content-between p-1 m-0 bg-dark" style="margin-bottom: 0;">
+      
+    <a *ngIf="userRol === 'cliente' || !userRol " [routerLink]="['/home']" class="d-none d-lg-flex  nav-link link-underline-opacity-0 text-white fs-5 m-1 d-flex flex-column align-items-center">
+      <i class="bi bi-house-door"></i><span class="underline"></span>
+    Inicio
+    </a>
+    <a *ngIf="userRol === 'cliente' || !userRol " [routerLink]="['/nosotros']" class="d-none d-lg-flex  nav-link link-underline-opacity-0 text-white fs-5 m-1 d-flex flex-column align-items-center">
+      <i class="bi bi-info-circle"></i><span class="underline"></span>
+      Nosotros
+    </a>
+
+    <a *ngIf="userRol === 'cliente' || !userRol " [routerLink]="['/destinos']" class="d-none d-lg-flex nav-link link-underline-opacity-0 text-white fs-5 m-1 d-flex flex-column align-items-center">
+      <i class="bi bi-geo-alt"></i><span class="underline"></span>
+      Destinos
+    </a>
+    <a *ngIf="userRol === 'cliente' || !userRol " [routerLink]="['/promociones-list']" class="d-none d-lg-flex nav-link link-underline-opacity-0 text-white fs-5 m-1 d-flex flex-column align-items-center">
+      <i class="bi bi-gift"></i><span class="underline"></span>
+      Promociones
+    </a>
+    <!--admin-->
+    <a *ngIf="userRol === 'admin'" [routerLink]="['/admin-viajes']" class="d-none d-lg-flex nav-link link-underline-opacity-0 text-white fs-5 m-1 d-flex flex-column align-items-center">
+      <i class="bi bi-truck"></i>
+      <span class="underline"></span>
+      Admin viajes
+  </a>
+  <a *ngIf="userRol === 'admin'" [routerLink]="['/admin-dash']" class="d-none d-lg-flex nav-link link-underline-opacity-0 text-white fs-5 m-1 d-flex flex-column align-items-center">
+      <i class="bi bi-bar-chart"></i> 
+      <span class="underline"></span>
+      Admin actividad
+  </a>
+  <a *ngIf="userRol === 'admin'" [routerLink]="['/admin-user']" class="d-none d-lg-flex nav-link link-underline-opacity-0 text-white fs-5 m-1 d-flex flex-column align-items-center">
+    <i class="bi bi-person-plus"></i> 
+    <span class="underline"></span>
+    Admin usuarios
+  </a>
+  <a *ngIf="userRol === 'admin'" [routerLink]="['/reservas']" class="d-none d-lg-flex nav-link link-underline-opacity-0 text-white fs-5 m-1 d-flex flex-column align-items-center">
+      <i class="bi bi-calendar-check"></i> 
+      <span class="underline"></span>
+      Admin reservas
+    </a>
+    <a *ngIf="userRol === 'admin'" [routerLink]="['/reservas-limit']" class="d-none d-lg-flex nav-link link-underline-opacity-0 text-white fs-5 m-1 d-flex flex-column align-items-center">
+      <i class="bi bi-exclamation-triangle"></i>
+      <span class="underline"></span>
+      Reservas limite
+    </a>
+    <a *ngIf="userRol === 'admin'" [routerLink]="['/administradores']" class="d-none d-lg-flex nav-link link-underline-opacity-0 text-white fs-5 m-1 d-flex flex-column align-items-center">
+        <i class="bi bi-person-plus"></i> 
+        <span class="underline"></span>
+        Administradores
+    </a>
+  <a *ngIf="userRol === 'admin' || userRol === 'cliente'" [routerLink]="['/notify']" class="d-none d-lg-flex nav-link link-underline-opacity-0 text-white fs-5 m-1 d-flex flex-column align-items-center">
+      <i class="bi bi-bell"></i>
+      <span class="underline"></span>
+      Notificaciones
+  </a>
+
+  <!--dropboton-->
+  <li class="nav-item dropdown d-lg-none">
+    <a class="nav-link dropdown-toggle btn1 fs-2 p-2 m-0 p-0" style="border-radius: 5px;" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <i class="bi bi-list fs-1 m-0 p-0"></i>
+    </a>
+    <ul class="dropdown-menu text-center p-0 bg-dark" style="width: 230px;">
+      <li>
+        <a *ngIf="userRol === 'cliente' || !userRol " [routerLink]="['/home']" class="nav-link link-underline-opacity-0 text-white fs-5 m-1 d-flex flex-column align-items-center">
+          <i class="bi bi-house-door"></i><span class="underline"></span>
+          Inicio
+        </a>
+      </li>
+      <li>
+        <a *ngIf="userRol === 'cliente' || !userRol " [routerLink]="['/nosotros']" class="nav-link link-underline-opacity-0 text-white fs-5 m-1 d-flex flex-column align-items-center">
+          <i class="bi bi-info-circle"></i><span class="underline"></span>
+          Nosotros
+        </a>
+      </li>
+
+      <li>
+        <a *ngIf="userRol === 'cliente' || !userRol " [routerLink]="['/destinos']" class="nav-link link-underline-opacity-0 text-white fs-5 m-1 d-flex flex-column align-items-center">
+          <i class="bi bi-geo-alt"></i><span class="underline"></span>
+          Destinos
+        </a>
+      </li>
+      <li>
+        <a *ngIf="userRol === 'cliente' || !userRol " [routerLink]="['/promociones-list']" class="nav-link link-underline-opacity-0 text-white fs-5 m-1 d-flex flex-column align-items-center">
+          <i class="bi bi-gift"></i><span class="underline"></span>
+          Promociones
+        </a>
+      </li>
+      <!--admin-->
+      
+      <li>
+        <a *ngIf="userRol === 'admin'" [routerLink]="['/admin-viajes']" class="nav-link link-underline-opacity-0 text-white fs-5 m-1 d-flex flex-column align-items-center">
+          <i class="bi bi-truck"></i>
+          <span class="underline"></span>
+          Admin viajes
+        </a>
+      </li>
+      <li>
+        <a *ngIf="userRol === 'admin'" [routerLink]="['/gerencia']" class="nav-link link-underline-opacity-0 text-white fs-5 m-1 d-flex flex-column align-items-center">
+          <i class="bi bi-building"></i> 
+          <span class="underline"></span>
+          Gerencia
+        </a>
+      </li>
+      <li>
+        <a *ngIf="userRol === 'admin'" [routerLink]="['/admin-dash']" class="nav-link link-underline-opacity-0 text-white fs-5 m-1 d-flex flex-column align-items-center">
+          <i class="bi bi-bar-chart"></i> 
+          <span class="underline"></span>
+          Admin actividad
+        </a>
+      </li>
+      <li>
+        <a *ngIf="userRol === 'admin'" [routerLink]="['/admin-user']" class="nav-link link-underline-opacity-0 text-white fs-5 m-1 d-flex flex-column align-items-center">
+          <i class="bi bi-person-plus"></i> 
+          <span class="underline"></span>
+          Admin Usuarios
+        </a>
+      </li>
+      <li>
+        <a *ngIf="userRol === 'admin'" [routerLink]="['/reservas']" class="nav-link link-underline-opacity-0 text-white fs-5 m-1 d-flex flex-column align-items-center">
+          <i class="bi bi-calendar-check"></i> 
+          <span class="underline"></span>
+          Admin reservas
+        </a>
+      </li>
+      <li>
+        <a *ngIf="userRol === 'admin'" [routerLink]="['/reservas-limit']" class="nav-link link-underline-opacity-0 text-white fs-5 m-1 d-flex flex-column align-items-center">
+          <i class="fas fa-ban" title="Límite de Reservas"></i>
+          <span class="underline"></span>
+          Reservas limite
+        </a>
+      </li>
+      <li>
+        <a *ngIf="userRol === 'admin'" [routerLink]="['/administradores']" class="nav-link link-underline-opacity-0 text-white fs-5 m-1 d-flex flex-column align-items-center">
+          <i class="bi bi-person-plus"></i> 
+          <span class="underline"></span>
+          Administradores
+        </a>
+      </li>
+      <li>
+        <a *ngIf="userRol === 'admin' || userRol === 'cliente'" [routerLink]="['/notify']" class="nav-link link-underline-opacity-0 text-white fs-5 m-1 d-flex flex-column align-items-center">
+          <i class="bi bi-bell"></i>
+          <span class="underline"></span>
+          Notificaciones
+        </a>
+      </li>
+      
+    </ul>
+  </li>
+
+    <div class="d-flex align-items-center justify-content-end">
+      <a *ngIf="!userRol" data-bs-toggle="modal" data-bs-target="#loginModal" class="btn1  btn fs-5 m-1 border-0 link-underline-opacity-0 text-white fs-5 m-1 d-flex flex-column align-items-center">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        Ingresar
+      </a>
+      <a *ngIf="!userRol" data-bs-toggle="modal" data-bs-target="#registroModal" class="btn2 btn fs-5 m-1 border-0 btn-outline-light text-black">
+        <b>Registrese Gratis</b>
+      </a>
+      
+      <li class="nav-item dropdown">
+        <a *ngIf="userRol" class="nav-link dropdown-toggle btn1 fs-5 p-2" style="border-radius: 5px;" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          {{ userNombre }}
+        </a>
+        <ul class="dropdown-menu text-center p-0" style="width: 230px;">
+          <li class="bg-primary p-2 rounded-top m-0" style="opacity: 0.8;"><img style="width: 50px; height: 50px; border-radius: 50%;" src="
+            https://static.vecteezy.com/system/resources/previews/007/033/146/non_2x/profile-icon-login-head-icon-vector.jpg
+            " alt=""></li>
+            <li class="fs-5"><b>{{ userNombre }}</b></li>
+            <li>{{ userCorreo }}</li>
+          <li><hr class="dropdown-divider"></li>
+          <li>
+            <a [routerLink]="['/profile']" style="margin-top: 2px;" class="btn btn-outline-primary w-100 fs-6 text-black d-flex align-items-center border-0 justify-content-between" type="button">
+              <i class="bi bi-person-gear "></i>
+              <span class="text-center flex-grow-1">Gestionar mi cuenta</span>
+            </a>
+          </li>
+          <li>
+            <button (click)="cerrarSesion()" style="margin-top: 2px;" class="btn btn-outline-danger w-100 fs-6 text-black d-flex align-items-center border-0 justify-content-between" type="button">
+                <i class="bi bi-box-arrow-right"></i>
+                <span class="text-center flex-grow-1">Cerrar sesión</span>
+            </button>
+        </li>
+       </ul>
+      </li>
+    </div>
+  </nav>
+  
+<!--login modal-->
+<div class="modal fade" id="loginModal" #loginModal tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h5 class="modal-title text-white" id="loginModalLabel" style="text-align: center; width: 100%;">BIENVENIDO INICIA SESIÓN</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-5">
+        <app-login></app-login>
+        <div class="text-center">
+          <p class="mb-0">¿No tienes una cuenta? <a type="button" data-bs-toggle="modal" data-bs-target="#registroModal" class="text-primary ms-2 text-decoration-none">Regístrate</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal registro -->
+<div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h5 class="modal-title text-white" id="registroModalLabel" style="text-align: center; width: 100%;"> BIENVENIDO REGISTRE SUS DATOS </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <app-register></app-register>
+        <div class="text-center">
+          <p class="mb-0">¿Tienes una cuenta? <a type="button" data-bs-toggle="modal" data-bs-target="#loginModal" class="text-primary ms-2 text-decoration-none mt-3">Inicia sesión</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
