@@ -164,7 +164,6 @@
       <a *ngIf="!userRol" data-bs-toggle="modal" data-bs-target="#registroModal" class="btn2 btn fs-5 m-1 border-0 btn-outline-light text-black">
         <b>Registrese Gratis</b>
       </a>
-      
       <li class="nav-item dropdown">
         <a *ngIf="userRol" class="nav-link dropdown-toggle btn1 fs-5 p-2" style="border-radius: 5px;" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           <span></span>
@@ -208,7 +207,13 @@
       <div class="modal-body p-5">
         <app-login></app-login>
         <div class="text-center">
-          <p class="mb-0">¿No tienes una cuenta? <a type="button" data-bs-toggle="modal" data-bs-target="#registroModal" class="text-primary ms-2 text-decoration-none">Regístrate</a></p>
+          <p class="mb-0 mt-3">¿No tienes una cuenta? <button type="button" (click)="openModalRegister()" class="btn m-0 p-0 text-primary ms-2 text-decoration-none">Regístrate</button></p>
+          <button 
+          type="button" 
+          class="d-none" 
+          id="closeButton1" 
+          data-bs-dismiss="modal">
+        </button>
         </div>
       </div>
     </div>
@@ -228,9 +233,16 @@
 
         <app-register></app-register>
         <div class="text-center">
-          <p class="mb-0">¿Tienes una cuenta? <a type="button" data-bs-toggle="modal" data-bs-target="#loginModal" class="text-primary ms-2 text-decoration-none mt-3">Inicia sesión</a></p>
+          <p class="mb-0 mt-3">¿Tienes una cuenta? <button type="button" (click)="openModalLogin()" class="btn m-0 text-primary ms-2 text-decoration-none p-0">Inicia sesión</button></p>
+          <button 
+          type="button" 
+          class="d-none" 
+          id="closeButtonxd" 
+          data-bs-dismiss="modal">
+        </button>
         </div>
       </div>
     </div>
   </div>
 </div>
+

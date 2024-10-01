@@ -1,17 +1,17 @@
-<form>
+<form (keydown)="onEnter($event)">
   <div class="form-group">
-    <label for="inputName">Nombre</label>
-    <input type="text" class="form-control" id="inputName" [(ngModel)]="user.name" name="name" required>
+    <label>Nombre</label>
+    <input type="text" class="form-control" [(ngModel)]="user.name" name="name" required>
   </div>
   <div class="form-group">
-    <label for="inputSurname">Apellidos</label>
-    <input type="text" class="form-control" id="inputSurname" [(ngModel)]="user.surname" name="surname">
+    <label>Apellidos</label>
+    <input type="text" class="form-control" [(ngModel)]="user.surname" name="surname">
   </div>
   <div class="mb-3">
     <div class="row">
       <div class="col">
-        <label for="tipoDocumento" class="form-label">Tipo de Documento:</label>
-        <select class="form-select" id="tipoDocumento" [(ngModel)]="user.document_type" name="document_type">
+        <label class="form-label">Tipo de Documento:</label>
+        <select class="form-select" [(ngModel)]="user.document_type" name="document_type">
           <option value=""> --Seleccionar--</option>
           <option value="DNI"> DNI </option>
           <option value="PASAPORTE"> PASAPORTE </option>
@@ -19,22 +19,22 @@
         </select>
       </div>
       <div class="col">
-        <label for="numeroDocumento" class="form-label">N° de Documento:</label>
-        <input type="text" class="form-control" id="numeroDocumento" [(ngModel)]="user.document_number" name="document_number" required>
+        <label class="form-label">N° de Documento:</label>
+        <input type="text" class="form-control" [(ngModel)]="user.document_number" name="document_number" required>
       </div>
     </div>
   </div>
   <div class="form-group">
-    <label for="inputPhone">Teléfono</label>
-    <input type="text" class="form-control" id="inputPhone" [(ngModel)]="user.phone_number" name="phone_number">
+    <label>Teléfono</label>
+    <input type="text" class="form-control" [(ngModel)]="user.phone_number" name="phone_number">
   </div>
   <div class="form-group">
-    <label for="inputEmail">Correo</label>
-    <input type="email" class="form-control" id="inputEmail" [(ngModel)]="user.email" name="email" required>
+    <label>Correo</label>
+    <input type="email" class="form-control" [(ngModel)]="user.email" name="email" required>
   </div>
   <div class="mb-3">
-    <label for="contrasena" class="form-label">Contraseña:</label>
-    <input type="password" class="form-control" id="contrasena" [(ngModel)]="user.password" name="password" required>
+    <label class="form-label">Contraseña:</label>
+    <input type="password" class="form-control" [(ngModel)]="user.password" name="password" required>
   </div>
 
 </form>
@@ -45,3 +45,12 @@
     <span *ngIf="!isLoading">Crear tu cuenta en Ecorú</span>
   </button>
 </div>
+
+
+<button 
+  type="button" 
+  class="d-none" 
+  id="closeButton" 
+  data-bs-dismiss="modal">
+</button>
+

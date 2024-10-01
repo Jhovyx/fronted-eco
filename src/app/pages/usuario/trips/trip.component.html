@@ -1,19 +1,21 @@
-    <div class="">
+<app-search></app-search>
+
+<div class="">
         <h1 class="text-center"><b>Encuentra tu destino</b></h1>
     </div>
-
+<!--container-->
     <div class="container">
       <div class="row">
         <div *ngFor="let trip of trips" class="col-12 col-sm-6 col-md-4 col-lg-3 p-3 d-flex align-items-center justify-content-center">
           <div class="card mb-3 border-0" style="max-width: 100%; height: auto;">
             <div class="card-body border-0 p-0">
-              <button (click)="selectTrip(trip)" style="border-radius: 10px;" data-bs-toggle="modal" data-bs-target="#tripDetailModall" class="btn btn-warning border-0 p-0 m-0">
+              <button (click)="selectTrip(trip)" style="border-radius: 10px;"  class="btn btn-warning border-0 p-0 m-0">
                 <img class="img-fluid" style="border-radius: 10px;" [src]="trip.imagen" alt="{{ trip.nombre }}">
               </button>
               <div class="d-flex align-items-center justify-content-center">
                 <div>
                   <p style="margin-top: -60px;" class="text-white fs-3"><b>{{ trip.nombre}}</b></p>
-                  <button type="button" class="btn m-2 btn-primary">Reservar</button>
+                  <button class="btn m-2 btn-primary" (click)="selectReserve(trip)">Reservar</button>
                 </div>
               </div>
             </div>
@@ -22,7 +24,7 @@
       </div>
     </div>
     
-
+<!--detalle-->
     <div class="modal fade" id="tripDetailModall" tabindex="-1" aria-labelledby="tripDetailModalLabell" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -33,16 +35,31 @@
           <div class="modal-body">
     
             <app-trip-detail></app-trip-detail>
-  
-            <div class="d-flex align-items-center justify-content-center ">
-              <button type="button" class="btn m-2 btn-primary">Reservar</button>
-              <button type="button" class="btn m-2 btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-            </div>
             
           </div>
         </div>
       </div>
     </div>
+
+<!-- Modal de Reserva -->
+<div class="modal fade" id="tripModall" tabindex="-1" aria-labelledby="tripModalLabell" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="tripModalLabell" style="text-align: center; width: 100%;">Formulario de reserva</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <app-add-reserva></app-add-reserva>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 
 <div class=" d-flex align-items-center justify-content-center">
   <a *ngIf="pagActual !== 1" type="button" class="btn btn-primary m-3" (click)="btnLeft()">

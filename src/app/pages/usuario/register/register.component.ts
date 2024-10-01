@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { UserService } from '../../../shared/services/user.service';
 import { User } from '../../../shared/interfaces/user.interface';
+import * as bootstrap from 'bootstrap';
+import { NavbarComponent } from '../../../core/navbar/navbar.component';
 
 @Component({
   selector: 'app-register',
@@ -22,7 +24,7 @@ export class RegisterComponent {
   };
 
   isLoading: boolean = false;
-
+  @ViewChild(NavbarComponent) navbarComponent!: NavbarComponent;
   constructor(private userService: UserService) {}
 
   async createUser() {
@@ -126,7 +128,23 @@ export class RegisterComponent {
         this.showCustomAlert('La cuenta fue creada con éxito.', 'success');
         this.isLoading = false;
         this.resetForm()
-        location.reload()
+
+        // Cerrar el modal de registro
+        const registerModalElement = document.getElementById('registroModal');
+        if (registerModalElement) {
+          // hacer click en el btn de cerraar modal
+          const closeButton = document.getElementById('closeButton');
+          if (closeButton) {
+            closeButton.click(); // Simula un clic en el botón de cerrar
+          }
+        }
+        // Mostrar el modal de inicio de sesión
+        const loginModalElement = document.getElementById('loginModal');
+        if (loginModalElement) {
+          //enviar peticion al nabvar
+          const loginModal = new bootstrap.Modal(loginModalElement);
+          loginModal.show();
+        }
       }else if(response === 'email_in_use'){
         this.showCustomAlert('El correo ingresado ya esta registrado.', 'error');
         this.isLoading = false;
@@ -141,6 +159,14 @@ export class RegisterComponent {
 
   }
 
+  onEnter(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      event.preventDefault(); // Evita el comportamiento por defecto del Enter
+      this.createUser(); // Llama a la función para crear el usuario
+    }
+  }
+
+ 
 
   resetForm() {
     this.user = {

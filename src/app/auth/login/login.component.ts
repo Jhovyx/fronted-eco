@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
@@ -12,7 +11,7 @@ export class LoginComponent {
   password!: string;
   isLoading: boolean = false;
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor( private authService: AuthService) {}
 
   async login() {
     this.isLoading = true; // Activar el spinner
@@ -50,7 +49,16 @@ export class LoginComponent {
         this.isLoading = false; // Detener el spinner
         this.password = ''; // Limpiar el campo de contraseña
         this.email = ''; // Limpiar el campo de correo
-        location.reload();
+        
+        const loginModalElement = document.getElementById('loginModal');
+        if (loginModalElement) {
+          // hacer click en el btn de cerraar modal
+          const closeButton = document.getElementById('closeButtonz');
+          if (closeButton) {
+            closeButton.click(); // Simula un clic en el botón de cerrar
+          }
+        }
+
       } else {
         this.showCustomAlert('Credenciales incorrectas. Inténtalo de nuevo.', 'error');
         this.isLoading = false; // Detener el spinner
@@ -68,6 +76,13 @@ export class LoginComponent {
       this.email = ''; // Limpiar el campo de correo
     }
   }
+
+  onEnter(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      event.preventDefault(); // Evita el comportamiento por defecto del Enter
+      this.login(); // Llama a la función para crear el usuario
+    }
+  } 
 
   showCustomAlert(message: string, type: 'success' | 'error') {
     const alertDiv = document.createElement('div');
