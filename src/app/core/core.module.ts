@@ -4,8 +4,8 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { AuthModule } from '../auth/auth.module';
-import { PagesModule } from '../pages/pages.module';
 import { RouterModule } from '@angular/router';
+import { AppRoutingModule } from '../app-routing.module';
 
 
 
@@ -18,8 +18,8 @@ import { RouterModule } from '@angular/router';
   imports: [
     CommonModule,
     AuthModule,
-    PagesModule,
-    RouterModule
+    RouterModule,
+    AppRoutingModule
   ],
   exports: [
     NavbarComponent,

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HomeComponent } from './usuario/home/home.component';
-import { WhatsappComponent } from './usuario/whatsapp/whatsapp.component';
 import { FormsModule } from '@angular/forms';
 import { AdminDashComponent } from './admin/admin-dash/admin-dash.component';
 import { RouterModule } from '@angular/router';
@@ -11,23 +10,21 @@ import { ReservationManagementComponent } from './admin/reservation-management/r
 import { ListTripComponent } from './admin/list-trip/list-trip.component';
 import { AddTripComponent } from './admin/add-trip/add-trip.component';
 import { EditTripComponent } from './admin/edit-trip/edit-trip.component';
-import { AdministratorComponent } from './admin/administrator/administrator.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ReservationLimitComponent } from './admin/reservation-limit/reservation-limit.component';
 import { NosotrosComponent } from './usuario/nosotros/nosotros.component';
 import { PromocionesListComponent } from './usuario/promociones/promociones.component';
 import { TripDetailComponet } from './usuario/trip-details/trip-detail.component';
-import { RegisterComponent } from './usuario/register/register.component';
 import { PromocionesDetailComponent } from './usuario/promociones/details-promocion/promociones.component';
 import { TripComponent } from './usuario/trips/trip.component';
 import { SearchComponent } from './usuario/search/search.component';
 import { ReservaAddComponent } from './usuario/reserva/add/add-reserva.component';
 import { AuthModule } from '../auth/auth.module';
+import { PaymentDetailComponent } from './usuario/payment/payment-detail.component';
 
 @NgModule({
   declarations: [
     HomeComponent,
-    WhatsappComponent,
     AdminDashComponent,
     NotifyComponent,
     AdminUsersComponent,
@@ -35,17 +32,16 @@ import { AuthModule } from '../auth/auth.module';
     ListTripComponent,
     AddTripComponent,
     EditTripComponent,
-    AdministratorComponent,
     ProfileComponent,
     ReservationLimitComponent,
     PromocionesListComponent,
     NosotrosComponent,
     TripComponent,
     TripDetailComponet,
-    RegisterComponent,
     PromocionesDetailComponent,
     SearchComponent,
-    ReservaAddComponent
+    ReservaAddComponent,
+    PaymentDetailComponent
   ],
   imports: [
     CommonModule,
@@ -56,7 +52,6 @@ import { AuthModule } from '../auth/auth.module';
   ],
   exports: [
     HomeComponent,
-    WhatsappComponent,
     AdminDashComponent,
     NotifyComponent,
     AdminUsersComponent,
@@ -64,16 +59,15 @@ import { AuthModule } from '../auth/auth.module';
     ListTripComponent,
     AddTripComponent,
     EditTripComponent,
-    AdministratorComponent,
     ProfileComponent,
     ReservationLimitComponent,
     PromocionesListComponent,
     NosotrosComponent,
     TripComponent,
-    RegisterComponent,
     PromocionesDetailComponent,
     SearchComponent,
-    ReservaAddComponent
+    ReservaAddComponent,
+    PaymentDetailComponent
   ]
 })
 export class PagesModule { }

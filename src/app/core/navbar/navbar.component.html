@@ -45,11 +45,7 @@
       <span class="underline"></span>
       Reservas limite
     </a>
-    <a *ngIf="userRol === 'admin'" [routerLink]="['/administradores']" class="d-none d-lg-flex nav-link link-underline-opacity-0 text-white fs-5 m-1 d-flex flex-column align-items-center">
-        <i class="bi bi-person-plus"></i> 
-        <span class="underline"></span>
-        Administradores
-    </a>
+
   <a *ngIf="userRol === 'admin' || userRol === 'cliente'" [routerLink]="['/notify']" class="d-none d-lg-flex nav-link link-underline-opacity-0 text-white fs-5 m-1 d-flex flex-column align-items-center">
       <i class="bi bi-bell"></i>
       <span class="underline"></span>
@@ -135,13 +131,7 @@
           Reservas limite
         </a>
       </li>
-      <li>
-        <a *ngIf="userRol === 'admin'" [routerLink]="['/administradores']" class="nav-link link-underline-opacity-0 text-white fs-5 m-1 d-flex flex-column align-items-center">
-          <i class="bi bi-person-plus"></i> 
-          <span class="underline"></span>
-          Administradores
-        </a>
-      </li>
+
       <li>
         <a *ngIf="userRol === 'admin' || userRol === 'cliente'" [routerLink]="['/notify']" class="nav-link link-underline-opacity-0 text-white fs-5 m-1 d-flex flex-column align-items-center">
           <i class="bi bi-bell"></i>

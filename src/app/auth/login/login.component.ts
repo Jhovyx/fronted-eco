@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../shared/services/auth.service';
+import { UserService } from '../../shared/services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -11,12 +11,10 @@ export class LoginComponent {
   password!: string;
   isLoading: boolean = false;
 
-  constructor( private authService: AuthService) {}
+  constructor( private readonly userService: UserService) {}
 
   async login() {
-    this.isLoading = true; // Activar el spinner
-    
-    // Validación de email
+    this.isLoading = true;
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!this.email) {
       this.showCustomAlert('El correo electrónico no debe estar vacío.', 'error');
@@ -28,8 +26,6 @@ export class LoginComponent {
       this.isLoading = false;
       return;
     }
-
-    // Validación de contraseña
     if (!this.password) {
       this.showCustomAlert('La contraseña no debe estar vacía.', 'error');
       this.isLoading = false;
@@ -40,47 +36,35 @@ export class LoginComponent {
       this.isLoading = false;
       return;
     }
-
-    try {
-      const user = await this.authService.login(this.email, this.password);
-      if (user) {
-        sessionStorage.setItem('user', JSON.stringify(user));
-        this.showCustomAlert('Bienvenido, su sesión ha iniciado correctamente.', 'success');
+    
+      const response = await this.userService.login(this.email, this.password);
+      if (response && typeof response === 'object' && response.primaryKey) {
+        this.showCustomAlert('Bienvenido, acceso ha sido autorizado.', 'success');
         this.isLoading = false; // Detener el spinner
         this.password = ''; // Limpiar el campo de contraseña
         this.email = ''; // Limpiar el campo de correo
         
         const loginModalElement = document.getElementById('loginModal');
         if (loginModalElement) {
-          // hacer click en el btn de cerraar modal
           const closeButton = document.getElementById('closeButtonz');
           if (closeButton) {
-            closeButton.click(); // Simula un clic en el botón de cerrar
+            closeButton.click();
           }
         }
 
       } else {
-        this.showCustomAlert('Credenciales incorrectas. Inténtalo de nuevo.', 'error');
+        this.showCustomAlert(response, 'error');
         this.isLoading = false; // Detener el spinner
         this.password = ''; // Limpiar el campo de contraseña
         this.email = ''; // Limpiar el campo de correo
       }
-    } catch (error) {
-      this.showCustomAlert('Ocurrió un error al iniciar sesión. Intenta de nuevo.', 'error');
-      this.isLoading = false; // Detener el spinner
-      this.password = ''; // Limpiar el campo de contraseña
-      this.email = ''; // Limpiar el campo de correo
-    } finally {
-      this.isLoading = false; // Detener el spinner
-      this.password = ''; // Limpiar el campo de contraseña
-      this.email = ''; // Limpiar el campo de correo
-    }
+
   }
 
   onEnter(event: KeyboardEvent) {
     if (event.key === 'Enter') {
-      event.preventDefault(); // Evita el comportamiento por defecto del Enter
-      this.login(); // Llama a la función para crear el usuario
+      event.preventDefault();
+      this.login();
     }
   } 
 

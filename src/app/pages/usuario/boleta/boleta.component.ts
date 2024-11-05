@@ -20,11 +20,9 @@ export class BoletaComponent{
                 const imgHeight = (canvas.height * imgWidth) / canvas.width;
                 doc.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
                 doc.save('IMPORTEC.pdf');
-                // Recargar la página después de la descarga
-                window.location.reload();
             });
         } else {
-            console.error('Element comprobante not found');
+            return
         }
     }
 
@@ -35,11 +33,9 @@ export class BoletaComponent{
         if (printContents) {
             document.body.innerHTML = printContents;
             window.print();
-            // Recargar la página después de la impresión
-            window.location.reload();
             document.body.innerHTML = originalContents;
         } else {
-            console.error('Element comprobante not found');
+            return
         }
     }
 }

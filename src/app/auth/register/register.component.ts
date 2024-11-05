@@ -1,8 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
-import { UserService } from '../../../shared/services/user.service';
-import { User } from '../../../shared/interfaces/user.interface';
 import * as bootstrap from 'bootstrap';
-import { NavbarComponent } from '../../../core/navbar/navbar.component';
+import { User } from '../../shared/interfaces/user.interface';
+import { UserService } from '../../shared/services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -10,46 +10,44 @@ import { NavbarComponent } from '../../../core/navbar/navbar.component';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
-  user: Omit<User, 'id'> = {
-    name: '',
-    surname: '',
+  user: Omit<User, 'primaryKey'> = {
+    firstName: '',
+    lastName: '',
     email: '',
-    estado: 1,
-    cargo: 'cliente',
-    document_number: '',
-    document_type: '',
-    phone_number: '',
+    userType: 'admin',
+    documentNumber: '',
+    documentType: '',
+    phoneNumber: '',
     password: '',
-    profile_picture_url: ''
+    profilePictureUrl: ''
   };
 
   isLoading: boolean = false;
-  @ViewChild(NavbarComponent) navbarComponent!: NavbarComponent;
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private router: Router) {}
 
   async createUser() {
 
     this.isLoading = true;
 
     // Validación de name
-    if (!this.user.name) {
+    if (!this.user.firstName) {
       this.showCustomAlert('El nombre de usario no debe estar vacío.', 'error');
       this.isLoading = false;
       return;
     }
-    if (!/^[A-Za-z\s]+$/.test(this.user.name)) {
+    if (!/^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/.test(this.user.firstName)) {
       this.showCustomAlert('El nombre solo debe contener letras.', 'error');
       this.isLoading = false;
       return;
     }
 
     // Validación de surname
-    if (!this.user.surname) {
+    if (!this.user.lastName) {
       this.showCustomAlert('El apellido de usario no debe estar vacío.', 'error');
       this.isLoading = false;
       return;
     }
-    if (!/^[A-Za-z\s]+$/.test(this.user.surname)) {
+    if (!/^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/.test(this.user.lastName)) {
       this.showCustomAlert('El apellido solo debe contener letras.', 'error');
       this.isLoading = false;
       return;
@@ -57,42 +55,42 @@ export class RegisterComponent {
 
     // Validación de tipo de documento
     const validDocumentTypes = ['DNI', 'RUC', 'PASAPORTE'];
-    if (!this.user.document_type) {
+    if (!this.user.documentType) {
       this.showCustomAlert('Selecciona el tipo de documento.', 'error');
       this.isLoading = false;
       return;
     }
 
     // Validación del número de documento según el tipo seleccionado
-    if(!this.user.document_number.length){
+    if(!this.user.documentNumber.length){
         this.showCustomAlert('El numero de documento no debe estar vacio.', 'error');
         this.isLoading = false;
         return;
     }
-    if (this.user.document_type === 'DNI' && !/^\d{8}$/.test(this.user.document_number)) {
+    if (this.user.documentType === 'DNI' && !/^\d{8}$/.test(this.user.documentNumber)) {
       this.showCustomAlert('El DNI debe tener 8 dígitos.', 'error');
       this.isLoading = false;
       return;
-    } else if (this.user.document_type === 'RUC' && !/^\d{11}$/.test(this.user.document_number)) {
+    } else if (this.user.documentType === 'RUC' && !/^\d{11}$/.test(this.user.documentNumber)) {
       this.showCustomAlert('El RUC debe tener 11 dígitos.', 'error');
       this.isLoading = false;
       return;
-    } else if (this.user.document_type === 'PASAPORTE' && !/^[A-Z0-9]{6,9}$/.test(this.user.document_number)) {
+    } else if (this.user.documentType === 'PASAPORTE' && !/^[A-Z0-9]{6,9}$/.test(this.user.documentNumber)) {
       this.showCustomAlert('El número de pasaporte debe tener entre 6 y 9 caracteres alfanuméricos.', 'error');
       this.isLoading = false;
       return;
     }    
 
     //validacion del numero telefonico
-    if(!this.user.phone_number.length){
+    if(!this.user.phoneNumber.length){
       this.showCustomAlert('El numero de telefono no debe estar vacio.', 'error')
       this.isLoading = false;
         return;
-    }else if(this.user.phone_number.length !== 9){
+    }else if(this.user.phoneNumber.length !== 9){
       this.showCustomAlert('Ingresa un numero de telefono valido.', 'error')
       this.isLoading = false;
         return;
-    } else if (!/^\d+$/.test(this.user.phone_number)) {
+    } else if (!/^\d+$/.test(this.user.phoneNumber)) {
       this.showCustomAlert('El número de teléfono solo debe contener numeros.', 'error');
       this.isLoading = false;
       return;
@@ -122,10 +120,9 @@ export class RegisterComponent {
       this.isLoading = false;
       return;
     }
-
       const response = await this.userService.createUser(this.user);
-      if(response === 'success'){
-        this.showCustomAlert('La cuenta fue creada con éxito.', 'success');
+      if(response  === 'Usuario creado con éxito.'){
+        this.showCustomAlert(response, 'success');
         this.isLoading = false;
         this.resetForm()
 
@@ -139,18 +136,16 @@ export class RegisterComponent {
           }
         }
         // Mostrar el modal de inicio de sesión
-        const loginModalElement = document.getElementById('loginModal');
-        if (loginModalElement) {
-          //enviar peticion al nabvar
-          const loginModal = new bootstrap.Modal(loginModalElement);
-          loginModal.show();
+        if (this.router.url !== '/admin-user') {
+          const loginModalElement = document.getElementById('loginModal');
+          if (loginModalElement) {
+            //enviar peticion al nabvar
+            const loginModal = new bootstrap.Modal(loginModalElement);
+            loginModal.show();
+          }
         }
-      }else if(response === 'email_in_use'){
-        this.showCustomAlert('El correo ingresado ya esta registrado.', 'error');
-        this.isLoading = false;
-        return;
-      }else if(response === 'error'){
-        this.showCustomAlert('Ocurrio un error al crear la cuenta.', 'error');
+      }else{
+        this.showCustomAlert(response, 'error');
         this.isLoading = false;
         return;
       }
@@ -165,21 +160,18 @@ export class RegisterComponent {
       this.createUser(); // Llama a la función para crear el usuario
     }
   }
-
- 
-
+  
   resetForm() {
     this.user = {
-      name: '',
-      surname: '',
+      firstName: '',
+      lastName: '',
       email: '',
-      estado: 1,
-      cargo: 'cliente',
-      document_number: '',
-      document_type: '',
-      phone_number: '',
+      userType: 'cliente',
+      documentNumber: '',
+      documentType: '',
+      phoneNumber: '',
       password: '',
-      profile_picture_url: ''
+      profilePictureUrl: ''
     };
   }
 

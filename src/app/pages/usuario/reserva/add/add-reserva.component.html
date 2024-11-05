@@ -1,8 +1,83 @@
-<h2 class="text-center">Reserva de Viaje</h2>
-
 <div class="d-flex align-items-center justify-content-center">
     <div class="">
-        <button type="button" class="btn m-2 btn-primary">Confirmar</button>
-        <button type="button" class="btn m-2 btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <div class="">
+            <div class="row">
+                <div class="col">
+                    <p class="text-center">SELECCIONAR ASIENTOS</p>
+                    <hr>
+                    <div class="bus-seats row row-cols-4">
+                        <div class="col" *ngFor="let seat of asientos">
+                            <a 
+                                class="btn asiento m-2 p-0" 
+                                [ngClass]="{
+                                    'asiento-occupied': seat.status === -1,
+                                    'asiento-available': seat.status === 0,
+                                    'asiento-selected': seat.status === 1
+                                }"
+                                (click)="seat.status !== -1 ? selectAsiento(seat) : null"
+                                [class.disabled]="seat.status === -1"> 
+                                <i class="fas fs-3 fa-chair"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="mt-3 d-flex justify-content-between">
+                        <p><span class="asiento-availablexd">●</span> Disponible</p>
+                        <p><span class="asiento-occupiedxd">●</span> Ocupado</p>
+                        <p><span class="asiento-selectedxd">●</span> Seleccionado</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <form>
+                        <p class="form-label text-center">DATOS DEL PASAJERO</p>
+                        <hr>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td><strong>Nombre:</strong></td>
+                                    <td>{{ user.firstName }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Apellidos:</strong></td>
+                                    <td>{{ user.lastName }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Documento:</strong></td>
+                                    <td>{{ user.documentType }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>N° Documento:</strong></td>
+                                    <td>{{ user.documentNumber }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Teléfono:</strong></td>
+                                    <td>{{ user.phoneNumber }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Correo:</strong></td>
+                                    <td>{{ user.email }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="">
+                            <a class="btn btn-secondary">Actualizar mis Datos</a>    
+                        </div>
+                    </div>            
+                                   
+                </div>
+            </div>          
+        </div>
+        <hr>
+        <div class="d-flex align-items-center justify-content-center">
+            <a type="button" class="btn m-2 btn-primary" (click)="VloseModal()" [routerLink]="['/pago-detalle']">Confirmar</a>
+            <button type="button" class="btn m-2 btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        </div>
     </div>
 </div>
+<button 
+          type="button" 
+          class="d-none" 
+          id="closeButtonResxd" 
+          data-bs-dismiss="modal">
+        </button> <!--hora de salida - bus-->

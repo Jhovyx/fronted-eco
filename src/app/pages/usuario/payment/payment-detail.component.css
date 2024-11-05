@@ -1,0 +1,87 @@
+/* Estilo general del contenedor del formulario */
+.container {
+    width: 100%; /* Ancho del contenedor: 100% del ancho del elemento padre */
+    max-width: 1000px; /* Ancho máximo del contenedor: 1000 píxeles */
+    margin: 0 auto; /* Centra el contenedor horizontalmente */
+    padding: 20px; /* Espacio interno del contenedor: 20 píxeles en todos los lados */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra suave alrededor del contenedor */
+    border-radius: 8px; /* Bordes redondeados del contenedor: radio de 8 píxeles */
+    background-color: #f9f9f9; /* Color de fondo del contenedor */
+    display: grid; /* Utiliza el modelo de diseño de cuadrícula (grid) */
+    grid-template-columns: repeat(2, 1fr); /* Dos columnas de igual tamaño (fracción del espacio disponible) */
+    gap: 20px; /* Espacio entre las filas y columnas */
+}
+
+/* Estilo del encabezado */
+.header h1 {
+    grid-column: span 2; /* El encabezado ocupa ambas columnas del grid */
+    text-align: center; /* Alinea el texto al centro */
+    color: #333; /* Color del texto del encabezado */
+    margin-bottom: 20px; /* Margen inferior del encabezado: 20 píxeles */
+}
+
+/* Estilo de las etiquetas */
+.container label {
+    display: block; /* Muestra las etiquetas como bloques (ocupan toda la línea) */
+    margin: 10px 0 5px; /* Margen superior de 10 píxeles y margen inferior de 5 píxeles */
+    font-weight: bold; /* Hace el texto de las etiquetas en negrita */
+    color: #555; /* Color del texto de las etiquetas */
+}
+
+/* Estilo para los campos de entrada y el selector */
+.container input[type="text"],
+.container input[type="number"],
+.container input[type="date"],
+.container select {
+    width: 105%; /* Ancho de los campos: 105% del ancho del contenedor (puede causar desbordamiento) */
+    padding: 10px; /* Espacio interno de los campos: 10 píxeles en todos los lados */
+    border: 1px solid #ddd; /* Borde de 1 píxel sólido con color gris claro */
+    border-radius: 4px; /* Bordes redondeados de los campos: radio de 4 píxeles */
+    box-sizing: border-box; /* Incluye el padding y el borde en el ancho total del campo */
+    margin-bottom: 15px; /* Margen inferior de los campos: 15 píxeles */
+}
+
+/* Estilo cuando los campos están enfocados */
+.container input[type="text"]:focus,
+.container input[type="number"]:focus,
+.container input[type="date"]:focus,
+.container select:focus {
+    border-color: #4CAF50; /* Color del borde cuando el campo está enfocado: verde */
+    outline: none; /* Elimina el borde de enfoque predeterminado del navegador */
+}
+
+/* Estilo para los grupos de radio buttons */
+.form-group {
+    grid-column: span 2; /* Ocupa ambas columnas del grid */
+    margin-bottom: 10px; /* Margen inferior del grupo de radio buttons: 10 píxeles */
+    display: flex; /* Utiliza el modelo de diseño flexible (flexbox) */
+    gap: 10px; /* Espacio entre los elementos dentro del grupo: 10 píxeles */
+}
+
+/* Estilo para el botón de pagar */
+.btn-pagar {
+    background-color: #4CAF50; /* Color de fondo del botón: verde */
+    border: none; /* Sin borde alrededor del botón */
+    color: white; /* Color del texto del botón: blanco */
+    padding: 15px 32px; /* Espacio interno del botón: 15 píxeles arriba y abajo, 32 píxeles a los lados */
+    text-align: center; /* Alinea el texto del botón al centro */
+    text-decoration: none; /* Elimina el subrayado del texto del botón */
+    display: inline-block; /* Muestra el botón como un elemento en línea con bloque */
+    font-size: 16px; /* Tamaño de la fuente del texto del botón */
+    margin: 20px 0; /* Margen superior e inferior del botón: 20 píxeles */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón a una mano (indicador de clic) */
+    border-radius: 4px; /* Bordes redondeados del botón: radio de 4 píxeles */
+    transition: background-color 0.3s; /* Suaviza el cambio de color de fondo cuando se pasa el mouse */
+}
+
+/* Estilo para el botón de pagar cuando se pasa el ratón sobre él */
+.btn-pagar:hover {
+    background-color: #45a049; /* Cambia el color de fondo cuando el botón está en estado hover (pasar el ratón sobre él) */
+}
+
+/* Estilo para el contenedor del botón */
+.button-container {
+    grid-column: span 2; /* Asegura que el contenedor ocupa ambas columnas del grid */
+    text-align: right; /* Alinea el contenido del contenedor a la derecha */
+    margin-top: 20px; /* Margen superior del contenedor */
+}

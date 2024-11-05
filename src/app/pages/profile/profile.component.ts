@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { UserService } from "../../shared/services/user.service";
 import { ImgBBResponse, User } from "../../shared/interfaces/user.interface";
 import { Observable, of, throwError } from 'rxjs';
@@ -9,37 +9,35 @@ import { catchError } from 'rxjs/operators';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent {
 
   imagePreview: string | ArrayBuffer | null = null; // Vista previa de la imagen
   selectedFile: File | null = null; // Imagen seleccionada
   imgUrlResponse!: string;
   user: User = { // Inicializar el objeto `user`
-    id: '',
+    primaryKey: '',
     email: '',
-    name: '',
-    surname: '',
-    estado: 1,
-    cargo: '',
-    document_number: '',
-    document_type: '',
-    phone_number: '',
+    firstName: '',
+    lastName: '',
+    userType: '',
+    documentNumber: '',
+    documentType: '',
+    phoneNumber: '',
     password: '',
-    profile_picture_url: ''
+    profilePictureUrl: ''
   };
 
   originalUser: User = { // Estado inicial del usuario
-    id: '',
+    primaryKey: '',
     email: '',
-    name: '',
-    surname: '',
-    estado: 1,
-    cargo: '',
-    document_number: '',
-    document_type: '',
-    phone_number: '',
+    firstName: '',
+    lastName: '',
+    userType: '',
+    documentNumber: '',
+    documentType: '',
+    phoneNumber: '',
     password: '',
-    profile_picture_url: ''
+    profilePictureUrl: ''
   };
 
   oldPassword: string = '';
@@ -47,9 +45,7 @@ export class ProfileComponent implements OnInit {
   confirmNewPassword: string = '';
   isLoading: boolean = false;
 
-  constructor(private userService: UserService) {}
-
-  ngOnInit(): void {
+  constructor(private userService: UserService) {
     this.loadUserData(); // Cargar los datos del usuario al inicializar
   }
 
@@ -78,12 +74,11 @@ export class ProfileComponent implements OnInit {
         })
       );
     } else {
-      // Si no hay imagen seleccionada, devuelve un observable con la URL actual
       return of({
         success: true,
         status: 200,
         data: {
-          url: this.user.profile_picture_url
+          url: this.user.profilePictureUrl
         }
       } as ImgBBResponse);
     }
@@ -92,74 +87,88 @@ export class ProfileComponent implements OnInit {
   updateProfile() {
     this.isLoading = true;
 
-    // Validación de name
-    if (!this.user.name) {
+    if (!this.user.firstName) {
       this.showCustomAlert('El nombre de usario no debe estar vacío.', 'error');
       this.isLoading = false;
       return;
     }
-    if (!/^[A-Za-z\s]+$/.test(this.user.name)) {
+    if (!/^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/.test(this.user.firstName)) {
       this.showCustomAlert('El nombre solo debe contener letras.', 'error');
       this.isLoading = false;
       return;
     }
 
-    // Validación de surname
-    if (!this.user.surname) {
+    if (!this.user.lastName) {
       this.showCustomAlert('El apellido de usario no debe estar vacío.', 'error');
       this.isLoading = false;
       return;
     }
-    if (!/^[A-Za-z\s]+$/.test(this.user.surname)) {
+    if (!/^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/.test(this.user.lastName)) {
       this.showCustomAlert('El apellido solo debe contener letras.', 'error');
       this.isLoading = false;
       return;
     }
 
-    // Validación de tipo de documento
-    const validDocumentTypes = ['DNI', 'RUC', 'PASAPORTE'];
-    if (!this.user.document_type) {
-      this.showCustomAlert('Selecciona el tipo de documento.', 'error');
+    let validDocumentTypes = ['DNI', 'RUC', 'PASAPORTE'];
+
+    // Verifica que el tipo de documento esté seleccionado
+    if (!this.user.documentType || !validDocumentTypes.includes(this.user.documentType)) {
+      this.showCustomAlert('Selecciona un tipo de documento válido.', 'error');
       this.isLoading = false;
       return;
     }
 
-    // Validación del número de documento según el tipo seleccionado
-    if(!this.user.document_number.length){
-        this.showCustomAlert('El numero de documento no debe estar vacio.', 'error');
+    // Verifica que el número de documento no esté vacío
+    if (!this.user.documentNumber || this.user.documentNumber.length === 0) {
+      this.showCustomAlert('El número de documento no debe estar vacío.', 'error');
+      this.isLoading = false;
+      return;
+    }
+
+    // Valida el número de documento de acuerdo al tipo seleccionado
+    switch (this.user.documentType) {
+      case 'DNI':
+        if (!/^\d{8}$/.test(this.user.documentNumber)) {
+          this.showCustomAlert('El DNI debe tener 8 dígitos.', 'error');
+          this.isLoading = false;
+          return;
+        }
+        break;
+      case 'RUC':
+        if (!/^\d{11}$/.test(this.user.documentNumber)) {
+          this.showCustomAlert('El RUC debe tener 11 dígitos.', 'error');
+          this.isLoading = false;
+          return;
+        }
+        break;
+      case 'PASAPORTE':
+        if (!/^[A-Z0-9]{6,9}$/.test(this.user.documentNumber)) {
+          this.showCustomAlert('El número de pasaporte debe tener entre 6 y 9 caracteres alfanuméricos.', 'error');
+          this.isLoading = false;
+          return;
+        }
+        break;
+      default:
+        this.showCustomAlert('Tipo de documento no reconocido.', 'error');
         this.isLoading = false;
         return;
     }
-    if (this.user.document_type === 'DNI' && !/^\d{8}$/.test(this.user.document_number)) {
-      this.showCustomAlert('El DNI debe tener 8 dígitos.', 'error');
-      this.isLoading = false;
-      return;
-    } else if (this.user.document_type === 'RUC' && !/^\d{11}$/.test(this.user.document_number)) {
-      this.showCustomAlert('El RUC debe tener 11 dígitos.', 'error');
-      this.isLoading = false;
-      return;
-    } else if (this.user.document_type === 'PASAPORTE' && !/^[A-Z0-9]{6,9}$/.test(this.user.document_number)) {
-      this.showCustomAlert('El número de pasaporte debe tener entre 6 y 9 caracteres alfanuméricos.', 'error');
-      this.isLoading = false;
-      return;
-    }    
+ 
 
-    //validacion del numero telefonico
-    if(!this.user.phone_number.length){
+    if(!this.user.phoneNumber.length){
       this.showCustomAlert('El numero de telefono no debe estar vacio.', 'error')
       this.isLoading = false;
         return;
-    }else if(this.user.phone_number.length !== 9){
+    }else if(this.user.phoneNumber.length !== 9){
       this.showCustomAlert('Ingresa un numero de telefono valido.', 'error')
       this.isLoading = false;
         return;
-    } else if (!/^\d+$/.test(this.user.phone_number)) {
+    } else if (!/^\d+$/.test(this.user.phoneNumber)) {
       this.showCustomAlert('El número de teléfono solo debe contener numeros.', 'error');
       this.isLoading = false;
       return;
     }
 
-    // Validación de email
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!this.user.email) {
       this.showCustomAlert('El correo electrónico no debe estar vacío.', 'error');
@@ -177,7 +186,7 @@ export class ProfileComponent implements OnInit {
       this.uploadImage().subscribe(
         (response: ImgBBResponse) => {
           if (response && response.data) {
-            this.user.profile_picture_url = response.data.url; // Actualiza la URL de la imagen
+            this.user.profilePictureUrl = response.data.url; // Actualiza la URL de la imagen
           }
           this.saveUserProfile(); // Guardar el perfil después de subir la imagen
         },
@@ -193,28 +202,69 @@ export class ProfileComponent implements OnInit {
   }
 
   async saveUserProfile() {
-    const user = await this.userService.updateUser(this.user.id, this.user)
-    if(user){
-      sessionStorage.setItem('user', JSON.stringify(user));
+    const updatedUserData = this.getUpdatedUserData();
+    // Verificar si hay cambios
+    if (Object.keys(updatedUserData).length === 0) {
+      this.showCustomAlert('No se realizaron cambios en el perfil.', 'info');
+      this.isLoading = false;
+      return;
+    }
+    // Llamar al servicio de actualización con los datos cambiados
+    const response = await this.userService.updateUser(this.user.primaryKey, updatedUserData);
+    if(response && typeof response === 'object' && response.primaryKey){
+      this.loadUserData();
       this.showCustomAlert('Los datos de actualizaron con éxito.', 'success');
       this.isLoading = false;
-      location.reload()
+      const closeButton = document.getElementById('closeButtonProfile');
+      if (closeButton) {
+        closeButton.click(); // Simula un clic en el botón de cerrar
+      }
     }else{
-      this.showCustomAlert('Error al actulizar los datos de usuario.', 'error');
+      this.showCustomAlert(response, 'error');
       this.isLoading = false;
     }
   }
 
+  
+  private getUpdatedUserData(): Partial<User> {
+    const updatedUser: Partial<User> = {};
+  
+    // Comparar cada campo
+    if (this.user.firstName !== this.originalUser.firstName) {
+      updatedUser.firstName = this.user.firstName;
+    }
+    if (this.user.lastName !== this.originalUser.lastName) {
+      updatedUser.lastName = this.user.lastName;
+    }
+    if (this.user.documentType !== this.originalUser.documentType) {
+      updatedUser.documentType = this.user.documentType;
+    }
+    if (this.user.documentNumber !== this.originalUser.documentNumber) {
+      updatedUser.documentNumber = this.user.documentNumber;
+    }
+    if (this.user.phoneNumber !== this.originalUser.phoneNumber) {
+      updatedUser.phoneNumber = this.user.phoneNumber;
+    }
+    if (this.user.email !== this.originalUser.email) {
+      updatedUser.email = this.user.email;
+    }
+    if (this.user.profilePictureUrl !== this.originalUser.profilePictureUrl) {
+      updatedUser.profilePictureUrl = this.user.profilePictureUrl;
+    }
+  
+    return updatedUser;
+  }
+  
 
   private isUserChanged(): boolean {
     return (
-      this.user.name !== this.originalUser.name ||
-      this.user.surname !== this.originalUser.surname ||
-      this.user.document_type !== this.originalUser.document_type ||
-      this.user.document_number !== this.originalUser.document_number ||
-      this.user.phone_number !== this.originalUser.phone_number ||
+      this.user.firstName !== this.originalUser.firstName ||
+      this.user.lastName !== this.originalUser.lastName ||
+      this.user.documentType !== this.originalUser.documentType ||
+      this.user.documentNumber !== this.originalUser.documentNumber ||
+      this.user.phoneNumber !== this.originalUser.phoneNumber ||
       this.user.email !== this.originalUser.email ||
-      this.user.profile_picture_url !== this.originalUser.profile_picture_url
+      this.user.profilePictureUrl !== this.originalUser.profilePictureUrl
     );
   }
 
@@ -256,7 +306,6 @@ export class ProfileComponent implements OnInit {
   async updatePassword() {
     this.isLoading = true
 
-    // Validación de contraseña
     if (!this.oldPassword) {
       this.showCustomAlert('La contraseña actual no debe estar vacía.', 'error');
       this.isLoading = false;
@@ -291,19 +340,19 @@ export class ProfileComponent implements OnInit {
     }
 
     if (this.newPassword === this.confirmNewPassword) {
-      const response = await this.userService.updatePassword(this.user.id, this.oldPassword, this.newPassword); // Usa await aquí
-      if (response === 'success') {
-        this.showCustomAlert('Contraseña actualizada exitosamente.', 'success'); // Corrige 'error' a 'success'
+      const response = await this.userService.updatePassword(this.user.primaryKey, this.oldPassword, this.newPassword);
+      if (response === 'Contraseña actualizada correctamente.') {
+        this.showCustomAlert(response, 'success'); 
         this.oldPassword = '';
         this.newPassword = '';
         this.confirmNewPassword = '';
         this.isLoading = false
-        location.reload()
-      } else if(response === 'Old_password_incorrect'){
-        this.showCustomAlert('Contraseña actual incorrecta.', 'error'); // Manejo de error
-        this.isLoading = false
+        const closeButton = document.getElementById('closeButtonUpdatePasword');
+        if (closeButton) {
+          closeButton.click();
+        }
       } else {
-        this.showCustomAlert('Ocurrio un error al actualizar la contraseña.', 'error'); // Manejo de error
+        this.showCustomAlert(response, 'error');
         this.isLoading = false
       }
     } else {

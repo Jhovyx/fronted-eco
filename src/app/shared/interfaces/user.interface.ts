@@ -1,19 +1,16 @@
 export interface User {
-  id: string;
+  primaryKey: string;
+  firstName: string;
+  lastName: string;
+  documentType: string;
+  documentNumber: string;
+  phoneNumber: string;
   email: string;
-  name: string;
-  surname: string;
-  password: string; // Opcional si el backend lo maneja
-  phone_number: string;
-  document_type: string;
-  document_number: string;
-  profile_picture_url?: string;
-  cargo?: string;
-  estado?: number;
-  // Otros campos según tu base de datos
+  password: string;
+  profilePictureUrl?: string;
+  userType?: string;
+  userAdminId?: string
 }
-
-
 
   //interface de respuesta de imgBB
   export interface ImgBBResponse {
@@ -32,9 +29,4 @@ export interface User {
     };
     success: boolean;
     status: number;
-  }
-  
-  //respuesta de creacion de usuario
-  export interface CreateResponse{
-    message: string
   }

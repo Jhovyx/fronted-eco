@@ -16,3 +16,8 @@ export interface DestinosResponse {
     message: number;
     data: Trip[];
 }
+
+export interface Asientos{
+    id: number,
+    status: number//0 -1
+}
