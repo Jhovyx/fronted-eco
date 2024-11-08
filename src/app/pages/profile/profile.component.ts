@@ -213,12 +213,12 @@ export class ProfileComponent {
     const response = await this.userService.updateUser(this.user.primaryKey, updatedUserData);
     if(response && typeof response === 'object' && response.primaryKey){
       this.loadUserData();
-      this.showCustomAlert('Los datos de actualizaron con éxito.', 'success');
       this.isLoading = false;
       const closeButton = document.getElementById('closeButtonProfile');
       if (closeButton) {
         closeButton.click(); // Simula un clic en el botón de cerrar
       }
+      this.showCustomAlert('Los datos de actualizaron con éxito.', 'success');
     }else{
       this.showCustomAlert(response, 'error');
       this.isLoading = false;
@@ -342,7 +342,6 @@ export class ProfileComponent {
     if (this.newPassword === this.confirmNewPassword) {
       const response = await this.userService.updatePassword(this.user.primaryKey, this.oldPassword, this.newPassword);
       if (response === 'Contraseña actualizada correctamente.') {
-        this.showCustomAlert(response, 'success'); 
         this.oldPassword = '';
         this.newPassword = '';
         this.confirmNewPassword = '';
@@ -351,6 +350,7 @@ export class ProfileComponent {
         if (closeButton) {
           closeButton.click();
         }
+        this.showCustomAlert(response, 'success'); 
       } else {
         this.showCustomAlert(response, 'error');
         this.isLoading = false

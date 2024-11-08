@@ -11,23 +11,44 @@
 
     <!--CONTENEDOR DE CATEGORIAS-->
     <div class="col-md-3 d-flex justify-content-center align-items-center">
-      <div class="dropdown">
-        <div class="input-group mb-1" style="width: 280px; display: flex; flex-direction: row; align-items: center;">
-          <label class="input-group-text"><b>CATEGORIA</b></label>
-          <select class="form-select" [(ngModel)]="selectedType" (change)="filterUsers()">
-            <option value="TODOS">TODOS</option>
-            <option value="admin">ADMINISTRADORES</option>
-            <option value="cliente">CLIENTES</option>
-          </select>                
-        </div>
+      <div class="input-group mb-1" style="width: 280px; display: flex; flex-direction: row; align-items: center;">
+        <label class="input-group-text"><b>CATEGORÍA</b></label>
+        <select class="form-select" [(ngModel)]="selectedType" (change)="filterUsers()">
+          <option value="TODOS">TODOS</option>
+          <option value="admin">ADMINISTRADORES</option>
+          <option value="cliente">CLIENTES</option>
+        </select>
       </div>
     </div>
 
-    <div class="col-md-3 d-flex justify-content-center align-items-center">
-      <div class="dropdown">
-        <div class="input-group mb-1" style="width: 280px; display: flex; flex-direction: row; align-items: center;">
-          <input type="text" placeholder="Buscar..." class="form-control" (keyup)="onSearchChange($event)">
-        </div>
+    <!--BUSCAR POR FECHAS DE CREACION-->
+    <div class="col-md-2 d-flex justify-content-center align-items-center">
+      <div class="input-group mb-1">
+        <label class="input-group-text" for="dateInput">DESDE</label>
+        <input
+          type="date"
+          class="form-control"
+          id="dateInput"
+          [min]="minDate"
+          [max]="maxDate"
+          [(ngModel)]="startDate"
+          (change)="filterUsers()"
+        />
+      </div>
+    </div>
+
+    <div class="col-md-2 d-flex justify-content-center align-items-center">
+      <div class="input-group mb-1">
+        <label class="input-group-text" for="dateInput">HASTA</label>
+        <input
+          type="date"
+          class="form-control"
+          id="dateInput"
+          [min]="minDate"
+          [max]="maxDate"
+          [(ngModel)]="endDate" 
+          (change)="filterUsers()"
+        />
       </div>
     </div>
 
@@ -65,8 +86,11 @@
           <td>{{ user.phoneNumber }}</td>
           <td>{{ user.userType }}</td>
           <td style=" display: flex; justify-content: center;">
-            <button (click)="detailUser(user)" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#detalleModal">
-              <i class="fas fa-eye"></i> Ver Detalles
+            <button (click)="detailUser(user)" class="btn btn-primary btn-sm m-1" data-bs-toggle="modal" data-bs-target="#detalleModal">
+              <i class="fas fa-eye"></i> Ver
+            </button>
+            <button (click)="deleteUser(user.primaryKey)" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" class="btn btn-danger btn-sm m-1">
+              <i class="fas fa-trash"></i> Eliminar
             </button>
           </td>
         </tr>
@@ -103,6 +127,12 @@
                     
                     <dt class="col-sm-4">Telefono:</dt>
                     <dd class="col-sm-8">{{ user.phoneNumber }}</dd>
+
+                    <dt class="col-sm-4">Fecha de creación:</dt>
+                    <dd class="col-sm-8">{{ formatDate(user.createdAt ?? 0) }}</dd>
+
+                    <dt class="col-sm-4">Ultima actulización:</dt>
+                    <dd class="col-sm-8">{{ formatDate(user.updatedAt ?? 0) }}</dd>
                 </dl>
             </div>
             <div class="modal-footer">
@@ -111,3 +141,26 @@
         </div>
     </div>
 </div>
+
+<!-- Modal de confirmación de eliminación -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered"> <!-- Clase para centrar el modal -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Eliminación</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" [disabled]="isLoading"></button>
+      </div>
+      <div class="modal-body">
+        ¿Estás seguro de que deseas eliminar este usuario?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="closeButtonConfir"  data-bs-dismiss="modal" [disabled]="isLoading">Cancelar</button>
+        <button type="button" class="btn btn-danger" (click)="confirmDelete()" [disabled]="isLoading">
+          <span *ngIf="!isLoading">Eliminar</span>
+          <span *ngIf="isLoading">Eliminando...</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+

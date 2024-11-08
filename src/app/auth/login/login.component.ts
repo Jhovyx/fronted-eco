@@ -39,10 +39,6 @@ export class LoginComponent {
     
       const response = await this.userService.login(this.email, this.password);
       if (response && typeof response === 'object' && response.primaryKey) {
-        this.showCustomAlert('Bienvenido, acceso ha sido autorizado.', 'success');
-        this.isLoading = false; // Detener el spinner
-        this.password = ''; // Limpiar el campo de contraseña
-        this.email = ''; // Limpiar el campo de correo
         
         const loginModalElement = document.getElementById('loginModal');
         if (loginModalElement) {
@@ -51,6 +47,10 @@ export class LoginComponent {
             closeButton.click();
           }
         }
+        this.showCustomAlert('Bienvenido, acceso ha sido autorizado.', 'success');
+        this.isLoading = false; // Detener el spinner
+        this.password = ''; // Limpiar el campo de contraseña
+        this.email = ''; // Limpiar el campo de correo
 
       } else {
         this.showCustomAlert(response, 'error');

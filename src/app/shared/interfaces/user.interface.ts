@@ -9,7 +9,9 @@ export interface User {
   password: string;
   profilePictureUrl?: string;
   userType?: string;
-  userAdminId?: string
+  userAdminId?: string;
+  createdAt?: number;
+  updatedAt?: number; 
 }
 
   //interface de respuesta de imgBB

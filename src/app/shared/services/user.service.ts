@@ -10,7 +10,7 @@ import { ImgBBResponse, User } from '../interfaces/user.interface';
 export class UserService{
     private apiKeyImages = 'd03db2efb9b5f84b54e691b44c31976d';//key para imagenes
     private apiImages = 'https://api.imgbb.com/1/upload';//api para imagenes
-    private apiBackend = 'http://localhost:3000/v1'//backend
+    private apiBackend = 'http://localhost:3000/v1/users'//backend
 
     private userSubject = new BehaviorSubject<User | null>(null); // Estado inicial
     user$: Observable<User | null> = this.userSubject.asObservable();
@@ -18,7 +18,7 @@ export class UserService{
     constructor(private http : HttpClient){}
 
     async getUsers() {
-      return await this.http.get<User[]>(`${this.apiBackend}/users`).toPromise();
+      return await this.http.get<User[]>(`${this.apiBackend}`).toPromise();
     }
     
     //ya esta verificado
@@ -26,26 +26,25 @@ export class UserService{
     //update user
     async updateUser(id: string, updateUser: Partial<User>) {
       try {
-        const user = await this.http.patch<User>(`${this.apiBackend}/users/${id}`, updateUser).toPromise()
+        const user = await this.http.patch<User>(`${this.apiBackend}/${id}`, updateUser).toPromise()
         if(user){
           this.setUser(user);
           this.userSubject.next(user); // Emitir el nuevo usuario
           return user
         }else{
-          return 'Ocurrio un error al actulizar el usuario.';
+          return 'Ocurrio un error al actualizar el usuario.';
         }
       } catch (error) {
         if(error instanceof HttpErrorResponse){
           // Verificar si el mensaje está en un idioma diferente al español
           const errorMessage = error.error.message || '';
 
-          // Aquí puedes implementar una lógica simple para verificar si el mensaje está en español
-          const isSpanish = /^[A-Za-zÁÉÍÓÚáéíóúñÑ\s,.]+$/.test(errorMessage); // Verifica si solo tiene caracteres en español
+          const isSpanish = /^[A-Za-zÁÉÍÓÚáéíóúñÑ\s,.]+$/.test(errorMessage); 
           
           if (isSpanish) {
-            return errorMessage; // Retorna el mensaje en español
+            return errorMessage;
           } else {
-            return 'Ocurrio un error al actualizar el usuario.'; // Mensaje genérico si no está en español
+            return 'Ocurrio un error al actualizar el usuario.';
           }
         }else{
           return 'Ocurrio un error al actulizar el usuario.';
@@ -57,17 +56,17 @@ export class UserService{
     async updatePassword(id: string, oldPassword: string, newPassword: string) {
       try {
         const body = {oldPassword, newPassword }; // Prepara el cuerpo de la solicitud
-        const response = await this.http.patch<{ message: string }>(`${this.apiBackend}/users/password/${id}`, body).toPromise();
+        const response = await this.http.patch<{ message: string }>(`${this.apiBackend}/password/${id}`, body).toPromise();
         if(response){
           return response.message
         }else{
-          return 'Ocurrio un error al actulizar la contraseña.';
+          return 'Ocurrio un error al actualizar la contraseña.';
         }
       } catch (error) {
         if(error instanceof HttpErrorResponse){
           return error.error.message;
         }else{
-          return 'Ocurrio un error al actulizar la contraseña.';
+          return 'Ocurrio un error al actualizar la contraseña.';
         }
       }
     }
@@ -91,7 +90,7 @@ export class UserService{
       this.loadUserData();
       if(this.userAdmin && this.userAdmin === 'admin') newUser.userAdminId = this.userAdminId;
       try {
-        const response = await this.http.post<{ message: string }>(`${this.apiBackend}/users`, newUser).toPromise()
+        const response = await this.http.post<{ message: string }>(`${this.apiBackend}`, newUser).toPromise()
         if(response){
           return response.message
         }else{
@@ -99,17 +98,58 @@ export class UserService{
         }
       } catch (error) {
         if(error instanceof HttpErrorResponse){
-          return error.error.message;
+          // Verificar si el mensaje está en un idioma diferente al español
+          const errorMessage = error.error.message || '';
+
+          const isSpanish = /^[A-Za-zÁÉÍÓÚáéíóúñÑ\s,.]+$/.test(errorMessage); 
+          
+          if (isSpanish) {
+            return errorMessage;
+          } else {
+            return 'Ocurrio un error al crear el usuario.';
+          }
         }else{
           return 'Ocurrio un error al crear el usuario.';
         }
       }
     }   
 
+    async deleteUser(primaryKey: string){
+      this.loadUserData();
+      if(this.userAdmin === 'admin'){
+        try {
+          const response = await this.http.patch<{ message: string }>(`${this.apiBackend}/delete/${primaryKey}`, {userAdminId: this.userAdminId}).toPromise()
+          console.log(response)
+          if(response){
+            return response.message
+          }else{
+            return 'Ocurrio un error al eliminar el usuario.';
+          }
+        } catch (error) {
+          if(error instanceof HttpErrorResponse){
+            // Verificar si el mensaje está en un idioma diferente al español
+            const errorMessage = error.error.message || '';
+
+            const isSpanish = /^[A-Za-zÁÉÍÓÚáéíóúñÑ\s,.]+$/.test(errorMessage); 
+            
+            if (isSpanish) {
+              return errorMessage;
+            } else {
+              return 'Ocurrio un error al crear el usuario.';
+            }
+          }else{
+            return 'Ocurrio un error al eliminar el usuario.';
+          }
+        }
+      }else{
+        return 'Este usuario no esta permitido que realize la accion.';
+      }
+    }
+
     //loguin 
   async login(email: string, password: string) {
       try{
-          const user = await this.http.post<User>(`${this.apiBackend}/users/login`, {email, password}).toPromise();
+          const user = await this.http.post<User>(`${this.apiBackend}/login`, {email, password}).toPromise();
           if (user) {
             this.setUser(user);
             this.userSubject.next(user); // Emitir el nuevo usuario
@@ -118,9 +158,18 @@ export class UserService{
             return 'Ocurrio un error al ingresar al sistema.'
       } catch (error){
         if(error instanceof HttpErrorResponse){
-          return error.error.message;
+          // Verificar si el mensaje está en un idioma diferente al español
+          const errorMessage = error.error.message || '';
+
+          const isSpanish = /^[A-Za-zÁÉÍÓÚáéíóúñÑ\s,.]+$/.test(errorMessage); 
+          
+          if (isSpanish) {
+            return errorMessage;
+          } else {
+            return 'Ocurrio un error al ingresar al sistema.';
+          }
         }else{
-          return 'Ocurrio un error al crear el usuario.';
+          return 'Ocurrio un error al ingresar al sistema.';
         }
       }
   }

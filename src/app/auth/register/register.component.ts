@@ -3,6 +3,7 @@ import * as bootstrap from 'bootstrap';
 import { User } from '../../shared/interfaces/user.interface';
 import { UserService } from '../../shared/services/user.service';
 import { Router } from '@angular/router';
+import { AdminUsersComponent } from '../../pages/admin/admin-users/admin-users.component';
 
 @Component({
   selector: 'app-register',
@@ -22,6 +23,7 @@ export class RegisterComponent {
     profilePictureUrl: ''
   };
 
+  @ViewChild(AdminUsersComponent) adminUsersComponent!: AdminUsersComponent;
   isLoading: boolean = false;
   constructor(private userService: UserService, private router: Router) {}
 
@@ -122,10 +124,6 @@ export class RegisterComponent {
     }
       const response = await this.userService.createUser(this.user);
       if(response  === 'Usuario creado con éxito.'){
-        this.showCustomAlert(response, 'success');
-        this.isLoading = false;
-        this.resetForm()
-
         // Cerrar el modal de registro
         const registerModalElement = document.getElementById('registroModal');
         if (registerModalElement) {
@@ -135,6 +133,10 @@ export class RegisterComponent {
             closeButton.click(); // Simula un clic en el botón de cerrar
           }
         }
+        this.showCustomAlert(response, 'success');
+        this.isLoading = false;
+        this.resetForm();
+        
         // Mostrar el modal de inicio de sesión
         if (this.router.url !== '/admin-user') {
           const loginModalElement = document.getElementById('loginModal');
@@ -144,6 +146,7 @@ export class RegisterComponent {
             loginModal.show();
           }
         }
+        this.adminUsersComponent.loadUser();
       }else{
         this.showCustomAlert(response, 'error');
         this.isLoading = false;
