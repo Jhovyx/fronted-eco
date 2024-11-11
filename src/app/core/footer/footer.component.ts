@@ -11,9 +11,10 @@ export class FooterComponent implements OnInit {
 
   userRol?: string;
 
-  constructor(private userService: UserService){this.loadUserData()}
+  constructor(private userService: UserService){}
 
   ngOnInit(): void {
+    this.loadUserData();
     this.userService.user$.subscribe(user => {
       if(user){
         this.userRol = user?.userType; 

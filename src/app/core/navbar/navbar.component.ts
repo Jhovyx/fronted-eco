@@ -30,11 +30,6 @@ export class NavbarComponent implements OnInit {
         if(user.profilePictureUrl && user.profilePictureUrl.length !== 0){
           this.imgProfile = user.profilePictureUrl;
         }
-      }else{
-        this.userRol = '';
-        this.userNombre = '';
-        this.userCorreo = '';
-        this.imgProfile = '';
       }
     });
   }
