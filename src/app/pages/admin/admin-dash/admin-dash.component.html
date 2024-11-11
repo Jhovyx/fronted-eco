@@ -1,74 +1,202 @@
-<button class="btn btn-secondary mb-4" onclick="window.history.back()">Regresar</button>
 
 <div class="container mt-5">
-    <h2 class="mb-4">Actividades de Usuarios</h2>
-    <div class="table-responsive">
-        <table class="table table-striped table-bordered table-hover">
-            <thead class="table-dark">
-                <tr>
-                    <th>ID</th>
-                    <th>Correo</th>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Tipo de Actividad</th>
-                    <th>Hora de Actividad</th>
-                    <th>Acción</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let activity of activities">
-                    <td>{{ activity.id }}</td>
-                    <td>{{ activity.email }}</td>
-                    <td>{{ activity.firstName }}</td>
-                    <td>{{ activity.lastName }}</td>
-                    <td>{{ activity.activityType }}</td>
-                    <td>{{ activity.activityTime | date: 'short' }}</td>
-                    <td>
-                        <button class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#activityModal" (click)="selectActivity(activity)">
-                            <i class="bi bi-eye"></i> Ver
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+
+    <div class="row bg-primary rounded p-3 shadow-lg">
+    
+        
+
+      <div class="col-md-4 d-flex justify-content-center align-items-center mb-2">
+        <div class="input-group mb-1 animate__animated animate__fadeIn animate__delay-1s">
+          <div class="input-group mb-0">
+            <label class="input-group-text" for="userInput">USUARIO</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="userInput" 
+              placeholder="Buscar..." 
+              [(ngModel)]="userInput"
+              (input)="ActivitiesFilter()"
+              list="userList"
+            ><!--enviar el usuario-->
+          </div>
+          <datalist id="userList">
+            <option *ngFor="let user of filteredUsers.slice(0, 5)" [value]="user.firstName" class="itemxd">
+              {{ user.firstName }}
+            </option>
+          </datalist>
+        </div>
+      </div>
+            
+        
+        <!--BUSCAR POR FECHAS DE CREACION-->
+        <div class="col-md-3 d-flex justify-content-center align-items-center mb-2">
+          <div class="input-group mb-1 animate__animated animate__fadeIn animate__delay-2s">
+            <label class="input-group-text text-black" for="dateInput">DESDE</label>
+            <input
+              type="date"
+              class="form-control"
+              id="dateInput"
+              [min]="minDate"
+              [max]="maxDate"
+              [(ngModel)]="startDate"
+              (change)="ActivitiesFilter()"
+            />
+          </div>
+        </div>
+    
+        <div class="col-md-3 d-flex justify-content-center align-items-center mb-2">
+          <div class="input-group mb-1 animate__animated animate__fadeIn animate__delay-2s">
+            <label class="input-group-text text-black" for="dateInput">HASTA</label>
+            <input
+              type="date"
+              class="form-control"
+              id="dateInput"
+              [min]="minDate"
+              [max]="maxDate"
+              [(ngModel)]="endDate" 
+              (change)="ActivitiesFilter()"
+            />
+          </div>
+        </div>
+
+        <!--BOTÓN DE REFRESCAR-->
+        <div class="col-md-2 d-flex justify-content-center align-items-center mb-2">
+          <button (click)="refreshData()"
+            class="btn btn-action bg-trnansparent border-0 flex justify-content-center
+             align-items-center shadow-sm rounded-circle hover-zoom-in animate__animated animate__fadeIn animate__delay-1s">
+            <i class="bi bi-arrow-clockwise" style="font-size: 30px; color: white;"></i>
+          </button>
+        </div>
+    
     </div>
+
+    <br>
+    
+    <div class="table-responsive " style="max-height: 600px;">
+      <table class="table table-striped rounded shadow-sm">
+        <thead class="table-dark rounded" style="position: sticky; top: 0; z-index: 2;">
+          <tr>
+            <th class="text-center">Tipo de actividad</th>
+            <th class="text-center">Fecha</th>
+            <th class="text-center">Detalle</th>
+            <th class="text-center">IP Actividad</th>
+            <th class="text-center">Otros detalles</th>
+          </tr>
+        </thead>
+        <tbody class="scrollable-tbody" style="max-height: 600px; overflow-y: auto;">
+          <tr *ngFor="let activity of filteredActivities" class="animate__animated animate__fadeInUp">
+            <td class="align-middle">{{ activity.activityType }}</td>
+            <td class="text-center align-middle">{{ formatDate(activity.createdAt) }}</td>
+            <td class="align-middle">{{ activity.detail }}</td>
+            <td class="text-center align-middle">{{ activity.ip }}</td>
+            <td class="d-flex justify-content-center align-middle">
+              <button (click)="getDetails(activity)" class="btn x1 btn-primary btn-sm m-1 hover-zoom-in p-1" data-bs-toggle="modal" data-bs-target="#activityModal">
+                <i class="fas fa-eye"></i> Ver más...
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
 </div>
+
 
 <!-- Modal for Activity Details -->
 <div class="modal fade" id="activityModal" tabindex="-1" aria-labelledby="activityModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="activityModalLabel">Detalles de la Actividad</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content border-0 rounded-4 shadow-lg">
+      
+      <!-- Modal Header -->
+      <div class="modal-header bg-primary text-light rounded-top animate__animated animate__fadeIn">
+        <h5 class="modal-title" id="activityModalLabel">
+          <i class="bi bi-info-circle-fill"></i> <span class="ms-2">Detalles de la Actividad</span>
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <div class="row">
+          
+          <!-- Detalles de la Actividad -->
+          <div class="col-md-6">
+            <div class="activity-card card mb-3 p-4" data-aos="fade-up">
+              <div class="text-center">
+                <h6 class="text-primary mb-3"><i class="bi bi-card-checklist"></i> Actividad</h6>
+              </div>
+              <div class="d-flex align-items-center mb-3">
+                <i class="bi bi-activity fs-1 text-primary" style="margin-right: 20px;"></i>
+                <div> 
+                  <div class="profile-info-text">
+                    <div class="profile-info-label fw-semibold"><i class="bi bi-type"></i> TIPO</div>
+                    <div class="profile-info-value">{{ activity.activityType }}</div>
+                  </div>
+                  <div class="profile-info-text">
+                    <div class="profile-info-label fw-semibold"><i class="bi bi-calendar"></i> FECHA</div>
+                    <div class="profile-info-value">{{ formatDate(activity.createdAt) }}</div>
+                  </div>
+                  <div class="profile-info-text">
+                    <div class="profile-info-label fw-semibold"><i class="bi bi-file-earmark-text"></i> DETALLES</div>
+                    <div class="profile-info-value">{{ activity.detail }}</div>
+                  </div>
+                  <div class="profile-info-text">
+                    <div class="profile-info-label fw-semibold"><i class="bi bi-laptop"></i> IP</div>
+                    <div class="profile-info-value">{{ activity.ip }}</div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="modal-body">
-                <dl class="row">
-                    <dt class="col-sm-4">ID:</dt>
-                    <dd class="col-sm-8">{{ selectedActivity?.id }}</dd>
-
-                    <dt class="col-sm-4">Correo:</dt>
-                    <dd class="col-sm-8">{{ selectedActivity?.email }}</dd>
-
-                    <dt class="col-sm-4">Nombre:</dt>
-                    <dd class="col-sm-8">{{ selectedActivity?.firstName }}</dd>
-
-                    <dt class="col-sm-4">Apellido:</dt>
-                    <dd class="col-sm-8">{{ selectedActivity?.lastName }}</dd>
-
-                    <dt class="col-sm-4">Tipo de Actividad:</dt>
-                    <dd class="col-sm-8">{{ selectedActivity?.activityType }}</dd>
-
-                    <dt class="col-sm-4">Hora de Actividad:</dt>
-                    <dd class="col-sm-8">{{ selectedActivity?.activityTime | date: 'short' }}</dd>
-
-                    <dt class="col-sm-4">Descripción:</dt>
-                    <dd class="col-sm-8">{{ selectedActivity?.description }}</dd>
-                </dl>
+            <div class="align-items-center justify-content-center d-flex">
+              <div class="">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                  <i class="bi bi-x-circle-fill"></i> Cerrar
+                </button>
+              </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          </div>
+          
+          <!-- Datos del Usuario -->
+          <div class="col-md-6">
+            <div class="user-card card mb-3 p-4" data-aos="fade-up" data-aos-duration="1200">
+              <div class="text-center mb-4">
+                <h6 class="text-primary mb-3"><i class="bi bi-person-circle"></i> Usuario</h6>
+              </div>
+
+              <div class="d-flex justify-content-center align-items-center mb-4">
+                <div class="text-center">
+                  <p class="fw-semibold mb-0" id="userName">{{ selectedUser.firstName }}</p>
+                  <p class="text-muted mb-0" id="userEmail">{{ selectedUser.email }}</p>
+                  <p class="text-muted mb-0" id="userPhone">{{ selectedUser.phoneNumber }}</p>
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-center align-items-center mb-4">
+                <div>
+                  <img *ngIf="selectedUser.profilePictureUrl; else defaultProfile"
+                    [src]="selectedUser.profilePictureUrl" 
+                    alt="Imagen de {{ selectedUser.firstName }}" 
+                    class="rounded-circle mb-3"
+                    style="width: 120px; height: 120px; object-fit: cover; border: 4px solid #fff;">
+                </div>
+                <div class="ms-3">
+                  <div class="profile-info-text">
+                    <div class="profile-info-label fw-semibold"><i class="bi bi-person-badge"></i> TIPO DE USUARIO</div>
+                    <div class="profile-info-value text-center">{{ selectedUser.userType }}</div>
+                  </div>
+                </div>
+              </div>
+
+              <ng-template #defaultProfile>
+                <i class="bi bi-person-circle text-primary" style="font-size: 80px;"></i> <!-- Icono por defecto -->
+              </ng-template>
             </div>
+          </div>
+          
         </div>
+      </div>
+
     </div>
+  </div>
 </div>
+

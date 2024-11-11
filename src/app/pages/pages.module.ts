@@ -21,6 +21,7 @@ import { SearchComponent } from './usuario/search/search.component';
 import { ReservaAddComponent } from './usuario/reserva/add/add-reserva.component';
 import { AuthModule } from '../auth/auth.module';
 import { PaymentDetailComponent } from './usuario/payment/payment-detail.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,7 @@ import { PaymentDetailComponent } from './usuario/payment/payment-detail.compone
     FormsModule,
     RouterModule,
     AuthModule,
-
+    NgSelectModule
   ],
   exports: [
     HomeComponent,

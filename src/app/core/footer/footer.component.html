@@ -1,42 +1,48 @@
 <footer class="footer-container">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-3 mb-3">
-        <h5 class="footer-heading">ECORÚ</h5>
-        <p class="footer-text">Explora el mundo con nosotros y descubre aventuras inolvidables.</p>
-      </div>
-      <div class="col-md-3 mb-3 footer-links">
-        <h5 class="footer-heading">Enlaces</h5>
-        <ul class="list-unstyled">
-          <li><a href="#">Inicio</a></li>
-          <li><a href="#">Viajes Populares</a></li>
-          <li><a href="#">Un poco de nosotros</a></li>
-          <li><a href="#">Contacto</a></li>
+  <div class="footer-wrapper">
+    <div class="footer-item logo">
+      <h5 class="footer-heading">ECORÚ</h5>
+      <p class="footer-text">Vive experiencias únicas mientras exploras el mundo con nosotros.</p>
+    </div>
+    <div class="footer-item quick-links">
+      <h5 class="footer-heading">Enlaces Rápidos</h5>
+      <div class="">
+        <ul class="footer-links text-start">
+          <li><a *ngIf="userRol === 'cliente' || !userRol " [routerLink]="['/home']">Inicio</a></li>
+          <li><a *ngIf="userRol === 'cliente' || !userRol " [routerLink]="['/nosotros']">Nosotros</a></li>
+          <li><a *ngIf="userRol === 'cliente' || !userRol " [routerLink]="['/destinos']">Destinos</a></li>
+          <li><a *ngIf="userRol === 'cliente' || !userRol " [routerLink]="['/promociones-list']">Promociones</a></li>
+          
+          <li><a *ngIf="userRol === 'admin' " [routerLink]="['/admin-viajes']">Administarción de Viajes</a></li>
+          <li><a *ngIf="userRol === 'admin' " [routerLink]="['/admin-dash']">Administarción de Actividades</a></li>
+          <li><a *ngIf="userRol === 'admin' " [routerLink]="['/admin-user']">Administarción de Usuarios</a></li>
+          <li><a *ngIf="userRol === 'admin' " [routerLink]="['/admin-reservas']">Administarción de Reservas</a></li>
+          <li><a *ngIf="userRol === 'admin' " [routerLink]="['/reservas-limit']">Reservas limite</a></li>
+          
+          <li><a *ngIf=" userRol === 'cliente' " [routerLink]="['/reservas']">Reservas</a></li>
+  
+          <li><a *ngIf="userRol === 'admin' || userRol === 'cliente' " [routerLink]="['/notify']">Notificaciones</a></li>
         </ul>
       </div>
-      <div class="col-md-3 mb-3">
-        <h5 class="footer-heading">Contacto</h5>
-        <p class="footer-text">Email: ECORU.com</p>
-        <p class="footer-text">Teléfono: +51 987 654 321</p>
-        <div class="social-icons">
-          <a href="#"><i class="fab fa-facebook-f"></i></a>
-          <a href="#"><i class="fab fa-twitter"></i></a>
-          <a href="#"><i class="fab fa-instagram"></i></a>
-          <a href="#"><i class="fab fa-linkedin-in"></i></a>
-        </div>
-      </div>
-      <div class="col-md-3 mb-3">
-        <h5 class="footer-heading">Suscríbete a nuestro boletín</h5>
-        <form class="d-flex flex-column flex-md-row">
-          <input type="email" class="form-control m-1" placeholder="Tu correo electrónico">
-          <button  class="btn btn-primary m-1">Suscribirse</button>
-        </form>
+    </div>
+    <div class="footer-item socials">
+      <h5 class="footer-heading">Síguenos</h5>
+      <div class="social-icons">
+        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
       </div>
     </div>
-    <div class="row mt-4">
-      <div class="col-md-12 text-center">
-        <p class="footer-text">Todos los derechos reservados &copy; 2024</p>
-      </div>
+    <div class="footer-item newsletter">
+      <h5 class="footer-heading">Suscríbete</h5>
+      <form class="newsletter-form">
+        <input type="email" class="form-control" placeholder="Tu correo electrónico" required>
+        <button class="btn-submit text-black">Suscribirse</button>
+      </form>
     </div>
+  </div>
+  <div class="footer-bottom m-0 text-center">
+    <p class="footer-text">© ECORU - 2024 Todos los derechos reservados</p>
   </div>
 </footer>

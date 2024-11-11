@@ -1,23 +1,31 @@
-<form (keydown)="onEnter($event)">
-  <div class="mb-3">
-    <label class="form-label">Correo Electrónico:</label>
-    <input type="email" class="form-control" name="email" [(ngModel)]="email" required>
+<form (keydown)="onEnter($event)" class="needs-validation" novalidate>
+  <!-- Campo Correo Electrónico -->
+  <div class="mb-4 position-relative">
+    <label for="email" class="form-label">Correo Electrónico:</label>
+    <div class="input-group">
+      <span class="input-group-text bg-primary text-white"><i class="fas fa-envelope"></i></span>
+      <input type="email" id="email" class="form-control form-control-lg shadow-sm" name="email" [(ngModel)]="email" required>
+    </div>
   </div>
-  <div class="mb-3">
-    <label class="form-label">Contraseña:</label>
-    <input type="password" class="form-control" name="password" [(ngModel)]="password" required>
+
+  <!-- Campo Contraseña -->
+  <div class="mb-4 position-relative">
+    <label for="password" class="form-label">Contraseña:</label>
+    <div class="input-group">
+      <span class="input-group-text bg-primary text-white"><i class="fas fa-lock"></i></span>
+      <input type="password" id="password" class="form-control form-control-lg shadow-sm" name="password" [(ngModel)]="password" required>
+    </div>
+  </div>
+
+  <!-- Botón de Acceso -->
+  <div class="d-flex justify-content-center mt-4">
+    <button class="btn btn-primary btn-lg shadow-sm" (click)="login()" [disabled]="isLoading">
+      <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+      <span *ngIf="!isLoading"><i class="fas fa-sign-in-alt"></i> ACCEDER</span>
+      <span *ngIf="isLoading">Validando datos...</span>
+    </button>
   </div>
 </form>
-<div class="d-flex align-items-center justify-content-center">
-  <button class="btn btn-primary" (click)="login()" [disabled]="isLoading">
-    <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-    <span *ngIf="!isLoading">ACCEDER</span>
-    <span *ngIf="isLoading">Accediendo...</span>
-  </button>
-</div>
-  <button 
-    type="button" 
-    class="d-none" 
-    id="closeButtonz" 
-    data-bs-dismiss="modal">
-  </button>
+
+<!-- Cierre Modal (solo se activa si es necesario) -->
+<button type="button" class="d-none" id="closeButtonz" data-bs-dismiss="modal"></button>

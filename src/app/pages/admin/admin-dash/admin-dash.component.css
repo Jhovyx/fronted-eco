@@ -1,3 +1,92 @@
-:host {
-  display: block;
+.hover-zoom-in:hover {
+  transform: scale(1.1);
+  transition: transform 0.3s ease-in-out;
 }
+
+.x1 {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  margin-right: 2px;
+  padding: 0px;
+}
+
+  /* Animaciones con CSS */
+  .modal.fade .modal-dialog {
+    transition: transform 0.3s ease-out;
+  }
+
+  .modal.fade.show .modal-dialog {
+    transform: translate(0, 0);
+  }
+
+  .activity-card, .user-card {
+    transition: all 0.3s ease-in-out;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .activity-card:hover, .user-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .modal-header {
+    background-color: #007bff;
+  }
+
+  .modal-body {
+    background-color: #f8f9fa;
+    animation: fadeIn 1s ease-out;
+  }
+
+  .modal-footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #e3e3e3;
+  }
+
+  /* Definición de animación para la cabecera */
+  @keyframes slideInLeft {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  /* Animación para el fade-in de la modal */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* Estilos del texto de los valores */
+  .fw-semibold {
+    font-weight: 600;
+  }
+
+  .bi {
+    transition: color 0.3s ease-in-out;
+  }
+
+  .bi:hover {
+    color: #0056b3;
+  }
+
+  /* Mejorar la imagen del perfil */
+  #userProfilePic {
+    transition: transform 0.3s ease-in-out;
+  }
+
+  #userProfilePic:hover {
+    transform: scale(1.1);
+  }
+
+
+  

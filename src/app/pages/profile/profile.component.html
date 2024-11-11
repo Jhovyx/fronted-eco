@@ -1,59 +1,114 @@
-<!-- Contenedor principal -->
-<div class="container d-flex align-items-center justify-content-center mt-5 profile-container">
-    <div class="text-center">
-        <h2 class="mb-4">Bienvenido, {{ user.firstName }} {{ user.lastName }}</h2>
-        <ng-container *ngIf="user.profilePictureUrl; else userIcon">
-            <img class="profile-img mb-4" [src]="user.profilePictureUrl" alt="perfil-foto">
-          </ng-container>
-          <ng-template #userIcon>
-            <i class="bi bi-person-circle" style="font-size: 3rem;"></i> <!-- Icono de Bootstrap de un usuario -->
-          </ng-template>
-                  
-        <!-- Sección de perfil del usuario -->
-        <div class="row">
-            <!-- Tarjeta de información personal -->
+<div class="container d-flex justify-content-center profile-container">
+    <div class="profile-card-container">
+        <div class="profile-header text-center mb-5">
+            
+            <div class="profile-img-container mb-4">
+                <ng-container *ngIf="user.profilePictureUrl; else userIcon">
+                    <img class="profile-img fade-in" [src]="user.profilePictureUrl" alt="Foto de perfil">
+                </ng-container>
+                <ng-template #userIcon>
+                    <i class="bi bi-person-circle fade-in"></i> <!-- Icono de usuario -->
+                </ng-template>                
+            </div>
+            <h2 class="text-uppercase fw-bold">Bienvenido, {{ user.firstName }} {{ user.lastName }}</h2>
+        </div>
+
+        <div class="profile-info row">
+            <!-- Datos Personales -->
             <div class="col-md-6">
-                <div class="card profile-card mx-auto" style="width: 350px; height: 250px;">
-                    <div class="card-header bg-primary text-white text-center">
+                <div class="profile-card">
+                    <div class="profile-card-header">
                         <b>Datos Personales</b>
                     </div>
-                    <div class="card-body">
-                        <ul class="list-group mb-4">
-                            <li class="list-group-item">Nombre: <span>{{ user.firstName }}</span></li>
-                            <li class="list-group-item">Apellidos: <span>{{ user.lastName }}</span></li>
-                            <li class="list-group-item">Documento: <span>{{ user.documentType }}</span></li>
-                            <li class="list-group-item">N° Documento: <span>{{ user.documentNumber }}</span></li>
-                        </ul>
+                    <div class="profile-card-body">
+                        <div class="profile-info-container">
+                            <div class="profile-info-item">
+                                <div class="profile-info-icon">
+                                    <i class="bi bi-person-lines-fill"></i>
+                                </div>
+                                <div class="profile-info-text">
+                                    <div class="profile-info-label">NOMBRES</div>
+                                    <div class="profile-info-value">{{ user.firstName }}</div>
+                                </div>
+                            </div>
+                            <div class="profile-info-item">
+                                <div class="profile-info-icon">
+                                    <i class="bi bi-person-lines-fill"></i>
+                                </div>
+                                <div class="profile-info-text">
+                                    <div class="profile-info-label">APELLIDOS</div>
+                                    <div class="profile-info-value">{{ user.lastName }}</div>
+                                </div>
+                            </div>
+                            <div class="profile-info-item">
+                                <div class="profile-info-icon">
+                                    <i class="bi bi-card-text"></i>
+                                </div>
+                                <div class="profile-info-text">
+                                    <div class="profile-info-label">DOCUMENTO</div>
+                                    <div class="profile-info-value">{{ user.documentType }}</div>
+                                </div>
+                            </div>
+                            <div class="profile-info-item">
+                                <div class="profile-info-icon">
+                                    <i class="bi bi-file-earmark-text"></i>
+                                </div>
+                                <div class="profile-info-text">
+                                    <div class="profile-info-label">N° DOCUMENTO</div>
+                                    <div class="profile-info-value">{{ user.documentNumber }}</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    
                 </div>
             </div>
 
-            <!-- Tarjeta de información de contacto -->
+            <!-- Datos de Contacto -->
             <div class="col-md-6">
-                <div class="card profile-card mx-auto" style="width: 350px; height: 250px;">
-                    <div class="card-header bg-primary text-white text-center">
+                <div class="profile-card">
+                    <div class="profile-card-header">
                         <b>Datos de Contacto</b>
                     </div>
-                    <div class="card-body">
-                        <ul class="list-group mb-4">
-                            <li class="list-group-item">Teléfono: <span>{{ user.phoneNumber }}</span></li>
-                            <li class="list-group-item">Correo: <span>{{ user.email }}</span></li>
-                        </ul>
+                    <div class="profile-card-body">
+                        <div class="profile-info-container">
+                            <div class="profile-info-item">
+                                <div class="profile-info-icon">
+                                    <i class="bi bi-telephone-fill"></i>
+                                </div>
+                                <div class="profile-info-text">
+                                    <div class="profile-info-label">TELEFONO</div>
+                                    <div class="profile-info-value">{{ user.phoneNumber }}</div>
+                                </div>
+                            </div>
+                            <div class="profile-info-item">
+                                <div class="profile-info-icon">
+                                    <i class="bi bi-envelope-fill"></i>
+                                </div>
+                                <div class="profile-info-text">
+                                    <div class="profile-info-label">EMAIL</div>
+                                    <div class="profile-info-value">{{ user.email }}</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    
                 </div>
             </div>
         </div>
 
-        <div class="d-flex justify-content-center mt-4">
-            <button data-bs-toggle="modal" data-bs-target="#updateModal" class="btn fs-5 m-1 border-0 btn-primary text-white">
-                Actualizar Datos
+        <div class="actions d-flex justify-content-center mt-4">
+            <button data-bs-toggle="modal" data-bs-target="#updateModal" class="btn btn-action btn-primary mx-3">
+                <i class="bi bi-pencil-square"></i> Actualizar Datos
             </button>
-            <button data-bs-toggle="modal" data-bs-target="#changePasswordModal" class="btn fs-5 m-1 border-0 bg-secondary text-black">
-                Cambiar Contraseña
+            <button data-bs-toggle="modal" data-bs-target="#changePasswordModal" class="btn btn-action btn-secondary mx-3">
+                <i class="bi bi-key-fill"></i> Cambiar Contraseña
             </button>
         </div>
+        
     </div>
 </div>
+
 
 <!-- Modal para Actualizar Datos -->
 <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
@@ -109,19 +164,31 @@
                 </form>
             </div>
             <div class="modal-footer d-flex align-items-center justify-content-center">
-                <button type="submit" class="btn m-2 btn-primary" (click)="updateProfile()" [disabled]="isLoading">
-                    <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                    <span *ngIf="!isLoading">Guardar cambios</span>
-                    <span *ngIf="isLoading">Actulizando...</span>
-                </button>
-                <button type="button" class="btn m-2 btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <!-- Botón de guardar cambios -->
                 <button 
-                type="button" 
-                class="d-none" 
-                id="closeButtonProfile" 
-                data-bs-dismiss="modal">
+                    type="submit" 
+                    class="btn btn-action btn-primary m-2" 
+                    (click)="updateProfile()" 
+                    [disabled]="isLoading">
+                    <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    <span *ngIf="!isLoading"><i class="bi bi-save me-2"></i>Guardar cambios</span>
+                    <span *ngIf="isLoading">Actualizando...</span>
+                </button>
+            
+                <!-- Botón de cancelar -->
+                <button type="button" class="btn btn-action btn-secondary m-2" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle me-2"></i>Cancelar
+                </button>
+            
+                <!-- Botón de cierre invisible -->
+                <button 
+                    type="button" 
+                    class="d-none" 
+                    id="closeButtonProfile" 
+                    data-bs-dismiss="modal">
                 </button>
             </div>
+            
         </div>
     </div>
 </div>
@@ -151,19 +218,30 @@
                 </form>
             </div>
             <div class="modal-footer d-flex align-items-center justify-content-center">
-                <button type="submit" class="btn m-2 btn-primary" (click)="updatePassword()" [disabled]="isLoading">
+                <!-- Botón para guardar cambios (con animación y borde redondeado) -->
+                <button type="submit" class="btn btn-action btn-primary m-2" (click)="updatePassword()" [disabled]="isLoading">
+                    <!-- Spinner de carga que aparece mientras se está actualizando -->
                     <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                    <span *ngIf="!isLoading">Guardar cambios</span>
-                    <span *ngIf="isLoading">Actulizando...</span>
+                    <!-- Texto normal cuando no se está actualizando -->
+                    <span *ngIf="!isLoading"><i class="bi bi-save me-2"></i>Guardar cambios</span>
+                    <!-- Texto mientras se está actualizando -->
+                    <span *ngIf="isLoading">Actualizando...</span>
                 </button>
-                <button type="button" class="btn m-3 btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                
+                <!-- Botón para cerrar el modal -->
+                <button type="button" class="btn btn-action btn-secondary m-3" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle"></i> Cerrar
+                </button>
+                
+                <!-- Botón de cierre invisible para usabilidad -->
                 <button 
-                type="button" 
-                class="d-none" 
-                id="closeButtonUpdatePasword" 
-                data-bs-dismiss="modal">
+                    type="button" 
+                    class="d-none" 
+                    id="closeButtonUpdatePassword" 
+                    data-bs-dismiss="modal">
                 </button>
             </div>
+            
         </div>
     </div>
 </div>

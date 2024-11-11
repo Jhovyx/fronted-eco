@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { UserService } from '../../shared/services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,7 @@ export class LoginComponent {
   password!: string;
   isLoading: boolean = false;
 
-  constructor( private readonly userService: UserService) {}
+  constructor( private readonly userService: UserService,  private router: Router) {}
 
   async login() {
     this.isLoading = true;
@@ -51,9 +52,11 @@ export class LoginComponent {
         this.isLoading = false; // Detener el spinner
         this.password = ''; // Limpiar el campo de contraseña
         this.email = ''; // Limpiar el campo de correo
-
+        console.log(response)
+        if(response.userType === "cliente")this.router.navigate(['/home']);
+        if(response.userType === "admin")this.router.navigate(['/admin-viajes']);
       } else {
-        this.showCustomAlert(response, 'error');
+        this.showCustomAlert("Credenciales incorrectas.", 'error');
         this.isLoading = false; // Detener el spinner
         this.password = ''; // Limpiar el campo de contraseña
         this.email = ''; // Limpiar el campo de correo

@@ -1,3 +1,20 @@
-:host {
-  display: block;
+/* Efecto de zoom para el botón de agregar */
+.hover-zoom-in:hover {
+  transform: scale(1.1);
+  transition: transform 0.3s ease-in-out;
 }
+
+.x1 {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-left: 0;
+  margin-right: 2px;
+}
+
+.x2 {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-right: 0;
+  margin-left: 2px;
+}
+

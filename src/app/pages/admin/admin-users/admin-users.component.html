@@ -1,30 +1,45 @@
 <div class="container mt-5">
   
-  <div class="row bg-primary rounded ">
+  <div class="row bg-primary rounded p-3 shadow-lg">
 
-    <!--TITULO-->
-    <div class="col align-items-center justify-content-center d-flex">
-      <div>
-        <label style="font-size: 36px; color: white;" class="form-label"><b>Lista de usuarios</b></label>
+    <div class="col-md-2 d-flex justify-content-center align-items-center mb-2">
+      <div class="input-group mb-1 animate__animated animate__fadeIn animate__delay-1s">
+        <div class="input-group mb-0">
+          <label class="input-group-text" for="userInput">NAME</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="userInput" 
+            placeholder="Buscar..." 
+            [(ngModel)]="userInput"
+            (input)="filterUsers()"
+            list="userList"
+          ><!--enviar el usuario-->
+        </div>
+        <datalist id="userList">
+          <option *ngFor="let user of filteredUsers.slice(0, 5)" [value]="user.firstName" class="itemxd">
+            {{ user.firstName }}
+          </option>
+        </datalist>
       </div>
     </div>
 
     <!--CONTENEDOR DE CATEGORIAS-->
-    <div class="col-md-3 d-flex justify-content-center align-items-center">
-      <div class="input-group mb-1" style="width: 280px; display: flex; flex-direction: row; align-items: center;">
-        <label class="input-group-text"><b>CATEGORÍA</b></label>
+    <div class="col-md-2 d-flex justify-content-center align-items-center mb-2">
+      <div class="input-group mb-1 animate__animated animate__fadeIn animate__delay-2s">
+        <label class="input-group-text text-black">ROL</label>
         <select class="form-select" [(ngModel)]="selectedType" (change)="filterUsers()">
           <option value="TODOS">TODOS</option>
-          <option value="admin">ADMINISTRADORES</option>
-          <option value="cliente">CLIENTES</option>
+          <option value="admin">ADMIN</option>
+          <option value="cliente">CLIENT</option>
         </select>
       </div>
     </div>
 
     <!--BUSCAR POR FECHAS DE CREACION-->
-    <div class="col-md-2 d-flex justify-content-center align-items-center">
-      <div class="input-group mb-1">
-        <label class="input-group-text" for="dateInput">DESDE</label>
+    <div class="col-md-3 d-flex justify-content-center align-items-center mb-2">
+      <div class="input-group mb-1 animate__animated animate__fadeIn animate__delay-2s">
+        <label class="input-group-text text-black" for="dateInput">DESDE</label>
         <input
           type="date"
           class="form-control"
@@ -37,9 +52,9 @@
       </div>
     </div>
 
-    <div class="col-md-2 d-flex justify-content-center align-items-center">
-      <div class="input-group mb-1">
-        <label class="input-group-text" for="dateInput">HASTA</label>
+    <div class="col-md-3 d-flex justify-content-center align-items-center mb-2">
+      <div class="input-group mb-1 animate__animated animate__fadeIn animate__delay-2s">
+        <label class="input-group-text text-black" for="dateInput">HASTA</label>
         <input
           type="date"
           class="form-control"
@@ -53,11 +68,22 @@
     </div>
 
     <!--CONTENEDOR DEL BOTON AGREGAR-->
-    <div class="col-md-1 d-flex align-items-center justify-content-center">
+    <div class="col-md-1 d-flex justify-content-center align-items-center mb-1">
       <button data-bs-toggle="modal" data-bs-target="#registroModal"
-        class=" text-center d-flex justify-content-center align-items-center bg-primary"
-        style="width: 50px; height: 50px; padding: 0; border: none;">
-        <b><i class="bi bi-patch-plus-fill" style="font-size: 35px; color: black;"></i></b>
+        class="btn btn-action bg-trnansparent d-flex justify-content-center
+         align-items-center shadow-sm rounded-circle hover-zoom-in animate__animated animate__fadeIn animate__delay-1s"
+        style="width: 60px; height: 60px; padding: 0; border: none;">
+        <i class="bi bi-patch-plus-fill" style="font-size: 45px; color: white;"></i>
+      </button>
+    </div>
+
+    <!--BOTÓN DE REFRESCAR-->
+    <div class="col-md-1 d-flex justify-content-center align-items-center mb-2">
+      <button (click)="refreshData()"
+        class="btn btn-action bg-trnansparent d-flex justify-content-center
+         align-items-center shadow-sm rounded-circle hover-zoom-in animate__animated animate__fadeIn animate__delay-1s"
+        style="width: 60px; height: 60px; padding: 0; border: none;">
+        <i class="bi bi-arrow-clockwise" style="font-size: 30px; color: white;"></i>
       </button>
     </div>
 
@@ -65,31 +91,32 @@
 
   <br>
     <!-- Tabla de administración de usuarios -->
-    <table class="table table-striped  rounded">
-      <thead class="table-dark">
-        <tr class="rounded">
-          <th class="rounded text-center m-1">Nombres</th>
-          <th class="rounded text-center m-1">Apellidos</th>
-          <th class="rounded text-center m-1">Documento</th>
-          <th class="rounded text-center m-1">N° Documento</th>
-          <th class="rounded text-center m-1">Teléfono</th>
-          <th class="rounded text-center m-1">Rol</th>
-          <th class="rounded text-center m-1">Acciones</th>
+  <div class="table-responsive animate__animated animate__fadeIn animate__delay-1s" style="max-height: 600px;">
+    <table class="table table-striped rounded shadow-sm">
+      <thead class="table-dark rounded" style="position: sticky; top: 0; z-index: 2;">
+        <tr>
+          <th class="text-center">Nombres <i class="bi bi-person"></i></th>
+          <th class="text-center">Apellidos <i class="bi bi-person-lines-fill"></i></th>
+          <th class="text-center">Documento <i class="bi bi-card-text"></i></th>
+          <th class="text-center">N° Documento <i class="bi bi-123"></i></th>
+          <th class="text-center">Teléfono <i class="bi bi-telephone"></i></th>
+          <th class="text-center">Rol <i class="bi bi-person-badge"></i></th>
+          <th class="text-center">Acciones <i class="bi bi-gear"></i></th>
         </tr>
       </thead>
-      <tbody>
-        <tr *ngFor="let user of filteredUsers">
-          <td>{{ user.firstName }}</td>
-          <td>{{ user.lastName }}</td>
-          <td>{{ user.documentType }}</td>
-          <td>{{ user.documentNumber }}</td>
-          <td>{{ user.phoneNumber }}</td>
-          <td>{{ user.userType }}</td>
-          <td style=" display: flex; justify-content: center;">
-            <button (click)="detailUser(user)" class="btn btn-primary btn-sm m-1" data-bs-toggle="modal" data-bs-target="#detalleModal">
+      <tbody style="max-height: 600px; overflow-y: auto;">
+        <tr *ngFor="let user of filteredUsers" class="animate__animated animate__fadeInUp">
+          <td class="text-center align-middle">{{ user.firstName }}</td>
+          <td class="text-center align-middle">{{ user.lastName }}</td>
+          <td class="text-center align-middle">{{ user.documentType }}</td>
+          <td class="text-center align-middle">{{ user.documentNumber }}</td>
+          <td class="text-center align-middle">{{ user.phoneNumber }}</td>
+          <td class="text-center align-middle">{{ user.userType }}</td>
+          <td class="d-flex justify-content-center align-middle">
+            <button (click)="detailUser(user)" class="btn x1 btn-primary btn-sm m-1 hover-zoom-in" data-bs-toggle="modal" data-bs-target="#detalleModal">
               <i class="fas fa-eye"></i> Ver
             </button>
-            <button (click)="deleteUser(user.primaryKey)" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" class="btn btn-danger btn-sm m-1">
+            <button (click)="deleteUser(user.primaryKey)" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" class="btn x2 btn-danger btn-sm m-1 hover-zoom-in">
               <i class="fas fa-trash"></i> Eliminar
             </button>
           </td>
@@ -97,68 +124,109 @@
       </tbody>
     </table>
   </div>
-
-  <div class="modal fade" id="detalleModal" tabindex="-1" aria-labelledby="dModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="dModalLabel">Detalles de usuario</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <dl class="row">
-                    <dt class="col-sm-4">ID:</dt>
-                    <dd class="col-sm-8">{{ user.primaryKey }}</dd>
-
-                    <dt class="col-sm-4">Correo:</dt>
-                    <dd class="col-sm-8">{{ user.email }}</dd>
-
-                    <dt class="col-sm-4">Nombre:</dt>
-                    <dd class="col-sm-8">{{ user.firstName }}</dd>
-
-                    <dt class="col-sm-4">Apellido:</dt>
-                    <dd class="col-sm-8">{{ user.lastName }}</dd>
-
-                    <dt class="col-sm-4">Documento:</dt>
-                    <dd class="col-sm-8">{{ user.documentType }}</dd>
-
-                    <dt class="col-sm-4">N° Documento:</dt>
-                    <dd class="col-sm-8">{{ user.documentNumber }}</dd>
-                    
-                    <dt class="col-sm-4">Telefono:</dt>
-                    <dd class="col-sm-8">{{ user.phoneNumber }}</dd>
-
-                    <dt class="col-sm-4">Fecha de creación:</dt>
-                    <dd class="col-sm-8">{{ formatDate(user.createdAt ?? 0) }}</dd>
-
-                    <dt class="col-sm-4">Ultima actulización:</dt>
-                    <dd class="col-sm-8">{{ formatDate(user.updatedAt ?? 0) }}</dd>
-                </dl>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-            </div>
-        </div>
-    </div>
 </div>
+
+<div class="modal fade" id="detalleModal" tabindex="-1" aria-labelledby="dModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content" style="display: flex; flex-direction: row; border-radius: 12px; overflow: hidden;">
+          
+          <!-- Barra lateral con imagen y detalles básicos -->
+          <div class="modal-sidebar p-4 text-center" style="background-color: #f4f5f7; width: 35%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <img *ngIf="user.profilePictureUrl; else defaultProfile"
+                  [src]="user.profilePictureUrl" 
+                  alt="Imagen de {{ user.firstName }}" 
+                  class="rounded-circle mb-3"
+                  style="width: 120px; height: 120px; object-fit: cover; border: 4px solid #fff;">
+            <ng-template #defaultProfile>
+                <i class="bi bi-person-circle text-primary" style="font-size: 80px;"></i> <!-- Bootstrap Icono por defecto -->
+            </ng-template>
+              <h5 class="mt-2">{{ user.firstName }} {{ user.lastName }}</h5>
+              <p class="text-muted">{{ user.email }}</p>
+              <p class="fw-bold">{{ user.phoneNumber }}</p>
+              <p class="badge bg-primary">{{ user.userType }}</p>
+          </div>
+
+          <!-- Contenido principal del modal -->
+          <div class="modal-body px-5 py-4" style="width: 65%; background-color: #fff;">
+              <button type="button" class="btn-close position-absolute" style="top: 10px; right: 15px;" data-bs-dismiss="modal" aria-label="Close"></button>
+              <h6 class="mb-4 text-primary">Detalles de Usuario</h6>
+              <div class="row gx-3 gy-2">
+                  
+                  <!-- Tarjeta de ID y Documento -->
+                  <div class="col-12">
+                      <div class="info-card p-3 mb-3 shadow-sm" style="background-color: #fdfdfe; border-radius: 8px;">
+                          <h6 class="text-muted mb-1">ID de Usuario</h6>
+                          <p class="fw-bold">{{ user.primaryKey }}</p>
+                      </div>
+                  </div>
+
+                  <!-- Documento y Número de Documento -->
+                  <div class="col-6">
+                      <div class="info-card p-3 shadow-sm" style="background-color: #fdfdfe; border-radius: 8px;">
+                          <h6 class="text-muted mb-1">Documento</h6>
+                          <p class="fw-bold">{{ user.documentType }}</p>
+                      </div>
+                  </div>
+                  <div class="col-6">
+                      <div class="info-card p-3 shadow-sm" style="background-color: #fdfdfe; border-radius: 8px;">
+                          <h6 class="text-muted mb-1">N° Documento</h6>
+                          <p class="fw-bold">{{ user.documentNumber }}</p>
+                      </div>
+                  </div>
+
+                  <!-- Fechas -->
+                  <div class="col-6">
+                      <div class="info-card p-3 shadow-sm" style="background-color: #fdfdfe; border-radius: 8px;">
+                          <h6 class="text-muted mb-1">Fecha de Creación</h6>
+                          <p class="fw-bold">{{ formatDate(user.createdAt ?? 0) }}</p>
+                      </div>
+                  </div>
+                  <div class="col-6">
+                      <div class="info-card p-3 shadow-sm" style="background-color: #fdfdfe; border-radius: 8px;">
+                          <h6 class="text-muted mb-1">Última Actualización</h6>
+                          <p class="fw-bold">{{ formatDate(user.updatedAt ?? 0) }}</p>
+                      </div>
+                  </div>
+                  <div class="d-flex align-items-center justify-content-center">
+                    <div class="">
+                      <button type="button" class="btn btn-secondary" id="closeButtonConfir"  data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
 
 <!-- Modal de confirmación de eliminación -->
 <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered"> <!-- Clase para centrar el modal -->
-    <div class="modal-content">
-      <div class="modal-header">
+    <div class="modal-content shadow-lg rounded-3 animate__animated animate__fadeIn">
+      <div class="modal-header bg-primary w-bold text-white">
+        <i class="bi text-warning bi-exclamation-triangle me-2"></i> <!-- Icono de advertencia -->
         <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Eliminación</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" [disabled]="isLoading"></button>
       </div>
-      <div class="modal-body">
-        ¿Estás seguro de que deseas eliminar este usuario?
+      <div class="modal-body text-center">
+        <p class="mb-0">¿Estás seguro de que deseas eliminar este usuario?</p>
+        <p class="text-muted small">Esta acción no se puede deshacer.</p>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" id="closeButtonConfir"  data-bs-dismiss="modal" [disabled]="isLoading">Cancelar</button>
-        <button type="button" class="btn btn-danger" (click)="confirmDelete()" [disabled]="isLoading">
-          <span *ngIf="!isLoading">Eliminar</span>
-          <span *ngIf="isLoading">Eliminando...</span>
-        </button>
+      <div class="modal-footer d-flex align-items-center justify-content-center">
+        <div class="">
+          <button type="button" class="btn btn-secondary m-2"  data-bs-dismiss="modal" [disabled]="isLoading">Cancelar</button>
+          <button type="button" class="btn btn-danger m-2" (click)="confirmDelete()" [disabled]="isLoading">
+            <span *ngIf="!isLoading">Eliminar</span>
+            <span *ngIf="isLoading">Eliminando...</span>
+          </button>
+          <!-- Botón de cierre invisible para usabilidad -->
+          <button 
+              type="button" 
+              class="d-none" 
+              id="closeButtonCorfimar" 
+              data-bs-dismiss="modal">
+          </button>
+        </div>
       </div>
     </div>
   </div>

@@ -4,6 +4,7 @@
 .nav-links {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     flex-wrap: nowrap; /* No permite que los elementos se ajusten en múltiples líneas */
     margin: 0;
     position: sticky;
@@ -14,12 +15,15 @@
     min-height: 100px;
 }
 
+/* Estilo de los enlaces */
 .nav-link {
     position: relative;
     color: white;
     text-decoration: none;
-    transition: color 0.3s ease-in-out;
-    margin: 0; /* Espacio entre los enlaces */
+    transition: color 0.4s ease-in-out, transform 0.4s ease, scale 0.4s ease;
+    margin: 0 20px;
+    font-size: 1.2rem;
+    font-weight: 600;
 }
 
 /* Subrayado de los enlaces */
@@ -33,9 +37,37 @@
     transition: width 0.5s ease-in-out, left 0.5s ease-in-out;
 }
 
+/* Efecto de expansión del subrayado */
 .nav-link:hover .underline {
     width: 100%;
     left: 0;
+}
+
+/* Efecto de escala y color sobre el enlace */
+.nav-link:hover {
+    transform: scale(1.1); /* Escala el enlace al pasar el mouse */
+}
+
+/* Estilo para los iconos dentro de los enlaces */
+.nav-link:hover i {
+    font-size: 1.6rem;
+    transition: transform 0.5s ease, color 0.3s ease;
+}
+
+.nav-link:hover i {
+    transform: rotate(360deg);
+    color: yellow; /* Cambio de color a amarillo */
+}
+
+.btn1:hover i {
+    transform: rotate(360deg);
+    color: yellow; /* Cambio de color a amarillo */
+}
+
+/* Para los iconos */
+.bi:hover {
+    color: rgb(48, 60, 230);
+    transition: color 0.3s;
 }
 
 /* Estilos para el botón de iniciar sesión */
@@ -119,4 +151,15 @@
 
 .nav-link.dropdown-toggle::after {
     display: none;
-  }
+}
+
+/* Rotación 360 grados en el ícono o imagen de perfil */
+.nav-link img,
+.nav-link i {
+    transition: transform 0.5s ease;
+}
+
+.nav-link:hover img,
+.nav-link:hover i {
+    transform: rotate(360deg);
+}

@@ -160,6 +160,13 @@
           <span></span>
           <span></span>
           <span></span>
+          <img *ngIf="imgProfile; else defaultProfile"
+          [src]="imgProfile" 
+          class="rounded-circle m-0"
+                  style="width: 25px; height: 25px;">
+          <ng-template #defaultProfile>
+            <i class="bi bi-person-circle text-primary m-0" style="font-size: 20px;"></i> <!-- Bootstrap Icono por defecto -->
+          </ng-template>
           {{ userNombre }}
         </a>
         <ul class="dropdown-menu text-center p-0" style="width: 230px;">
@@ -186,24 +193,22 @@
     </div>
   </nav>
   
-<!--login modal-->
+<!-- Modal de Inicio de sesión -->
 <div class="modal fade" id="loginModal" #loginModal tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header bg-primary">
-        <h5 class="modal-title text-white" id="loginModalLabel" style="text-align: center; width: 100%;">BIENVENIDO INICIA SESIÓN</h5>
+    <div class="modal-content shadow-lg rounded-4 animate__animated animate__fadeIn">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title w-100 text-center" id="loginModalLabel">
+          <i class="bi bi-person-lock me-2"></i> !Bienvenido¡, Inicia Sesión
+        </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body p-5">
+      <div class="modal-body p-4">
         <app-login></app-login>
-        <div class="text-center">
-          <p class="mb-0 mt-3">¿No tienes una cuenta? <button type="button" (click)="openModalRegister()" class="btn m-0 p-0 text-primary ms-2 text-decoration-none">Regístrate</button></p>
-          <button 
-          type="button" 
-          class="d-none" 
-          id="closeButton1" 
-          data-bs-dismiss="modal">
-        </button>
+        <div class="text-center mt-4">
+          <p class="mb-0">¿No tienes una cuenta? 
+            <button type="button" (click)="openModalRegister()" class="btn text-primary p-0 m-0 text-decoration-none" style="font-size: 16px; font-weight: 600;">Regístrate</button>
+          </p>
         </div>
       </div>
     </div>
@@ -211,28 +216,25 @@
 </div>
 
 
-<!-- Modal registro -->
+
+<!-- Modal Registro -->
 <div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header bg-primary">
-        <h5 class="modal-title text-white" id="registroModalLabel" style="text-align: center; width: 100%;"> BIENVENIDO REGISTRE SUS DATOS </h5>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow-lg">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title w-100 text-center" id="registroModalLabel">
+          <i class="fas fa-user-plus me-2"></i><strong>¡Bienvenido! Crea tu cuenta</strong>
+        </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-
+      <div class="modal-body p-3">
         <app-register></app-register>
-        <div class="text-center">
-          <p class="mb-0 mt-3">¿Tienes una cuenta? <button type="button" (click)="openModalLogin()" class="btn m-0 text-primary ms-2 text-decoration-none p-0">Inicia sesión</button></p>
-          <button 
-          type="button" 
-          class="d-none" 
-          id="closeButtonxd" 
-          data-bs-dismiss="modal">
-        </button>
+        <div class="text-center mt-2">
+          <p class="mb-0">¿Ya tienes una cuenta? <button type="button" (click)="openModalLogin()" class="btn btn-link text-primary text-decoration-none p-0">Inicia sesión</button></p>
         </div>
       </div>
     </div>
   </div>
 </div>
+
 

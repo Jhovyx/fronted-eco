@@ -1,16 +1,256 @@
+/* Contenedor de perfil */
 .profile-container {
+    max-width: 1200px;
+    padding: 20px;
+    background-color: #f4f4f9;
+    border-radius: 15px;
+}
+
+/* Contenedor principal de la tarjeta */
+.profile-card-container {
+    width: 100%;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     padding: 30px;
+    text-align: center;
 }
-.profile-card {
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+
+/* Encabezado del perfil */
+.profile-header h2 {
+    font-size: 30px;
+    color: #333;
 }
+
+/* Imagen de perfil */
+.profile-img-container {
+    position: relative;
+    margin-bottom: 20px;
+}
+
 .profile-img {
-    width: 120px;
-    height: 120px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
     object-fit: cover;
+    border: 3px solid #007bff;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
 }
-.btn-custom {
-    padding: 10px 20px;
+
+.profile-img i {
+    font-size: 5rem;
+    color: #007bff;
+}
+
+/* Tarjetas de información */
+.profile-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    overflow: hidden;
+}
+
+.profile-card-header {
+    background-color: #007bff;
+    color: white;
+    padding: 15px;
+    font-weight: bold;
+}
+
+.profile-card-body {
+    padding: 20px;
+}
+
+.profile-info-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
     font-size: 16px;
+    color: #555;
+}
+
+.profile-info-list li {
+    margin-bottom: 10px;
+}
+
+.profile-info-list li b {
+    color: #333;
+}
+
+/* Animación para el desvanecimiento */
+.fade-in {
+    opacity: 0;
+    animation: fadeIn 1s ease-in-out forwards;
+}
+
+/* Definición de la animación fadeIn */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Animación adicional para el icono de usuario en caso de no haber foto de perfil */
+.bi-person-circle {
+    font-size: 4rem;
+    color: #6c757d; /* Color gris suave para el icono */
+    animation: iconAppear 1s ease-out forwards;
+}
+
+/* Animación para el icono cuando no hay foto de perfil */
+@keyframes iconAppear {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+/*============*/
+/* Contenedor de la sección de información */
+.profile-card-body {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    animation: fadeIn 0.5s ease-in-out; /* Animación de aparición */
+}
+
+/* Contenedor para cada par de etiquetas y valores */
+.profile-info-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Dos columnas de igual tamaño */
+    gap: 20px;
+}
+
+/* Estilo para cada item de información */
+.profile-info-item {
+    display: flex;
+    align-items: center; /* Alineamos icono y texto */
+    justify-content: space-between;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animación suave */
+}
+
+/* Efecto de hover para los items */
+.profile-info-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para los iconos */
+.profile-info-icon {
+    font-size: 2rem; /* Tamaño más grande */
+    color: #007bff;
+    margin-right: 15px;
+    transition: transform 0.3s ease; /* Animación para iconos */
+}
+
+.profile-info-item:hover .profile-info-icon {
+    transform: rotate(15deg); /* Efecto de rotación en hover */
+}
+
+/* Estilo para la etiqueta */
+.profile-info-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin-right: 15px;
+}
+
+/* Estilo para el valor */
+.profile-info-value {
+    font-size: 16px;
+    color: #555;
+}
+
+/* Diferenciación de columnas */
+.profile-info-item:nth-child(odd) {
+    background-color: #f1f1f1;
+}
+
+.profile-info-item:nth-child(even) {
+    background-color: #ffffff;
+}
+
+/* Animación para la entrada de la tarjeta */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Estilos generales de los botones */
+.btn-action {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 25px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 20px;
+    transition: all 0.3s ease; /* Animación para todos los estados */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    min-width: 180px; /* Tamaño mínimo de los botones */
+}
+
+/* Efecto Hover */
+.btn-action:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos específicos para el botón primario */
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos específicos para el botón secundario */
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+/* Iconos dentro de los botones */
+.btn-action i {
+    margin-right: 10px;
+    font-size: 1.25rem;
+    transition: transform 0.3s ease; /* Animación para los iconos */
+}
+
+/* Efecto hover en los iconos */
+.btn-action:hover i {
+    transform: rotate(15deg); /* Rotación suave del icono */
+}
+
+/* Estilo de los contenedores de acciones */
+.actions {
+    margin-top: 30px;
 }

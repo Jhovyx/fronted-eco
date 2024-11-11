@@ -6,7 +6,7 @@ export interface User {
   documentNumber: string;
   phoneNumber: string;
   email: string;
-  password: string;
+  password?: string;
   profilePictureUrl?: string;
   userType?: string;
   userAdminId?: string;

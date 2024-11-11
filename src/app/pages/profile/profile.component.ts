@@ -220,7 +220,7 @@ export class ProfileComponent {
       }
       this.showCustomAlert('Los datos de actualizaron con éxito.', 'success');
     }else{
-      this.showCustomAlert(response, 'error');
+      this.showCustomAlert("Ocurrio un error al actilizar los datos.", 'error');
       this.isLoading = false;
     }
   }
@@ -346,7 +346,7 @@ export class ProfileComponent {
         this.newPassword = '';
         this.confirmNewPassword = '';
         this.isLoading = false
-        const closeButton = document.getElementById('closeButtonUpdatePasword');
+        const closeButton = document.getElementById('closeButtonUpdatePassword');
         if (closeButton) {
           closeButton.click();
         }

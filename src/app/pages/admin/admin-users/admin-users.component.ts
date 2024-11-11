@@ -22,7 +22,7 @@ export class AdminUsersComponent implements OnInit {
     firstName: '',
     lastName: '',
     email: '',
-    userType: 'admin',
+    userType: '',
     documentNumber: '',
     documentType: '',
     phoneNumber: '',
@@ -31,6 +31,7 @@ export class AdminUsersComponent implements OnInit {
     createdAt: 0,
     updatedAt: 0
   };
+  userInput: string = '';
 
   constructor(private userService: UserService) {}
 
@@ -55,15 +56,10 @@ export class AdminUsersComponent implements OnInit {
     if(response  === 'Usuario eliminado correctamente.'){
       this.isLoading = false;
       // Cerrar el modal
-      const registerModalElement = document.getElementById('confirmDeleteModal');
-      if (registerModalElement) {
-        // hacer click en el btn de cerraar modal
-        const closeButton = document.getElementById('closeButtonConfir');
+      const closeButton = document.getElementById('closeButtonCorfimar');
         if (closeButton) {
-          closeButton.click(); // Simula un clic en el botón de cerrar
+          closeButton.click();
         }
-      }
-      
       this.users = this.users.filter(user => user.primaryKey !== this.userDelete);
       this.filteredUsers = this.filteredUsers.filter(user => user.primaryKey !== this.userDelete);
       this.showCustomAlert(response, 'success');
@@ -79,6 +75,12 @@ export class AdminUsersComponent implements OnInit {
   filterUsers() {
     let filtered = this.selectedType === 'TODOS' ? this.users : this.users.filter(user => user.userType === this.selectedType);
 
+    if (this.userInput) {
+      filtered = filtered.filter(user =>
+        user.firstName.toLowerCase().includes(this.userInput.toLowerCase())
+      );
+    }
+
     // Filtro de fecha DESDE
     if (this.startDate) {
       const startUnix = new Date(this.startDate).getTime();
@@ -87,8 +89,15 @@ export class AdminUsersComponent implements OnInit {
 
     // Filtro de fecha HASTA
     if (this.endDate) {
+      // Convertir 'endDate' a timestamp Unix
       const endUnix = new Date(this.endDate).getTime();
-      filtered = filtered.filter(user => user.createdAt && user.createdAt <= endUnix); // Verificación de createdAt
+
+      // Sumar un día (24 horas en milisegundos) y restar un milisegundo para cubrir todo el día
+      const oneDayInMillis = 24 * 60 * 60 * 1000; // Un día en milisegundos
+      const endOfDayUnix = endUnix + oneDayInMillis - 1; // Ajustar a las 23:59:59.999 del día
+
+      // Filtrar las actividades usando el valor ajustado
+      filtered = filtered.filter(user => user.createdAt && user.createdAt <= endOfDayUnix);
     }
 
     this.filteredUsers = filtered;
@@ -100,6 +109,19 @@ export class AdminUsersComponent implements OnInit {
       ...data
     };
   }  
+
+  refreshData(): void {
+    // Llamamos a la función para cargar los usuarios nuevamente.
+    this.loadUser();
+    // Reiniciamos los filtros
+    this.selectedType = 'TODOS';
+    this.startDate = '';
+    this.endDate = '';
+    this.userInput = '';
+    // Vuelve a aplicar el filtro
+    this.filterUsers();
+  }
+  
 
   public formatDate(unixTimestamp: number) {
     if(unixTimestamp === 0){

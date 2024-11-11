@@ -1,5 +1,5 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { UserService } from '../../shared/services/user.service';
 import { User } from '../../shared/interfaces/user.interface';
 declare var bootstrap: any;
@@ -14,14 +14,12 @@ export class NavbarComponent implements OnInit {
   userRol?: string;
   userNombre?: string;
   userCorreo?: string;
+  imgProfile!: string;
 
   constructor(
     private router: Router,
-    private route: ActivatedRoute,
-    private el: ElementRef,
     private userService: UserService
   ) {    this.loadUserData()  }
-  
   ngOnInit(): void {
     this.initializePopovers();
     this.userService.user$.subscribe(user => {
@@ -29,9 +27,16 @@ export class NavbarComponent implements OnInit {
         this.userRol = user?.userType; 
         this.userNombre = user?.firstName;
         this.userCorreo = user?.email;
+        if(user.profilePictureUrl && user.profilePictureUrl.length !== 0){
+          this.imgProfile = user.profilePictureUrl;
+        }
+      }else{
+        this.userRol = '';
+        this.userNombre = '';
+        this.userCorreo = '';
+        this.imgProfile = '';
       }
     });
-
   }
 
   private loadUserData(): void {
@@ -41,6 +46,14 @@ export class NavbarComponent implements OnInit {
       this.userRol = user.userType; 
       this.userNombre = user.firstName;
       this.userCorreo = user.email;
+      if(user.profilePictureUrl && user.profilePictureUrl.length !== 0){
+        this.imgProfile = user.profilePictureUrl;
+      }
+    }else{
+      this.userRol = '';
+      this.userNombre = '';
+      this.userCorreo = '';
+      this.imgProfile = '';
     }
   }
 

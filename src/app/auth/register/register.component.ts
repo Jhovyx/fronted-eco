@@ -3,7 +3,6 @@ import * as bootstrap from 'bootstrap';
 import { User } from '../../shared/interfaces/user.interface';
 import { UserService } from '../../shared/services/user.service';
 import { Router } from '@angular/router';
-import { AdminUsersComponent } from '../../pages/admin/admin-users/admin-users.component';
 
 @Component({
   selector: 'app-register',
@@ -23,7 +22,6 @@ export class RegisterComponent {
     profilePictureUrl: ''
   };
 
-  @ViewChild(AdminUsersComponent) adminUsersComponent!: AdminUsersComponent;
   isLoading: boolean = false;
   constructor(private userService: UserService, private router: Router) {}
 
@@ -146,7 +144,7 @@ export class RegisterComponent {
             loginModal.show();
           }
         }
-        this.adminUsersComponent.loadUser();
+        
       }else{
         this.showCustomAlert(response, 'error');
         this.isLoading = false;
