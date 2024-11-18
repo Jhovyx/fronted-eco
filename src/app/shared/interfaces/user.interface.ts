@@ -11,7 +11,8 @@ export interface User {
   userType?: string;
   userAdminId?: string;
   createdAt?: number;
-  updatedAt?: number; 
+  updatedAt?: number;
+  estado?: boolean;
 }
 
   //interface de respuesta de imgBB

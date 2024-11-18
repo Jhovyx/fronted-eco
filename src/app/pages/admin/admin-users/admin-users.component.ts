@@ -29,7 +29,8 @@ export class AdminUsersComponent implements OnInit {
     password: '',
     profilePictureUrl: '',
     createdAt: 0,
-    updatedAt: 0
+    updatedAt: 0,
+    estado: false
   };
   userInput: string = '';
 
@@ -44,32 +45,6 @@ export class AdminUsersComponent implements OnInit {
       this.users = data ?? [];
       this.filteredUsers = this.users; // Inicializa filteredUsers con todos los usuarios
   }
-
-  deleteUser(primaryKey: string) {
-    this.userDelete = primaryKey;
-  }
-
-  isLoading: boolean = false;
-  async confirmDelete() {
-    this.isLoading = true;
-    const response = await this.userService.deleteUser(this.userDelete);
-    if(response  === 'Usuario eliminado correctamente.'){
-      this.isLoading = false;
-      // Cerrar el modal
-      const closeButton = document.getElementById('closeButtonCorfimar');
-        if (closeButton) {
-          closeButton.click();
-        }
-      this.users = this.users.filter(user => user.primaryKey !== this.userDelete);
-      this.filteredUsers = this.filteredUsers.filter(user => user.primaryKey !== this.userDelete);
-      this.showCustomAlert(response, 'success');
-    }else{
-      this.isLoading = false;
-      this.showCustomAlert(response, 'error');
-    }
-    this.isLoading = false;
-  }
-  
 
   // Filtro de usuarios por tipo y fechas
   filterUsers() {
@@ -120,6 +95,38 @@ export class AdminUsersComponent implements OnInit {
     this.userInput = '';
     // Vuelve a aplicar el filtro
     this.filterUsers();
+  }
+
+  async toggleUserStatus(user: User) {
+    this.loadUserData();
+    if(this.userAdmin && this.userAdmin === 'admin'){
+      // Cambiar el estado del usuario
+      const data: Partial<User> = {
+        estado: !user.estado,
+        userAdminId: this.userAdminId
+      }
+      const response = await this.userService.updateUserStatus(user.primaryKey,data);
+      if(response && typeof response === 'object' && response.primaryKey){
+        this.showCustomAlert('Se actualizo correctamente el estado.', 'success');
+        this.loadUser();
+      }
+    }else{
+      this.loadUser();
+      this.showCustomAlert('Este usuario no esta permitido que haga cambios.',"error");
+    }
+  }
+
+  userAdminId?: string
+  userAdmin?: string
+  private loadUserData(): void {
+    const data = sessionStorage.getItem('user');
+    if (data) {
+      const userx: User = JSON.parse(data);
+      if(userx){
+        this.userAdminId = userx.primaryKey; 
+        this.userAdmin = userx.userType; 
+      }
+    }
   }
   
 

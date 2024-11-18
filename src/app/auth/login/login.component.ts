@@ -38,9 +38,9 @@ export class LoginComponent {
       return;
     }
     
+    try {
       const response = await this.userService.login(this.email, this.password);
       if (response && typeof response === 'object' && response.primaryKey) {
-        
         const loginModalElement = document.getElementById('loginModal');
         if (loginModalElement) {
           const closeButton = document.getElementById('closeButtonz');
@@ -49,18 +49,16 @@ export class LoginComponent {
           }
         }
         this.showCustomAlert('Bienvenido, acceso ha sido autorizado.', 'success');
-        this.isLoading = false; // Detener el spinner
         this.password = ''; // Limpiar el campo de contraseña
         this.email = ''; // Limpiar el campo de correo
-        console.log(response)
-        if(response.userType === "cliente")this.router.navigate(['/home']);
-        if(response.userType === "admin")this.router.navigate(['/admin-viajes']);
-      } else {
-        this.showCustomAlert("Credenciales incorrectas.", 'error');
-        this.isLoading = false; // Detener el spinner
-        this.password = ''; // Limpiar el campo de contraseña
-        this.email = ''; // Limpiar el campo de correo
+        if (response.userType === "cliente") this.router.navigate(['/home']);
+        if (response.userType === "admin") this.router.navigate(['/admin-viajes']);
       }
+    } catch (error) {
+      this.showCustomAlert("Credenciales incorrectas.", 'error');
+    } finally {
+      this.isLoading = false;
+    }
 
   }
 

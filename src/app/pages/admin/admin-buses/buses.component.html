@@ -1,0 +1,331 @@
+<div class="container">
+
+<div class="w-100 mb-3 mt-3">
+    <div class="col">
+      <ul class="nav nav-tabs custom-nav">
+        <li class="nav-item">
+          <a 
+            class="nav-link btn btn-outline-primary custom-link text-black d-flex align-items-center justify-content-center" 
+            routerLink="/admin-viajes">
+            <i class="fas fa-route me-2 custom-icon"></i>
+            Administración de Viajes
+            <span class="underline"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a 
+            class="nav-link btn btn-outline-primary custom-link text-black d-flex align-items-center justify-content-center" 
+            routerLink="/admin-buses">
+            <i class="fas fa-bus-alt me-2 custom-icon"></i>
+            Administración de Buses
+            <span class="underline"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a 
+            class="nav-link btn btn-outline-primary custom-link text-black d-flex align-items-center justify-content-center" 
+            routerLink="/admin-estaciones">
+            <i class="fas fa-map-marker-alt me-2 custom-icon"></i>
+            Administración de Estaciones
+            <span class="underline"></span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!---->
+  <br>
+
+  <div class="row bg-primary rounded p-3 shadow-lg">
+          
+      <!--BUSCAR POR FECHAS DE CREACION-->
+      <div class="col-md-3 d-flex justify-content-center align-items-center mb-2">
+        <div class="input-group mb-1 animate__animated animate__fadeIn animate__delay-1s">
+          <label class="input-group-text text-black" for="dateInput">DESDE</label>
+          <input
+            type="date"
+            class="form-control"
+            id="dateInput"
+            [min]="minDate"
+            [max]="maxDate"
+            [(ngModel)]="startDate"
+            (change)="filterBuses()"
+          />
+        </div>
+      </div>
+  
+      <div class="col-md-3 d-flex justify-content-center align-items-center mb-2">
+        <div class="input-group mb-1 animate__animated animate__fadeIn animate__delay-1s">
+          <label class="input-group-text text-black" for="dateInput">HASTA</label>
+          <input
+            type="date"
+            class="form-control"
+            id="dateInput"
+            [min]="minDate"
+            [max]="maxDate"
+            [(ngModel)]="endDate" 
+            (change)="filterBuses()"
+          />
+        </div>
+      </div>
+      <div class="col-md-3"></div>
+
+      <div class="col-md-2 d-flex justify-content-center align-items-center mb-2">
+        <div class="input-group mb-1 animate__animated animate__fadeIn animate__delay-1s">
+            <button type="button" (click)="btnAdd()" class="btn bg-white" data-bs-toggle="modal" data-bs-target="#addBusModal">
+                <i class="bi bi-plus-square"></i>
+                Agregar Bus
+            </button>
+        </div>
+      </div>
+
+
+      <!--BOTÓN DE REFRESCAR-->
+      <div class="col-md-1 d-flex justify-content-center align-items-center mb-2">
+        <button  (click)="refresh()"
+          class="btn btn-action bg-trnansparent border-0 flex justify-content-center
+           align-items-center shadow-sm rounded-circle hover-zoom-in animate__animated animate__fadeIn animate__delay-1s">
+          <i class="bi bi-arrow-clockwise" style="font-size: 30px; color: white;"></i>
+        </button>
+      </div>
+  
+  </div>
+
+  <br>
+
+    <div class="table-responsive " style="max-height: 600px;">
+        <table class="table table-striped rounded shadow-sm">
+          <thead class="table-dark rounded" style="position: sticky; top: 0; z-index: 2;">
+            <tr>
+              <th class="text-center">Item</th>
+              <th class="text-center">Placa</th>
+              <th class="text-center">Modelo</th>
+              <th class="text-center">Capacidad</th>
+              <th class="text-center">Fecha Registro</th>
+              <th class="text-center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody class="scrollable-tbody" style="max-height: 600px; overflow-y: auto;">
+            <tr *ngFor="let bus of filteredBuses; let i = index" class="animate__animated animate__fadeInUp">
+                <td class="text-center align-middle">{{ i + 1 }}</td>
+              <td class="align-middle">{{ bus.placa }}</td>
+              <td class="text-center align-middle">{{ bus.modelo }}</td>
+              <td class="align-middle">{{ bus.capacidad }}</td>
+              <td class="align-items-center"> {{ formatDate(bus.createdAt ?? 0) }} </td>
+              <td class="d-flex justify-content-center align-middle">
+                <button class="btn x1 btn-primary btn-sm m-1 hover-zoom-in p-1" (click)="viewDetails(bus)" data-bs-toggle="modal" data-bs-target="#BusModal">
+                  <i class="fas fa-eye"></i> Ver más...
+                </button>
+                <button class="btn x1 btn-warning btn-sm m-1 hover-zoom-in p-1" (click)="btnEdit(bus)" data-bs-toggle="modal" data-bs-target="#addBusModal">
+                    <i class="bi bi-pencil"></i> Editar
+                </button>
+                <div class="form-check form-switch ms-2 d-flex align-items-center">
+                    <input 
+                      class="form-check-input" 
+                      type="checkbox" 
+                      [id]="'busActive' + bus.primaryKey" 
+                      [checked]="bus.estado" 
+                      (change)="updateStatus(bus)" />
+                    <label 
+                      class="form-check-label ms-1" 
+                      [for]="'busActive' + bus.primaryKey">
+                      {{ bus.estado ? 'Activo' : 'Inactivo' }}
+                    </label>
+                  </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  </div>
+
+ 
+  <!-- Modal Agregar/Actualizar Bus -->
+<div class="modal fade" id="addBusModal" tabindex="-1" aria-labelledby="addBusModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content border-0 rounded-4 shadow-lg">
+        
+        <!-- Modal Header -->
+        <div class="modal-header bg-primary text-white rounded-top animate__animated animate__fadeIn">
+          <h5 class="modal-title" id="addBusModalLabel">
+            <!-- Cambia el título dependiendo de si hay un usuario seleccionado -->
+            <i class="bi" [ngClass]="selectBus && selectBus.primaryKey ? 'bi-pencil-square' : 'bi-plus-circle-fill'"></i>
+            <span class="ms-2">
+              {{ selectBus && selectBus.primaryKey ? 'Actualizar Bus' : 'Agregar Bus' }}
+            </span>
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        
+        <!-- Modal Body -->
+        <div class="modal-body">
+          <form>
+            <!-- Campo para Placa -->
+            <div class="mb-3">
+              <label for="busPlate" class="form-label fw-semibold">
+                <i class="bi bi-card-text"></i> Placa
+              </label>
+              <input 
+                type="text" 
+                id="busPlate" 
+                class="form-control" 
+                placeholder="Ej: ABC-1234" 
+                required
+                [(ngModel)]="selectBus.placa"
+                name="busPlate">
+            </div>
+            
+            <!-- Campo para Modelo -->
+            <div class="mb-3">
+              <label for="busModel" class="form-label fw-semibold">
+                <i class="bi bi-truck"></i> Modelo
+              </label>
+              <input 
+                type="text" 
+                id="busModel" 
+                class="form-control" 
+                placeholder="Ej: Volvo B7R" 
+                required
+                [(ngModel)]="selectBus.modelo"
+                name="busModel">
+            </div>
+            
+            <!-- Campo para Capacidad -->
+            <div class="mb-3">
+              <label for="busCapacity" class="form-label fw-semibold">
+                <i class="bi bi-people-fill"></i> Capacidad
+              </label>
+              <input 
+                type="number" 
+                id="busCapacity" 
+                class="form-control" 
+                placeholder="Número de pasajeros" 
+                required
+                [(ngModel)]="selectBus.capacidad"
+                name="busCapacity">
+            </div>
+          </form>
+        </div>
+        
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            <i class="bi bi-x-circle-fill"></i> Cerrar
+          </button>
+          <!-- Cambia el texto del botón dependiendo de si hay un usuario seleccionado -->
+          <button type="button" class="btn btn-primary" (click)="addBus(selectBus)">
+            <i class="bi" [ngClass]="selectBus&& selectBus.primaryKey ? 'bi-check-circle-fill' : 'bi-plus-circle-fill'"></i>
+            {{ selectBus&& selectBus.primaryKey ? 'Actualizar Bus' : 'Agregar Bus' }}
+          </button>
+                <button 
+                    type="button" 
+                    class="d-none" 
+                    id="closeButtonModalBus" 
+                    data-bs-dismiss="modal">
+                </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+
+<!-- Modal for Activity Details -->
+<div class="modal fade" id="BusModal" tabindex="-1" aria-labelledby="activityModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content border-0 rounded-4 shadow-lg">
+        
+        <!-- Modal Header -->
+        <div class="modal-header bg-primary text-light rounded-top animate__animated animate__fadeIn">
+          <h5 class="modal-title" id="activityModalLabel">
+            <i class="bi bi-info-circle-fill"></i> <span class="ms-2">Detalles del Bus</span>
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+  
+        <!-- Modal Body -->
+        <div class="modal-body">
+          <div class="row">
+            
+            <!-- Detalles de la Actividad -->
+            <div class="col-md-6">
+              <div class="activity-card card mb-3 p-4" data-aos="fade-up">
+                <div class="text-center">
+                  <h6 class="text-primary mb-3"><i class="bi bi-bus-front"></i> Detalles del Bus</h6>
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                  <i class="bi bi-clipboard-data fs-1 text-primary" style="margin-right: 20px;"></i>
+                  <div> 
+                    <div class="profile-info-text">
+                      <div class="profile-info-label fw-semibold"><i class="bi bi-type"></i> Modelo</div>
+                      <div class="profile-info-value">{{ selectBus.modelo }}</div>
+                    </div>
+                    <div class="profile-info-text">
+                      <div class="profile-info-label fw-semibold"><i class="bi bi-calendar-event"></i> Fecha de Registro</div>
+                      <div class="profile-info-value">{{ formatDate(selectBus.createdAt ?? 0) }}</div>
+                    </div>
+                    <div class="profile-info-text">
+                      <div class="profile-info-label fw-semibold"><i class="bi bi-hash"></i> Placa</div>
+                      <div class="profile-info-value">{{ selectBus.placa }}</div>
+                    </div>
+                    <div class="profile-info-text">
+                      <div class="profile-info-label fw-semibold"><i class="bi bi-clock-history"></i> Última Actualización</div>
+                      <div class="profile-info-value">{{ formatDate(selectBus.updatedAt ?? 0) }}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="align-items-center justify-content-center d-flex">
+                <div class="">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle-fill"></i> Cerrar
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Datos del Usuario -->
+            <div class="col-md-6">
+              <div class="user-card card mb-3 p-4" data-aos="fade-up" data-aos-duration="1200">
+                <div class="text-center mb-4">
+                  <h6 class="text-primary mb-3"><i class="bi bi-person-circle"></i> Información del Administrador</h6>
+                </div>
+  
+                <div class="d-flex justify-content-center align-items-center mb-4">
+                  <div class="text-center">
+                    <p class="fw-semibold mb-0" id="userName">{{ selectedUser.firstName }}</p>
+                    <p class="text-muted mb-0" id="userEmail">{{ selectedUser.email }}</p>
+                    <p class="text-muted mb-0" id="userPhone">{{ selectedUser.phoneNumber }}</p>
+                  </div>
+                </div>
+  
+                <div class="d-flex justify-content-center align-items-center mb-4">
+                  <div>
+                    <img *ngIf="selectedUser.profilePictureUrl; else defaultProfile"
+                      [src]="selectedUser.profilePictureUrl" 
+                      alt="Imagen de {{ selectedUser.firstName }}" 
+                      class="rounded-circle mb-3"
+                      style="width: 120px; height: 120px; object-fit: cover; border: 4px solid #fff;">
+                  </div>
+                  <div class="ms-3">
+                    <div class="profile-info-text">
+                      <div class="profile-info-label fw-semibold"><i class="bi bi-person-badge-fill"></i> Tipo de Usuario</div>
+                      <div class="profile-info-value text-center">{{ selectedUser.userType }}</div>
+                    </div>
+                  </div>
+                </div>
+  
+                <ng-template #defaultProfile>
+                  <i class="bi bi-person-circle text-primary" style="font-size: 80px;"></i> <!-- Icono por defecto -->
+                </ng-template>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+  

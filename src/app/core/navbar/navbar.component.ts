@@ -67,22 +67,27 @@ export class NavbarComponent implements OnInit {
     this.userCorreo = undefined;
   }
 
-  openModalRegister(){
-    const closeButton = document.getElementById('closeButton1');
-    if (closeButton) {
-      closeButton.click();
+  openModalRegister() {
+    // Cerrar el modal de inicio de sesión antes de abrir el registro
+    const closeLoginButton = document.getElementById('closeLoginModal');
+    if (closeLoginButton) {
+      closeLoginButton.click();
     }
+
     const registerModalElement = document.getElementById('registroModal');
     if (registerModalElement) {
       const registerModal = new bootstrap.Modal(registerModalElement);
       registerModal.show();
     }
   }
-  openModalLogin(){
-    const closeButton = document.getElementById('closeButtonxd');
-    if (closeButton) {
-      closeButton.click();
+
+  openModalLogin() {
+    // Cerrar el modal de registro antes de abrir el inicio de sesión
+    const closeRegisterButton = document.getElementById('closeRegisterModal');
+    if (closeRegisterButton) {
+      closeRegisterButton.click();
     }
+
     const loginModalElement = document.getElementById('loginModal');
     if (loginModalElement) {
       const loginModal = new bootstrap.Modal(loginModalElement);

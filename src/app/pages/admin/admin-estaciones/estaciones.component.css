@@ -1,0 +1,28 @@
+/* Contenedor de los enlaces */
+.custom-nav {
+  display: flex;
+  justify-content: space-between; 
+  padding: 0 10px;
+}
+
+/* Enlaces personalizados */
+.custom-link {
+  position: relative;
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  transition: transform 0.3s ease;
+  text-align: center;
+  flex-grow: 1; /* Hace que cada enlace ocupe el mismo espacio disponible */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+/* Asegúrate de que cada enlace tenga su propio espacio */
+.nav-item {
+  flex-grow: 1; /* Hace que cada item ocupe el mismo tamaño */
+  text-align: center;
+}

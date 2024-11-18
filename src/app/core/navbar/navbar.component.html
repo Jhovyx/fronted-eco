@@ -192,8 +192,9 @@
       </li>
     </div>
   </nav>
-  
-<!-- Modal de Inicio de sesión -->
+ 
+
+  <!-- Modal de Inicio de sesión -->
 <div class="modal fade" id="loginModal" #loginModal tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content shadow-lg rounded-4 animate__animated animate__fadeIn">
@@ -201,7 +202,7 @@
         <h5 class="modal-title w-100 text-center" id="loginModalLabel">
           <i class="bi bi-person-lock me-2"></i> !Bienvenido¡, Inicia Sesión
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" id="closeLoginModal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body p-4">
         <app-login></app-login>
@@ -215,8 +216,6 @@
   </div>
 </div>
 
-
-
 <!-- Modal Registro -->
 <div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -225,7 +224,7 @@
         <h5 class="modal-title w-100 text-center" id="registroModalLabel">
           <i class="fas fa-user-plus me-2"></i><strong>¡Bienvenido! Crea tu cuenta</strong>
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" id="closeRegisterModal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body p-3">
         <app-register></app-register>
@@ -236,5 +235,3 @@
     </div>
   </div>
 </div>
-
-

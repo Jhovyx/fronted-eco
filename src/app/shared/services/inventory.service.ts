@@ -6,6 +6,10 @@ import { Asientos, DestinosResponse, Trip } from '../interfaces/trip.interface';
   providedIn: 'root'
 })
 export class InventoryService {
+
+  private busesKey = 'buses'; // Clave para almacenar buses en localStorage
+  private stationsKey = 'stations'; //ESTACIONES
+
   private trips: any[] = [
     { id: 1 ,image: 'https://www.peru.travel/Contenido/Destino/Imagen/es/8/1.4/Principal/lima-banner-3.jpg', description: 'Lima, la ciudad de cerros con lunas', name: 'Lima', cost: 1000, startDate: '2024-07-01', endDate: '2024-07-10', busName: 'Bus XYZ', busPlate: 'ABC-123', busLocation: 'Terminal Central', seatsAvailable: 20 },
     { id: 2,image: 'https://media.istockphoto.com/id/458569733/es/foto/city-square-en-ayacucho-per%C3%BA.jpg?s=612x612&w=0&k=20&c=8eVqNlaNJLdHYIpPoI8HQ-rOvfi9EKkCl4rkEwYa9bc=', description: 'Ayacucho abrigador', name: 'Ayacucho', cost: 1000, startDate: '2024-07-01', endDate: '2024-07-10', busName: 'Bus abc', busPlate: 'ABC-123', busLocation: 'Terminal Central', seatsAvailable: 20 },
@@ -18,6 +22,37 @@ export class InventoryService {
     { id: 9,image: 'https://e.rpp-noticias.io/large/2014/08/01/1068979.jpg', description: 'Cascas inolvidable', name: 'Cascas', cost: 1000, startDate: '2024-07-01', endDate: '2024-07-10', busName: 'Bus XYZ', busPlate: 'ABC-123', busLocation: 'Terminal Central', seatsAvailable: 20 },
     { id:10, image: 'https://noticias-pe.laiglesiadejesucristo.org/media/960x540/Chimbote-2.jpg', description: 'Chimbote mágico', name: 'Chimbote', cost: 1000, startDate: '2024-07-01', endDate: '2024-07-10', busName: 'Bus XYZ', busPlate: 'ABC-123', busLocation: 'Terminal Central', seatsAvailable: 20 },// Otros viajes aquí
   ];
+  //
+  private enabledTrips: number[] = [];
+
+//ESTACIONES
+getStations(): any[] {
+  const stations = localStorage.getItem(this.stationsKey);
+  return stations ? JSON.parse(stations) : [];
+}
+
+addStation(station: any): void {
+  const stations = this.getStations();
+  stations.push(station);
+  localStorage.setItem(this.stationsKey, JSON.stringify(stations));
+}
+
+updateStation(updatedStation: any): void {
+  const stations = this.getStations();
+  const index = stations.findIndex(station => station.id === updatedStation.id);
+  if (index > -1) {
+    stations[index] = updatedStation;
+    localStorage.setItem(this.stationsKey, JSON.stringify(stations));
+  }
+}
+
+deleteStation(stationId: number): void {
+  let stations = this.getStations();
+  stations = stations.filter(station => station.id !== stationId);
+  localStorage.setItem(this.stationsKey, JSON.stringify(stations));
+}
+
+  //buses
     
   getTrips(): any[] {
     return this.trips;
@@ -38,16 +73,19 @@ export class InventoryService {
   }
 
   disableTrip(id: number): void {
-    const trip = this.trips.find(trip => trip.id === id);
-    if (trip) {
-      trip.enabled = false;
+    const tripIndex = this.trips.findIndex(trip => trip.id === id);
+    if (tripIndex !== -1) {
+      this.trips[tripIndex].enabled = false;
+      this.enabledTrips = this.enabledTrips.filter(tripId => tripId !== id);
+      localStorage.setItem('enabledTrips', JSON.stringify(this.enabledTrips));
     }
   }
-
   enableTrip(id: number): void {
     const trip = this.trips.find(trip => trip.id === id);
     if (trip) {
       trip.enabled = true;
+      this.enabledTrips.push(id);
+      localStorage.setItem('enabledTrips', JSON.stringify(this.enabledTrips));
     }
   }
 
@@ -65,6 +103,43 @@ export class InventoryService {
     if (index !== -1) {
       this.trips[index] = { ...this.trips[index], ...updatedTrip };
     }
+  }
+
+  ///////////7
+
+  // Obtener los buses almacenados en localStorage
+  getBuses(): any[] {
+    const buses = localStorage.getItem(this.busesKey);
+    return buses ? JSON.parse(buses) : [];
+  }
+
+  // Guardar o actualizar los buses en localStorage
+  saveBuses(buses: any[]): void {
+    localStorage.setItem(this.busesKey, JSON.stringify(buses));
+  }
+
+  // Agregar un nuevo bus
+  addBus(bus: any): void {
+    const buses = this.getBuses();
+    buses.push(bus);
+    this.saveBuses(buses);
+  }
+
+  // Editar un bus existente
+  editBus(busId: number, updatedBus: any): void {
+    const buses = this.getBuses();
+    const index = buses.findIndex(bus => bus.id === busId);
+    if (index !== -1) {
+      buses[index] = { ...buses[index], ...updatedBus };
+      this.saveBuses(buses);
+    }
+  }
+
+  // Eliminar un bus
+  deleteBus(busId: number): void {
+    let buses = this.getBuses();
+    buses = buses.filter(bus => bus.id !== busId);
+    this.saveBuses(buses);
   }
 
   constructor(private http : HttpClient){}

@@ -37,6 +37,16 @@ export class UserService{
           return 'Ocurrio un error al actualizar el usuario.';
         }
     }
+
+    //update status
+    async updateUserStatus(id: string, updateUser: Partial<User>) {
+      const user = await this.http.patch<User>(`${this.apiBackend}/${id}`, updateUser).toPromise()
+      if(user){
+        return user
+      }else{
+        return 'Ocurrio un error al actualizar el usuario.';
+      }
+    }
     
     // Update password
     async updatePassword(id: string, oldPassword: string, newPassword: string) {
@@ -75,32 +85,23 @@ export class UserService{
         }
     }   
 
-    async deleteUser(primaryKey: string){
-      this.loadUserData();
-      if(this.userAdmin === 'admin'){
-          const response = await this.http.patch<{ message: string }>(`${this.apiBackend}/delete/${primaryKey}`, {userAdminId: this.userAdminId}).toPromise()
-          console.log(response)
-          if(response){
-            return response.message
-          }else{
-            return 'Ocurrio un error al eliminar el usuario.';
-          }
-      }else{
-        return 'Este usuario no esta permitido que realize la accion.';
+    //loguin
+    async login(email: string, password: string) {
+      try {
+        const user = await this.http.post<User>(`${this.apiBackend}/login`, { email, password }).toPromise();
+        if (user) {
+          this.setUser(user);
+          this.userSubject.next(user); // Emitir el nuevo usuario
+          return user;
+        } else {
+          throw new Error('Ocurrió un error al ingresar al sistema.');
+        }
+      } catch (error) {
+        // Lanza la excepción para que el componente lo maneje
+        throw new Error('Credenciales incorrectas o problema con el servidor.');
       }
     }
-
-    //loguin 
-        async login(email: string, password: string) {
-          const user = await this.http.post<User>(`${this.apiBackend}/login`, {email, password}).toPromise();
-          if (user) {
-            this.setUser(user);
-            this.userSubject.next(user); // Emitir el nuevo usuario
-            return user;
-          }else{
-            return 'Ocurrio un error al ingresar al sistema.'
-          }
-        }
+    
 
   //cerrar sesion
   logout(): void {

@@ -9,7 +9,12 @@ import { AuthModule } from './auth/auth.module';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
-// Firebase imports
+
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -24,28 +29,16 @@ import { HttpClientModule } from '@angular/common/http';
     SharedModule,
     FormsModule,
     RouterModule,
-    HttpClientModule
+    HttpClientModule,
+
+     // Módulos de Angular Material
+     MatInputModule,
+     MatFormFieldModule,
+     MatAutocompleteModule,
+     MatSelectModule,
+     MatOptionModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
-//firebase deploy
-// Import the functions you need from the SDKs you need
-//import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-/*const firebaseConfig = {
-  apiKey: "AIzaSyAK4I3Kh73hkbawjB-0c6kk0m2xDnvyctw",
-  authDomain: "prueba-f7cd9.firebaseapp.com",
-  databaseURL: "https://prueba-f7cd9-default-rtdb.firebaseio.com",
-  projectId: "prueba-f7cd9",
-  storageBucket: "prueba-f7cd9.appspot.com",
-  messagingSenderId: "784765850499",
-  appId: "1:784765850499:web:e3cc2cc33c3b5837115cb6"
-};*/
-
-// Initialize Firebase
-//const app = initializeApp(firebaseConfig);

@@ -112,14 +112,28 @@
           <td class="text-center align-middle">{{ user.documentNumber }}</td>
           <td class="text-center align-middle">{{ user.phoneNumber }}</td>
           <td class="text-center align-middle">{{ user.userType }}</td>
-          <td class="d-flex justify-content-center align-middle">
-            <button (click)="detailUser(user)" class="btn x1 btn-primary btn-sm m-1 hover-zoom-in" data-bs-toggle="modal" data-bs-target="#detalleModal">
+          <td class="d-flex justify-content-center align-items-center">
+            <button 
+              (click)="detailUser(user)" 
+              class="btn x1 btn-primary btn-sm m-1 hover-zoom-in" 
+              data-bs-toggle="modal" 
+              data-bs-target="#detalleModal">
               <i class="fas fa-eye"></i> Ver
             </button>
-            <button (click)="deleteUser(user.primaryKey)" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" class="btn x2 btn-danger btn-sm m-1 hover-zoom-in">
-              <i class="fas fa-trash"></i> Eliminar
-            </button>
-          </td>
+            <div class="form-check form-switch ms-2 d-flex align-items-center">
+              <input 
+                class="form-check-input" 
+                type="checkbox" 
+                [id]="'userActive' + user.primaryKey" 
+                [checked]="user.estado" 
+                (change)="toggleUserStatus(user)" />
+              <label 
+                class="form-check-label ms-1" 
+                [for]="'userActive' + user.primaryKey">
+                {{ user.estado ? 'Activo' : 'Inactivo' }}
+              </label>
+            </div>
+          </td>          
         </tr>
       </tbody>
     </table>
@@ -197,38 +211,3 @@
       </div>
   </div>
 </div>
-
-
-<!-- Modal de confirmación de eliminación -->
-<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered"> <!-- Clase para centrar el modal -->
-    <div class="modal-content shadow-lg rounded-3 animate__animated animate__fadeIn">
-      <div class="modal-header bg-primary w-bold text-white">
-        <i class="bi text-warning bi-exclamation-triangle me-2"></i> <!-- Icono de advertencia -->
-        <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Eliminación</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" [disabled]="isLoading"></button>
-      </div>
-      <div class="modal-body text-center">
-        <p class="mb-0">¿Estás seguro de que deseas eliminar este usuario?</p>
-        <p class="text-muted small">Esta acción no se puede deshacer.</p>
-      </div>
-      <div class="modal-footer d-flex align-items-center justify-content-center">
-        <div class="">
-          <button type="button" class="btn btn-secondary m-2"  data-bs-dismiss="modal" [disabled]="isLoading">Cancelar</button>
-          <button type="button" class="btn btn-danger m-2" (click)="confirmDelete()" [disabled]="isLoading">
-            <span *ngIf="!isLoading">Eliminar</span>
-            <span *ngIf="isLoading">Eliminando...</span>
-          </button>
-          <!-- Botón de cierre invisible para usabilidad -->
-          <button 
-              type="button" 
-              class="d-none" 
-              id="closeButtonCorfimar" 
-              data-bs-dismiss="modal">
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-

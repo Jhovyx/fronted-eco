@@ -1,69 +1,87 @@
-.boleta {
-    font-family: Arial, sans-serif;
-  }
-  
-  .boleta h4, .boleta h6 {
-    margin: 0;
-  }
-  
-  .boleta p {
-    margin: 0;
-  }
-  
-  .boleta .form-group label {
-    font-weight: bold;
-  }
-  
-  .boleta .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
-  }
-  
-  .boleta .btn-success {
-    background-color: #28a745;
-    border-color: #28a745;
-  }
-  
-  .total-label {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    color: #333;
-    display: block;
-  }
-  
-  .pasajeros-list {
-    background-color: #fff;
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #f8f9fa;
+    padding: 20px;
+}
+#comprobante {
+    width: 210mm;
+    max-width: 100%;
+    height: auto;
+    padding: 20px;
+    border: 1px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    /* padding: 1.5rem; */
-  }
-  
-  .pasajero-item {
-    padding: 0.75rem;
-    border-bottom: 1px solid #eee;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .pasajero-item:last-child {
-    border-bottom: none;
-  }
-  
-  .pasajero-info {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-  }
-  
-  .pasajero-nombre {
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: #444;
-  }
-  
-  .pasajero-dni {
-    font-size: 1rem;
-    color: #888;
-  }
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.header-logo img {
+    width: 100px;
+    height: auto;
+}
+.header-title {
+    color: #42988f;
+    text-align: center;
+}
+.header-title h4 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+}
+.header-title p {
+    margin: 0;
+    font-size: 14px;
+    color: #6c757d;
+}
+.table-bordered td, .table-bordered th {
+    border: 1px solid #ddd;
+}
+.table th {
+    background-color: #42988f;
+    color: white;
+    text-align: center;
+}
+.table td, .table th {
+    padding: 12px;
+    vertical-align: middle;
+    text-align: center;
+}
+.table tfoot td {
+    font-weight: bold;
+}
+.footer-note {
+    font-size: 12px;
+    color: #6c757d;
+    padding: 10px 0;
+    text-align: right;
+}
+.footer-table {
+    text-align: right;
+}
+.btn-primary {
+    background-color: #42988f;
+    border-color: #42988f;
+}
+.btn-primary:hover {
+    background-color: #367f77;
+    border-color: #367f77;
+}
+.qr-code img {
+    width: 100px;
+    height: 100px;
+}
+@media print {
+    #comprobante {
+        width: 100%;
+        border: none;
+        box-shadow: none;
+        margin: 0;
+        padding: 0;
+    }
+    .qr-code img {
+        width: 200px;
+        height: 200px;
+    }
+    .btn {
+        display: none;
+    }
+}

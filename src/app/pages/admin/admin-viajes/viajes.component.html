@@ -1,0 +1,200 @@
+ <div class="container">
+   
+   <div class="w-100 mb-3 mt-3">
+  <div class="col">
+    <ul class="nav nav-tabs custom-nav">
+      <li class="nav-item">
+        <a 
+          class="nav-link btn btn-outline-primary custom-link text-black d-flex align-items-center justify-content-center" 
+          routerLink="/admin-viajes">
+          <i class="fas fa-route me-2 custom-icon"></i>
+          Administración de Viajes
+          <span class="underline"></span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a 
+          class="nav-link btn btn-outline-primary custom-link text-black d-flex align-items-center justify-content-center" 
+          routerLink="/admin-buses">
+          <i class="fas fa-bus-alt me-2 custom-icon"></i>
+          Administración de Buses
+          <span class="underline"></span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a 
+          class="nav-link btn btn-outline-primary custom-link text-black d-flex align-items-center justify-content-center" 
+          routerLink="/admin-estaciones">
+          <i class="fas fa-map-marker-alt me-2 custom-icon"></i>
+          Administración de Estaciones
+          <span class="underline"></span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<!---->
+
+<div class="row bg-primary rounded p-3 shadow-lg">
+          
+  <!--BUSCAR POR FECHAS DE CREACION-->
+  <div class="col-md-3 d-flex justify-content-center align-items-center mb-2">
+    <div class="input-group mb-1 animate__animated animate__fadeIn animate__delay-1s">
+      <label class="input-group-text text-black" for="dateInput">DESDE</label>
+      <input
+        type="date"
+        class="form-control"
+        id="dateInput"
+        [min]="minDate"
+        [max]="maxDate"
+        [(ngModel)]="startDate"
+        (change)="filterViaje()"
+      />
+    </div>
+  </div>
+
+  <div class="col-md-3 d-flex justify-content-center align-items-center mb-2">
+    <div class="input-group mb-1 animate__animated animate__fadeIn animate__delay-1s">
+      <label class="input-group-text text-black" for="dateInput">HASTA</label>
+      <input
+        type="date"
+        class="form-control"
+        id="dateInput"
+        [min]="minDate"
+        [max]="maxDate"
+        [(ngModel)]="endDate" 
+        (change)="filterViaje()"
+      />
+    </div>
+  </div>
+
+  <div class="col-md-2 d-flex justify-content-center align-items-center mb-2">
+    <div class="input-group mb-1 animate__animated animate__fadeIn animate__delay-1s">
+      <div class="input-group mb-0">
+        <label class="input-group-text" for="userInput">NAME</label>
+        <input 
+          type="text" 
+          class="form-control" 
+          id="userInput" 
+          placeholder="Buscar..." 
+          list="userList"
+        ><!--enviar el usuario-->
+      </div>
+      <datalist id="userList">
+        <option *ngFor="let user of filteredUsers.slice(0, 5)" [value]="user.firstName" class="itemxd">
+          {{ user.firstName }}
+        </option>
+      </datalist>
+    </div>
+  </div>
+
+  <div class="col-md-2 d-flex justify-content-center align-items-center mb-2">
+    <div class="input-group mb-1 animate__animated animate__fadeIn animate__delay-1s">
+        <button type="button" (click)="btnAdd()" class="btn bg-white" data-bs-toggle="modal" data-bs-target="#viajeModal">
+            <i class="bi bi-plus-square"></i>
+            Agregar Viaje
+        </button>
+    </div>
+  </div>
+
+
+  <!--BOTÓN DE REFRESCAR-->
+  <div class="col-md-1 d-flex justify-content-center align-items-center mb-2">
+    <button  (click)="refresh()"
+      class="btn btn-action bg-trnansparent border-0 flex justify-content-center
+       align-items-center shadow-sm rounded-circle hover-zoom-in animate__animated animate__fadeIn animate__delay-1s">
+      <i class="bi bi-arrow-clockwise" style="font-size: 30px; color: white;"></i>
+    </button>
+  </div>
+
+</div>
+
+ <!-- Mostrar los viajes con tarjetas (cards) -->
+ <div class="row">
+  <div class="col-md-4 mb-4" *ngFor="let viaje of filteredViajes">
+    <div class="card" style="width: 18rem;">
+      <img class="card-img-top" [src]="viaje.urlImagen" alt="Imagen del viaje" (click)="viewDetails(viaje)">
+      <div class="card-body">
+        <h5 class="card-title">{{ viaje.nombre }}</h5>
+        <p class="card-text">{{ viaje.descripcion | slice:0:50 }}...</p>
+        <button class="btn" [ngClass]="{'btn-success': viaje.estado, 'btn-danger': !viaje.estado}" (click)="updateStatus(viaje)">
+          {{ viaje.estado ? 'Activo' : 'Inactivo' }}
+        </button>
+        <button class="btn btn-warning" (click)="btnEdit(viaje)">Editar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+</div>
+
+
+<!--modal para agreggar--> <!--mostrar la estaciones de origen y destino para poder seleccionar el bus a seleccionar  -->
+
+<div class="modal fade" id="viajeModal" tabindex="-1" aria-labelledby="viajeModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viajeModalLabel">{{ selectViaje.primaryKey ? 'Editar viaje' : 'Nuevo viaje' }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" id="nombre" [(ngModel)]="selectViaje.nombre" name="nombre" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label for="descripcion" class="form-label">Descripción</label>
+            <textarea id="descripcion" [(ngModel)]="selectViaje.descripcion" name="descripcion" class="form-control" required></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="costo" class="form-label">Costo</label>
+            <input type="number" id="costo" [(ngModel)]="selectViaje.costo" name="costo" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label for="fechaHoraSalida" class="form-label">Fecha y hora de salida</label>
+            <input type="datetime-local" id="fechaHoraSalida" [(ngModel)]="selectViaje.fechaHoraSalida" name="fechaHoraSalida" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label for="fechaHoraLlegada" class="form-label">Fecha y hora de llegada</label>
+            <input type="datetime-local" id="fechaHoraLlegada" [(ngModel)]="selectViaje.fechaHoraLlegada" name="fechaHoraLlegada" class="form-control" required>
+          </div>
+          <!-- Selección de estación de origen -->
+          <div class="mb-3">
+            <label for="idEstacionOrigen" class="form-label">Estación de Origen</label>
+            <select id="idEstacionOrigen" [(ngModel)]="selectViaje.idEstacionOrigen" name="idEstacionOrigen" class="form-control" required>
+              <option *ngFor="let estacion of filteredEstacion" [value]="estacion.primaryKey">{{ estacion.nombre }}</option>
+            </select>
+          </div>
+
+          <!-- Selección de estación de destino -->
+          <div class="mb-3">
+            <label for="idEstacionDestino" class="form-label">Estación de Destino</label>
+            <select id="idEstacionDestino" [(ngModel)]="selectViaje.idEstacionDestino" name="idEstacionDestino" class="form-control" required>
+              <option *ngFor="let estacion of filteredEstacion" [value]="estacion.primaryKey">{{ estacion.nombre }}</option>
+            </select>
+          </div>
+
+          <!-- Búsqueda y selección de bus -->
+          <div class="mb-3">
+            <label for="busSearchSelect" class="form-label">Buscar y Seleccionar Bus (Modelo o Placa)</label>
+            <select id="busSearchSelect" [(ngModel)]="selectViaje.idBus" name="busSearchSelect" class="form-control" required (click)="filterBuses()">
+              <!-- Opción de búsqueda en el select -->
+              <option value="" disabled selected>Escriba para buscar por modelo o placa...</option>
+              <!-- Opciones de buses filtrados -->
+              <option *ngFor="let bus of filteredBusResults" [value]="bus.primaryKey">{{ bus.modelo }} - {{ bus.placa }}</option>
+            </select>
+          </div>
+          
+          
+          <button type="button" class="btn btn-primary" (click)="addViaje(selectViaje)">{{ selectViaje.primaryKey ? 'Actualizar' : 'Crear' }}</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

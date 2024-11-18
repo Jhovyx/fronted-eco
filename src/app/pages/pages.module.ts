@@ -7,9 +7,6 @@ import { RouterModule } from '@angular/router';
 import { NotifyComponent } from './admin/notify/notify.component';
 import { AdminUsersComponent } from './admin/admin-users/admin-users.component';
 import { ReservationManagementComponent } from './admin/reservation-management/reservation-management.component';
-import { ListTripComponent } from './admin/list-trip/list-trip.component';
-import { AddTripComponent } from './admin/add-trip/add-trip.component';
-import { EditTripComponent } from './admin/edit-trip/edit-trip.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ReservationLimitComponent } from './admin/reservation-limit/reservation-limit.component';
 import { NosotrosComponent } from './usuario/nosotros/nosotros.component';
@@ -22,6 +19,9 @@ import { ReservaAddComponent } from './usuario/reserva/add/add-reserva.component
 import { AuthModule } from '../auth/auth.module';
 import { PaymentDetailComponent } from './usuario/payment/payment-detail.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { AminBusesComponent } from './admin/admin-buses/buses.component';
+import { AdminEstacionesComponent } from './admin/admin-estaciones/estaciones.component';
+import { ViajesComponent } from './admin/admin-viajes/viajes.component';
 
 @NgModule({
   declarations: [
@@ -30,9 +30,6 @@ import { NgSelectModule } from '@ng-select/ng-select';
     NotifyComponent,
     AdminUsersComponent,
     ReservationManagementComponent,
-    ListTripComponent,
-    AddTripComponent,
-    EditTripComponent,
     ProfileComponent,
     ReservationLimitComponent,
     PromocionesListComponent,
@@ -42,7 +39,10 @@ import { NgSelectModule } from '@ng-select/ng-select';
     PromocionesDetailComponent,
     SearchComponent,
     ReservaAddComponent,
-    PaymentDetailComponent
+    PaymentDetailComponent,
+    AminBusesComponent,
+    AdminEstacionesComponent,
+    ViajesComponent
   ],
   imports: [
     CommonModule,
@@ -57,9 +57,6 @@ import { NgSelectModule } from '@ng-select/ng-select';
     NotifyComponent,
     AdminUsersComponent,
     ReservationManagementComponent,
-    ListTripComponent,
-    AddTripComponent,
-    EditTripComponent,
     ProfileComponent,
     ReservationLimitComponent,
     PromocionesListComponent,
@@ -68,7 +65,10 @@ import { NgSelectModule } from '@ng-select/ng-select';
     PromocionesDetailComponent,
     SearchComponent,
     ReservaAddComponent,
-    PaymentDetailComponent
+    PaymentDetailComponent,
+    AminBusesComponent,
+    AdminEstacionesComponent,
+    ViajesComponent
   ]
 })
 export class PagesModule { }

@@ -1,114 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boleta de Reserva de Viajes</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+ 
+</head>
+<body>
 
 <div class="d-flex align-items-center justify-content-center mt-5">
-
-    <div id="comprobante" style="width: 210mm; height: 220mm; padding: 10px;" class=" m-0">
-        <div class="row bg-transparent">
-            <!-- header -->
-              <table class="table m-0 p-0 bg-transparent" style="border: none;">
-                <tr class="m-0 p-0 bg-transparent" style="border: none;">
-                    <td class="m-0 p-0 bg-transparent" style="width: 60px; border: none;">
-                        <div class="bg-transparent">
-                            <img  style="width: 180px; height: 180px;" src="
-                            https://i.ibb.co/wCTNS9F/ecoru.png
-                            " alt="">
-                        </div>
-                    </td>
-                    <td class="m-0 p-0" style="border: none;">
-                        <div style="padding-left: 0px;" class="text-center">
-                            <h4 class="text-center" style="color: #42988f;">EXPLORA EL MUNDO CON<br><b>ECORÚ. SAC</b></h4>
-                            <h5>Av. España - Trujillo - Perú</h5>
-                            <h5>ecorú&commat;gmail.com</h5>
-                            <h5>921258815</h5>
-                        </div>
-                    </td>
-                    <td class="m-0 p-0 bg-transparent" style="border: none;">
-                        <div class="mt-auto bg-transparent">
-                            <div style=" border: 1px solid black; width: max-content; " class="text-center p-2 bg-transparent">
-                                <h6>RUC: 10142536781</h6>
-                            <h6> BOLETA </h6>
-                            <h6> 001 - 214 - 2024</h6>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        </table>
-   <br>
-        <!--table client-->
-        <table class="table m-0 p-0 bg-transparent" style="border-collapse: collapse; border: none;">
-                <tr class=" p-0 bg-transparent" style="border: none; padding-left: 50px; ">
-                    <td class="m-0 align-middle bg-transparent" style="width: 160px; padding-left: 10px; border: none;"><b>RAZON SOCIAL <span style="float: right;">:</span></b></td>
-                  <td class="m-0 p-0 align-middle bg-transparent" style="border: none;"><span id="razonSocial">HILDERASHO</span></td>
-                  <td class="m-0 p-0 align-middle bg-transparent" style="border: none; width: 180px;"><b>FECHA EMISIÓN <span style="float: right;">:</span></b></td>
-                  <td style="border: none;"><span id="fecha">24/02/2024</span></td>
-                </tr>
-                <tr class="m-0 p-0" style="border: none;">
-                    <td class="m-0 align-middle" style="width: 150px; padding-left: 10px; border: none;"><b>RUC/DNI <span style="float: right;">:</span></b></td>
-                    <td class="m-0 p-0 align-middle" colspan="" style="border: none;"><span id="nDoc">72002411</span></td>
-                    <td class="m-0 p-0 align-middle" style="border: none;"><b>METODO DE PAGO<span style="float: right;">:</span></b></td>
-                    <td style="border: none;"><span id="metodoPago">TARJETA</span></td>
-                </tr>
-                <tr class="m-0 p-0" style="border: none;">
-                    <td class="m-0 align-middle" style="width: 150px; padding-left: 10px; border: none;"><b>TELEFONO <span style="float: right;">:</span></b></td>
-                    <td class="m-0 p-0 align-middle" colspan="" style="border: none;"><span id="telefono">961258815</span></td>
-                    <td class="m-0 p-0 align-middle" style="border: none;"><b>CORREO<span style="float: right;">:</span></b></td>
-                    <td style="border: none;"><span id="correo">hilderarce565&commat;gmail.com</span></td>
-                </tr>
-                <tr class="m-0 p-0" style="border: none;">
-                    <td class="m-0 align-middle" style="width: 150px; padding-left: 10px; border: none;"><b>DIRECCIÓN <span style="float: right;">:</span></b></td>
-                    <td class="m-0 p-0 align-middle" colspan="3" style="border: none;"><span id="direccion">AREVALO</span></td>
-                </tr>
-            </table>
-            
-            <!--Table products-->
-            <div class="" style="padding-left: 20px; padding-top: 20px; padding-bottom: 20px; padding-right: 20px; height: 400px;">
-                <table class="table m-0 p-0" style="border: none; width: 100%;">
-                    <thead>
-                        <tr class="m-0 p-0" style="border: none;">
-                            <th class="m-0 p-0 align-middle text-center" style="border: none; width: 10%;">ITEM</th>
-                            <th class="m-0 p-0 align-middle text-center" style="border: none; width: 55%;">DESCRIPCIÓN</th>
-                            <th class="m-0 p-0 align-middle text-center" style="border: none; width: 10%;">PASAJEROS</th>
-                            <th class="m-0 p-0 align-middle text-center" style="border: none; width: 15%;">PRECIO U</th>
-                            <th class="m-0 p-0 align-middle text-center" style="border: none; width: 10%;">TOTAL</th>
-                        </tr>
-                    </thead>
-                    <tbody class="table-group-divider">
-                        <tr class="m-0 p-0" style="border: none;">
-                            <td class="m-0 p-0 align-middle text-center" style="border: none;">1.00</td>
-                            <td class="m-0 p-0 align-middle" style="border: none;">Escapada de fin de año</td>
-                            <td class="m-0 p-0 align-middle text-center" style="border: none;">2.00</td>
-                            <td class="m-0 p-0 align-middle text-center" style="border: none;">S/ 20.00</td>
-                            <td class="m-0 p-0 align-middle text-center" style="border: none;">S/ 40.00</td>
-                        </tr>
-                    </tbody>
-                </table>
+    <div id="comprobante">
+        <div class="row mb-4">
+            <div class="col-4 header-logo">
+                <img src="https://i.ibb.co/wCTNS9F/ecoru.png" style="width:180px; heigth: 180px" alt="Ecorú">
             </div>
-            <!--subtotales-->
-            <div class="d-flex" style="padding-right: 40px; align-items: center; justify-content: space-between;">
-                <p style="padding-left: 50px;">Nuestros precios incluyen IGV.</p>
-                <table class="table table-bordered" style="width: 200px; border: none; border-collapse: collapse;">
+            <div class="col-4 header-title">
+                <h4>EXPLORA EL MUNDO CON<br><b>ECORÚ. SAC</b></h4>
+                <p>Av. España - Trujillo - Perú<br>ecoru&commat;gmail.com<br>921258815</p>
+            </div>
+            <div class="col-4 text-end">
+                <div class="border p-2">
+                    <p><strong>RUC:</strong> 10142536781</p>
+                    <p><strong>BOLETA:</strong> 001 - 214 - 2024</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Datos del cliente -->
+        <table class="table table-bordered mb-4">
+            <tbody>
+                <tr>
+                    <td><strong>RAZON SOCIAL</strong></td>
+                    <td id="razonSocial">HILDERASHO</td>
+                    <td><strong>FECHA EMISIÓN</strong></td>
+                    <td id="fecha">24/02/2024</td>
+                </tr>
+                <tr>
+                    <td><strong>RUC/DNI</strong></td>
+                    <td id="nDoc">72002411</td>
+                    <td><strong>MÉTODO DE PAGO</strong></td>
+                    <td id="metodoPago">TARJETA</td>
+                </tr>
+                <tr>
+                    <td><strong>TELÉFONO</strong></td>
+                    <td id="telefono">961258815</td>
+                    <td><strong>CORREO</strong></td>
+                    <td id="correo">hilderarce565&commat;gmail.com</td>
+                </tr>
+                <tr>
+                    <td><strong>DIRECCIÓN</strong></td>
+                    <td id="direccion" colspan="3">AREVALO</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detalles de los productos -->
+        <table class="table table-bordered mb-4">
+            <thead>
+                <tr>
+                    <th class="text-center">ITEM</th>
+                    <th class="text-center">DESCRIPCIÓN</th>
+                    <th class="text-center">PASAJEROS</th>
+                    <th class="text-center">PRECIO U</th>
+                    <th class="text-center">TOTAL</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1.00</td>
+                    <td>Escapada de fin de año</td>
+                    <td>2.00</td>
+                    <td>S/ 20.00</td>
+                    <td>S/ 40.00</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Totales -->
+        <div class="row">
+            <div class="col-6 footer-note">
+                <p>Nuestros precios incluyen IGV.</p>
+            </div>
+            <div class="col-6 footer-table">
+                <table class="table table-bordered">
                     <tfoot>
-                        <tr style="border: none;">
-                            <td class="fw-bold m-0 p-0 align-middle" style="border: none; padding: 8px;">SUBTOTAL</td>
-                            <td class="text-end m-0 p-0 align-middle" style="border: none; padding: 8px;"><span id="subtotal">S/ 240.00</span></td>
-                        </tr>
-                        <tr style="border: none;">
-                            <td class="fw-bold m-0 p-0 align-middle" style="border: none; padding: 8px;">IGV (18%)</td>
-                            <td class="text-end m-0 p-0 align-middle" style="border: none; padding: 8px;"><span id="igv">S/ 43.20</span></td>
-                        </tr>
-                        <tr style="border: none;">
-                            <td class="fw-bold m-0 p-0 align-middle" style="border: none; padding: 8px;">TOTAL</td>
-                            <td class="text-end m-0 p-0 align-middle" style="border: none; padding: 8px;"><span id="total">S/ 283.20</span></td>
+                        <tr>
+                            <td>SUBTOTAL</td>
+                            <td id="subtotal" class="text-end">S/ 240.00</td>
+                        <tr>
+                            <td>IGV (18%)</td>
+                            <td id="igv" class="text-end">S/ 43.20</td>
+                        <tr>
+                            <td>TOTAL</td>
+                            <td id="total" class="text-end">S/ 283.20</td>
                         </tr>
                     </tfoot>
                 </table>
             </div>
         </div>
+
+        <!-- QR code -->
+        <div class="row mt-4">
+            <div class="col-12 text-center qr-code">
+                <img src="https://th.bing.com/th/id/OIP.AzGsz6YA4Aup3paQ_poIAwHaHa?w=1160&h=1160&rs=1&pid=ImgDetMain" alt="QR Code">
+            </div>
+        </div>
     </div>
 </div>
-    
-    <!--botones-->
-    <div class="d-flex align-items-center justify-content-center" style="border: none;" >
-        <button type="button" class="btn btn-primary m-2" (click)="Descargar()">Descargar</button>
-        <button type="button" class="btn btn-primary m-2" (click)="Imprimir()">Imprimir</button>
-    </div>
-    
+
+<!-- Botones -->
+<div class="d-flex align-items-center justify-content-center mt-4">
+    <button type="button" class="btn btn-primary m-2" onclick="Descargar()">Descargar</button>
+    <button type="button" class="btn btn-primary m-2" onclick="Imprimir()">Imprimir</button>
+</div>
+
+</body>
+</html>

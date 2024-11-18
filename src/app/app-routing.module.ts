@@ -5,9 +5,6 @@ import { NotifyComponent } from './pages/admin/notify/notify.component';
 import { AdminUsersComponent } from './pages/admin/admin-users/admin-users.component';
 import { ReservationManagementComponent } from './pages/admin/reservation-management/reservation-management.component';
 import { AdminDashComponent } from './pages/admin/admin-dash/admin-dash.component';
-import { ListTripComponent } from './pages/admin/list-trip/list-trip.component';
-import { AddTripComponent } from './pages/admin/add-trip/add-trip.component';
-import { EditTripComponent } from './pages/admin/edit-trip/edit-trip.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { ReservationLimitComponent } from './pages/admin/reservation-limit/reservation-limit.component';
 import { NosotrosComponent } from './pages/usuario/nosotros/nosotros.component';
@@ -15,6 +12,9 @@ import { PromocionesListComponent } from './pages/usuario/promociones/promocione
 import { BoletaComponent } from './pages/usuario/boleta/boleta.component';
 import { TripComponent } from './pages/usuario/trips/trip.component';
 import { PaymentDetailComponent } from './pages/usuario/payment/payment-detail.component';
+import { AminBusesComponent } from './pages/admin/admin-buses/buses.component';
+import { AdminEstacionesComponent } from './pages/admin/admin-estaciones/estaciones.component';
+import { ViajesComponent } from './pages/admin/admin-viajes/viajes.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },//pordefecto
@@ -24,9 +24,9 @@ const routes: Routes = [
   { path: 'reservas', component: ReservationManagementComponent },//administracion de reservas
   { path: 'reservas-limit', component: ReservationLimitComponent },//administracion de reservas limite
   { path: 'admin-dash', component: AdminDashComponent },//administracion de actividades
-  { path: 'admin-viajes', component: ListTripComponent },//administracion de viajes ruta padre
-  { path: 'add-viaje', component: AddTripComponent },//agregra destinos
-  { path: 'edit-viaje', component: EditTripComponent },//edicion de destinos
+  { path: 'admin-viajes', component: ViajesComponent },//administracion de viajes ruta padre
+  { path: 'admin-buses', component: AminBusesComponent },//administracion de buses
+  { path: 'admin-estaciones', component: AdminEstacionesComponent },//administracion de buses
   { path: 'profile', component: ProfileComponent },//perfil del usuario
   { path: 'promociones-list', component: PromocionesListComponent },//lista de promociones
   { path: 'nosotros', component: NosotrosComponent },//info de nosotros
