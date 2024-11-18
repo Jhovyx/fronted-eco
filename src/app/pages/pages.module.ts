@@ -27,6 +27,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
+import { BoletaComponent } from './usuario/boleta/boleta.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { MatOptionModule } from '@angular/material/core';
     PaymentDetailComponent,
     AminBusesComponent,
     AdminEstacionesComponent,
-    ViajesComponent
+    ViajesComponent,
+    BoletaComponent
   ],
   imports: [
     CommonModule,
@@ -79,7 +81,8 @@ import { MatOptionModule } from '@angular/material/core';
     PaymentDetailComponent,
     AminBusesComponent,
     AdminEstacionesComponent,
-    ViajesComponent
+    ViajesComponent,
+    BoletaComponent
   ]
 })
 export class PagesModule { }

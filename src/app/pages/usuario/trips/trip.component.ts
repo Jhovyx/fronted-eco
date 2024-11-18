@@ -4,6 +4,8 @@ import { InventoryService } from "../../../shared/services/inventory.service";
 import { TripDetailComponet } from "../trip-details/trip-detail.component";
 import { ReservaAddComponent } from "../reserva/add/add-reserva.component";
 import * as bootstrap from 'bootstrap';
+import { Viaje } from "../../../shared/interfaces/viaje.interface";
+import { ViajesService } from "../../../shared/services/viajes.service";
 
 @Component({
   selector: 'app-trip',
@@ -12,15 +14,36 @@ import * as bootstrap from 'bootstrap';
 })
 
 export class TripComponent implements OnInit {
+
+
+  viajes: Viaje[] = []
+
+  async loadViajes() {
+    const data = await this.viajeService.findAll();
+    this.viajes = data ?? [];
+  }
+
+
+
+
+
+
+
+
+
+
+
+
   trips: Trip[] = []
   pagActual: number = 1
   limit: number = 8
   ultimoid: boolean = true
   @ViewChild(TripDetailComponet) tripDetailComponent!: TripDetailComponet;
   @ViewChild(ReservaAddComponent) reservaAddComponent!: ReservaAddComponent;
-  constructor(private inventoryService: InventoryService ){}
+  constructor(private inventoryService: InventoryService,private viajeService: ViajesService){}
   ngOnInit(): void {
-    this.getTrips()
+    this.getTrips();
+    this.loadViajes();
   }
   async getTrips(){
     const response = await this.inventoryService.FinAllTrips(this.pagActual, this.limit)

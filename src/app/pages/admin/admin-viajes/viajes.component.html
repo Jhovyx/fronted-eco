@@ -184,22 +184,12 @@
           </div>
 
           <!-- Búsqueda y selección de bus -->
-          <mat-form-field appearance="fill">
-            <mat-label>Buscar y Seleccionar Bus (Modelo o Placa)</mat-label>
-            <input 
-              type="text" 
-              matInput 
-              [(ngModel)]="busSearchQuery" 
-              [matAutocomplete]="auto" 
-              (input)="filterBuses()">
-            <mat-autocomplete #auto="matAutocomplete">
-              <mat-option 
-                *ngFor="let bus of filteredBusResults" 
-                [value]="bus.primaryKey">
-                {{ bus.modelo }} - {{ bus.placa }}
-              </mat-option>
-            </mat-autocomplete>
-          </mat-form-field>
+          <div class="mb-3">
+            <label for="idBus" class="form-label">Seleccionar Bus</label>
+            <select id="idBus" [(ngModel)]="selectViaje.idBus" name="idBus" class="form-control" required>
+              <option *ngFor="let bus of filteredBusResults" [value]="bus.primaryKey">{{ bus.modelo }} - {{ bus.placa }}</option>
+            </select>
+          </div>
           
           <button type="button" class="btn btn-primary" (click)="addViaje(selectViaje)">{{ selectViaje.primaryKey ? 'Actualizar' : 'Crear' }}</button>
         </form>

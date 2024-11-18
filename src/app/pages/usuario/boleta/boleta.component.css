@@ -1,11 +1,12 @@
-
 body {
     font-family: 'Montserrat', sans-serif;
     background-color: #f8f9fa;
     padding: 20px;
+    margin: 0;
 }
+
 #comprobante {
-    width: 210mm;
+    width: 210mm; /* Asegura que el tamaño sea adecuado para impresión en tamaño A4 */
     max-width: 100%;
     height: auto;
     padding: 20px;
@@ -13,62 +14,86 @@ body {
     border-radius: 8px;
     background-color: #ffffff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: auto;
 }
+
 .header-logo img {
-    width: 100px;
+    width: 180px;
     height: auto;
 }
+
 .header-title {
     color: #42988f;
     text-align: center;
 }
+
 .header-title h4 {
     margin: 0;
     font-size: 24px;
     font-weight: bold;
 }
+
 .header-title p {
     margin: 0;
     font-size: 14px;
     color: #6c757d;
 }
+
 .table-bordered td, .table-bordered th {
     border: 1px solid #ddd;
 }
+
+/* Mejoramos la apariencia de la tabla */
+.table {
+    font-size: 14px;
+    color: #495057; /* Gris oscuro para el texto */
+    border-collapse: collapse;
+}
+
 .table th {
     background-color: #42988f;
     color: white;
     text-align: center;
 }
-.table td, .table th {
-    padding: 12px;
+
+.table th, .table td {
+    padding: 12px 15px; /* Aumentamos el espaciado para que el contenido respire mejor */
+    text-align: left;
     vertical-align: middle;
-    text-align: center;
+    border: 1px solid #ddd; /* Bordes suaves */
 }
+
+
 .table tfoot td {
     font-weight: bold;
 }
+
 .footer-note {
     font-size: 12px;
     color: #6c757d;
     padding: 10px 0;
     text-align: right;
 }
+
 .footer-table {
     text-align: right;
 }
+
 .btn-primary {
     background-color: #42988f;
     border-color: #42988f;
 }
+
 .btn-primary:hover {
     background-color: #367f77;
     border-color: #367f77;
 }
+
 .qr-code img {
     width: 100px;
     height: 100px;
 }
+
 @media print {
     #comprobante {
         width: 100%;
@@ -77,11 +102,18 @@ body {
         margin: 0;
         padding: 0;
     }
+
     .qr-code img {
         width: 200px;
         height: 200px;
     }
+
     .btn {
         display: none;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
     }
 }
