@@ -22,6 +22,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { AminBusesComponent } from './admin/admin-buses/buses.component';
 import { AdminEstacionesComponent } from './admin/admin-estaciones/estaciones.component';
 import { ViajesComponent } from './admin/admin-viajes/viajes.component';
+import { BoletaComponent } from './usuario/boleta/boleta.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { ViajesComponent } from './admin/admin-viajes/viajes.component';
     PaymentDetailComponent,
     AminBusesComponent,
     AdminEstacionesComponent,
-    ViajesComponent
+    ViajesComponent,
+    BoletaComponent
   ],
   imports: [
     CommonModule,
@@ -68,7 +70,8 @@ import { ViajesComponent } from './admin/admin-viajes/viajes.component';
     PaymentDetailComponent,
     AminBusesComponent,
     AdminEstacionesComponent,
-    ViajesComponent
+    ViajesComponent,
+    BoletaComponent
   ]
 })
 export class PagesModule { }
