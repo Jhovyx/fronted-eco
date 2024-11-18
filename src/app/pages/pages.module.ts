@@ -22,6 +22,11 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { AminBusesComponent } from './admin/admin-buses/buses.component';
 import { AdminEstacionesComponent } from './admin/admin-estaciones/estaciones.component';
 import { ViajesComponent } from './admin/admin-viajes/viajes.component';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -49,7 +54,13 @@ import { ViajesComponent } from './admin/admin-viajes/viajes.component';
     FormsModule,
     RouterModule,
     AuthModule,
-    NgSelectModule
+    NgSelectModule,
+
+    MatInputModule,
+    MatFormFieldModule,
+    MatAutocompleteModule,
+    MatSelectModule,
+    MatOptionModule
   ],
   exports: [
     HomeComponent,
