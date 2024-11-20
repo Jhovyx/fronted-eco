@@ -16,4 +16,14 @@ export interface Viaje {
     createdAt: number; // Fecha de creación del viaje (timestamp)
     updatedAt: number; // Fecha de actualización del viaje (timestamp)
   }
+
+  export interface DestinosResponse {
+    message: number;
+    data: Viaje[];
+}
+
+export interface Asientos{
+    id: number,
+    status: number//0 -1
+}
   

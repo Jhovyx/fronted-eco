@@ -1,5 +1,8 @@
-import { Component } from "@angular/core";
-import { Trip } from "../../../shared/interfaces/trip.interface";
+import { Component, OnInit } from '@angular/core';
+import { ReservaService } from '../../../shared/services/reseva.service';
+import { Router } from '@angular/router';
+
+import { Viaje } from '../../../shared/interfaces/viaje.interface';
 import * as bootstrap from 'bootstrap';
 
 @Component({
@@ -7,58 +10,64 @@ import * as bootstrap from 'bootstrap';
   templateUrl: './trip-detail.component.html',
   styleUrls: ['./trip-detail.component.css']
 })
+export class TripDetailComponent implements OnInit {
 
-export class TripDetailComponet  {
-  
-  trip: Trip = {
-    id: 0,
-    imagen: '',
-    descripcion: '',
+  // Asegúrate de que 'trip' sea de tipo 'Viaje'
+  trip: Viaje = {
+    primaryKey: '', // Asegúrate de asignar un valor o dejarlo vacío
     nombre: '',
+    descripcion: '',
     costo: 0,
-    fechaInicio: '',
-    fechaFin: '',
-    nombreBus: '',
-    placaBus: '',
-    ubicacionBus: '',
-    asientosDisponibles: 0
-  }
-  detailReserva: boolean = false
-  UpdateSElectTrip(tripxd: Trip): Trip{
-    this.detailReserva = false
-    return this.trip = tripxd
-  }
-  TougleReservaDetail(){
-    this.detailReserva = !this.detailReserva
+    idBus: '',
+    idEstacionOrigen: '',
+    idEstacionDestino: '',
+    fechaHoraSalida: 0,
+    fechaHoraLlegada: 0,
+    estado: true,
+    statusPromo: false,
+    descuentoPorcentaje: 0,
+    userAdminId: '',
+    urlImagen: '',  // Este campo debe existir y estar correctamente asignado
+    createdAt: 0,
+    updatedAt: 0
+  };
+
+  user: any = null;
+
+  constructor(private reservaService: ReservaService, private router: Router) {}
+
+  ngOnInit(): void {
+    const selectedTrip = sessionStorage.getItem('selectedTrip');
+    if (selectedTrip) {
+      this.trip = JSON.parse(selectedTrip); // Asegúrate de que el objeto en sessionStorage esté bien estructurado
+    }
+
+    const userData = sessionStorage.getItem('user');
+    if (userData) {
+      this.user = JSON.parse(userData);
+    }
   }
 
-  reserveXd(trip: Trip){
-    const loginModalElement = document.getElementById('tripDetailModall');
-    if (loginModalElement) {
-      // hacer click en el btn de cerraar modal
-      const closeButton = document.getElementById('closeButtonres');
-      if (closeButton) {
-        closeButton.click(); // Simula un clic en el botón de cerrar
-      }
-    }
-    const userData = sessionStorage.getItem('user');
-    if (!userData) {
-      // Mostrar el modal de inicio de sesión
+  reserveXd(): void {
+    if (!this.user) {
       const loginModalElement = document.getElementById('loginModal');
       if (loginModalElement) {
-        //enviar peticion al nabvar
         const loginModal = new bootstrap.Modal(loginModalElement);
         loginModal.show();
+      } else {
+        console.error('No se encontró el modal de inicio de sesión');
       }
-    }else{
-      // Mostrar el modal de reserva
+    } else {
+      this.reservaService.setTrip(this.trip);  // Aquí se pasa el objeto 'trip' que es de tipo 'Viaje'
+      this.reservaService.setUser(this.user);
+  
       const reservaModalElement = document.getElementById('tripModall');
       if (reservaModalElement) {
-        //enviar peticion al nabvar
         const reservaModal = new bootstrap.Modal(reservaModalElement);
         reservaModal.show();
+      } else {
+        console.error('No se encontró el modal de reserva');
       }
     }
   }
-  
 }

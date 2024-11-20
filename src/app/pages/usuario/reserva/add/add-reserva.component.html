@@ -6,7 +6,7 @@
                     <p class="text-center">SELECCIONAR ASIENTOS</p>
                     <hr>
                     <div class="bus-seats row row-cols-4">
-                        <div class="col" *ngFor="let seat of asientos">
+                        <!-- <div class="col" *ngFor="let seat of asientos">
                             <a 
                                 class="btn asiento m-2 p-0" 
                                 [ngClass]="{
@@ -14,11 +14,11 @@
                                     'asiento-available': seat.status === 0,
                                     'asiento-selected': seat.status === 1
                                 }"
-                                (click)="seat.status !== -1 ? selectAsiento(seat) : null"
+                              >  (click)="seat.status !== -1 ? selectAsiento(seat) : null"
                                 [class.disabled]="seat.status === -1"> 
                                 <i class="fas fs-3 fa-chair"></i>
                             </a>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="mt-3 d-flex justify-content-between">
                         <p><span class="asiento-availablexd">●</span> Disponible</p>
@@ -31,7 +31,7 @@
                         <p class="form-label text-center">DATOS DEL PASAJERO</p>
                         <hr>
                         <table class="table">
-                            <tbody>
+                            <!-- <tbody>
                                 <tr>
                                     <td><strong>Nombre:</strong></td>
                                     <td>{{ user.firstName }}</td>
@@ -56,7 +56,7 @@
                                     <td><strong>Correo:</strong></td>
                                     <td>{{ user.email }}</td>
                                 </tr>
-                            </tbody>
+                            </tbody> -->
                         </table>
                     </form>
                     <div class="d-flex align-items-center justify-content-center">
@@ -70,7 +70,7 @@
         </div>
         <hr>
         <div class="d-flex align-items-center justify-content-center">
-            <a type="button" class="btn m-2 btn-primary" (click)="VloseModal()" [routerLink]="['/pago-detalle']">Confirmar</a>
+            <a type="button" class="btn m-2 btn-primary" onclick="" [routerLink]="['/pago-detalle']">Confirmar</a>
             <button type="button" class="btn m-2 btn-secondary" data-bs-dismiss="modal">Cancelar</button>
         </div>
     </div>

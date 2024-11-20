@@ -11,7 +11,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { ReservationLimitComponent } from './admin/reservation-limit/reservation-limit.component';
 import { NosotrosComponent } from './usuario/nosotros/nosotros.component';
 import { PromocionesListComponent } from './usuario/promociones/promociones.component';
-import { TripDetailComponet } from './usuario/trip-details/trip-detail.component';
+import { TripDetailComponent } from './usuario/trip-details/trip-detail.component';
 import { PromocionesDetailComponent } from './usuario/promociones/details-promocion/promociones.component';
 import { TripComponent } from './usuario/trips/trip.component';
 import { SearchComponent } from './usuario/search/search.component';
@@ -41,7 +41,7 @@ import { BoletaComponent } from './usuario/boleta/boleta.component';
     PromocionesListComponent,
     NosotrosComponent,
     TripComponent,
-    TripDetailComponet,
+    TripDetailComponent,
     PromocionesDetailComponent,
     SearchComponent,
     ReservaAddComponent,

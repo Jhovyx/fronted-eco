@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { Trip } from "../../../shared/interfaces/trip.interface";
+import { Viaje } from "../../../shared/interfaces/viaje.interface";
 import { SearchService } from "../../../shared/services/search.service";
 
 @Component({
@@ -14,7 +14,7 @@ export class SearchComponent implements OnInit {
     selectedOrigin: string = ''
     selectedDestination: string = ''
     selectedDate: string = ''
-    filterDestinos!: Trip[]
+    filterDestinos!: Viaje[]
     filterCiudades!: string[]
 
     constructor(private searchService: SearchService){

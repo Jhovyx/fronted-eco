@@ -15,6 +15,7 @@ import { PaymentDetailComponent } from './pages/usuario/payment/payment-detail.c
 import { AminBusesComponent } from './pages/admin/admin-buses/buses.component';
 import { AdminEstacionesComponent } from './pages/admin/admin-estaciones/estaciones.component';
 import { ViajesComponent } from './pages/admin/admin-viajes/viajes.component';
+import { TripDetailComponent } from './pages/usuario/trip-details/trip-detail.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },//pordefecto
@@ -31,6 +32,7 @@ const routes: Routes = [
   { path: 'promociones-list', component: PromocionesListComponent },//lista de promociones
   { path: 'nosotros', component: NosotrosComponent },//info de nosotros
   { path: 'destinos', component: TripComponent },//lista de destinos
+  { path: 'trip-detail', component: TripDetailComponent },
   { path: 'boleta', component: BoletaComponent },//boleta
   { path: 'pago-detalle', component: PaymentDetailComponent },//detalles del pago
   { path: '**', redirectTo: '/home' } // Manejo de rutas no encontradas
