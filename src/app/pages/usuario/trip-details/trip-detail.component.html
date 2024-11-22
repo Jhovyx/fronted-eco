@@ -26,9 +26,56 @@
             Reservar Ahora
           </button>
         </div>
+        
+        <!-- Botón de detalles del viaje con ícono de bus -->
+        <div class="d-flex justify-content-center mt-4">
+          <button (click)="showTripDetails()" class="btn btn-outline-info btn-lg mt-3 shadow-lg rounded-pill w-75">
+            <i class="bi bi-bus-front-fill me-2"></i> Ver Detalles del Viaje
+          </button>
+        </div>
       </div>
     </div>
   </div>
+
+  <!-- Modal de detalles del viaje -->
+  <div class="modal fade" id="tripDetailsModal" tabindex="-1" aria-labelledby="tripDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content animate__animated animate__zoomIn">
+        <div class="modal-header">
+          <h5 class="modal-title" id="tripDetailsModalLabel">Detalles del Viaje</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p><strong>Estación de Origen:</strong> {{ trip.nombreEstacionOrigen }}</p>
+          <p><strong>Estación de Destino:</strong> {{ trip.nombreEstacionDestino }}</p>
+          <p><strong>Nombre del Bus:</strong> {{ bus.modelo }}</p>
+          <p><strong>Placa:</strong> {{ bus.placa }}</p>
+          <p><strong>Capacidad del Bus:</strong> {{ bus.capacidad }} pasajeros</p>
+
+          <!-- Contenedor pequeño y estilizado para los asientos -->
+          <div *ngIf="bus.capacidad > 0" class="mt-4">
+            <h5 class="text-center">Asientos Disponibles</h5>
+            <div class="seats-container d-flex flex-wrap justify-content-center">
+              <div *ngFor="let seat of seats" class="seat-button-container">
+                <button (click)="selectSeat(seat.seatId)" 
+                        [class]="seat.isAvailable ? 'btn btn-outline-success' : 'btn btn-outline-danger'" 
+                        class="seat-button" 
+                        [disabled]="!seat.isAvailable">
+                  <i class="bi" [ngClass]="seat.isAvailable ? 'bi-seat' : 'bi-seat-fill'"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-hover" data-bs-dismiss="modal">Cerrar</button>
+          <button (click)="saveSeatSelection()" type="button" class="btn btn-success btn-hover">Guardar Selección</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 
   <!-- Modal de inicio de sesión -->
   <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
