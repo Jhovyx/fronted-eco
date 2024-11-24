@@ -24,6 +24,7 @@
     transform: scale(1.08);
 }
 
+/* Estilos de perfil */
 .user-profile {
     background: #fff;
     border-radius: 20px;
@@ -89,7 +90,17 @@ button.btn-secondary:hover {
 button.btn-hover {
     transition: transform 0.2s ease, background-color 0.3s ease;
 }
+button.btn-outline-info {
+    background-color: transparent;
+    color: #17a2b8;
+    border: 2px solid #17a2b8;
+}
 
+
+button.btn-outline-info:hover {
+    background-color: #17a2b8;
+    color: white;
+}
 button.btn-hover:hover {
     transform: scale(1.05);
     background-color: #ff7f50;
@@ -107,7 +118,71 @@ button.btn-hover:hover {
 .animate__zoomIn {
     animation-name: zoomIn;
 }
+.seats-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+.seat-button-container {
+    margin: 0 10px;
+}
 
+
+/* Asientos disponibles */
+.seat-button {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+    border-radius: 50%;
+    transition: transform 0.3s, background-color 0.3s;
+    background-color: transparent;
+    border: 2px solid #ddd;
+}
+
+.seat-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.seat-button:hover {
+    background-color: #f8f9fa;
+    transform: scale(1.1);
+}
+
+/* Colores personalizados para los asientos */
+.btn-outline-success {
+    color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-outline-danger {
+    color: #dc3545;
+    border-color: #dc3545;
+}
+
+.seat-button i {
+    font-size: 1.5rem;
+}
+
+/* Estilos para la selección de asiento */
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+@media (max-width: 576px) {
+    .seat-button {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
+}
+
+/* Animaciones */
 @keyframes fadeInUp {
     0% {
         opacity: 0;

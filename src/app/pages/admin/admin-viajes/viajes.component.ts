@@ -88,7 +88,7 @@ export class ViajesComponent implements OnInit {
   endDate: string = '';
   viajes: Viaje[] = [];
   filteredViajes: Viaje[] = []
-  selectViaje: Viaje = {primaryKey: '',nombre: '',descripcion: '',costo: 0,idBus: '',idEstacionOrigen: '',idEstacionDestino: '',
+  selectViaje: Viaje = {primaryKey: '',nombre: '',descripcion: '',costo: 0,idBus: '',idEstacionOrigen: '',nombreEstacionOrigen: '', idEstacionDestino: '',nombreEstacionDestino: '',
     fechaHoraSalida: 0, fechaHoraLlegada: 0, estado: false,statusPromo: false, descuentoPorcentaje: 0,userAdminId: '',urlImagen: '',createdAt: 0,updatedAt: 0,};
     ngOnInit(): void {
       this.loadViajes();
@@ -187,7 +187,7 @@ export class ViajesComponent implements OnInit {
   }
 
   btnAdd(){
-    this.selectViaje = {primaryKey: '',nombre: '',descripcion: '',costo: 0,idBus: '',idEstacionOrigen: '',idEstacionDestino: '',
+    this.selectViaje = {primaryKey: '',nombre: '',descripcion: '',costo: 0,idBus: '',idEstacionOrigen: '', nombreEstacionOrigen: '', idEstacionDestino: '', nombreEstacionDestino:'',
       fechaHoraSalida: 0, fechaHoraLlegada: 0, estado: false,statusPromo: false, descuentoPorcentaje: 0,userAdminId: '',urlImagen: '',createdAt: 0,updatedAt: 0,};
   }
 
