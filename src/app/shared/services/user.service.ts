@@ -109,6 +109,7 @@ export class UserService{
           // Limpiar el sessionStorage
       sessionStorage.removeItem('user');
       this.userSubject.next(null);
+      this.logoutUser();
   }
 
   //almacenar en sesion storage
@@ -127,5 +128,9 @@ export class UserService{
       }
     }
   }
-  
+
+  //cerrar sesion en backend
+  async logoutUser(){
+    await this.http.get<{ message: string }>(`${this.apiBackend}/logout`, { withCredentials: true }).toPromise();
+  }
 }
