@@ -160,53 +160,69 @@
         
         <!-- Modal Body -->
         <div class="modal-body">
-          <form>
+          <form class="p-3 rounded-3 shadow-sm bg-light">
             <!-- Campo para Placa -->
             <div class="mb-3">
-              <label for="busPlate" class="form-label fw-semibold">
-                <i class="bi bi-card-text"></i> Placa
+              <label for="busPlate" class="form-label text-secondary fw-bold">
+                <i class="bi bi-card-text me-2"></i> Placa
               </label>
-              <input 
-                type="text" 
-                id="busPlate" 
-                class="form-control" 
-                placeholder="Ej: ABC-1234" 
-                required
-                [(ngModel)]="selectBus.placa"
-                name="busPlate">
+              <div class="input-group">
+                <span class="input-group-text bg-white text-primary border-0 shadow-sm">
+                  <i class="bi bi-card-text"></i>
+                </span>
+                <input 
+                  type="text" 
+                  id="busPlate" 
+                  class="form-control border-0 shadow-sm bg-white" 
+                  placeholder="Ej: ABC-1234" 
+                  required
+                  [(ngModel)]="selectBus.placa"
+                  name="busPlate">
+              </div>
             </div>
-            
+        
             <!-- Campo para Modelo -->
             <div class="mb-3">
-              <label for="busModel" class="form-label fw-semibold">
-                <i class="bi bi-truck"></i> Modelo
+              <label for="busModel" class="form-label text-secondary fw-bold">
+                <i class="bi bi-truck me-2"></i> Modelo
               </label>
-              <input 
-                type="text" 
-                id="busModel" 
-                class="form-control" 
-                placeholder="Ej: Volvo B7R" 
-                required
-                [(ngModel)]="selectBus.modelo"
-                name="busModel">
+              <div class="input-group">
+                <span class="input-group-text bg-white text-primary border-0 shadow-sm">
+                  <i class="bi bi-truck"></i>
+                </span>
+                <input 
+                  type="text" 
+                  id="busModel" 
+                  class="form-control border-0 shadow-sm bg-white" 
+                  placeholder="Ej: Volvo B7R" 
+                  required
+                  [(ngModel)]="selectBus.modelo"
+                  name="busModel">
+              </div>
             </div>
-            
+        
             <!-- Campo para Capacidad -->
             <div class="mb-3">
-              <label for="busCapacity" class="form-label fw-semibold">
-                <i class="bi bi-people-fill"></i> Capacidad
+              <label for="busCapacity" class="form-label text-secondary fw-bold">
+                <i class="bi bi-people-fill me-2"></i> Capacidad
               </label>
-              <input 
-                type="number" 
-                id="busCapacity" 
-                class="form-control" 
-                placeholder="Número de pasajeros" 
-                required
-                [(ngModel)]="selectBus.capacidad"
-                name="busCapacity">
+              <div class="input-group">
+                <span class="input-group-text bg-white text-primary border-0 shadow-sm">
+                  <i class="bi bi-people-fill"></i>
+                </span>
+                <input 
+                  type="number" 
+                  id="busCapacity" 
+                  class="form-control border-0 shadow-sm bg-white" 
+                  placeholder="Número de pasajeros" 
+                  required
+                  [(ngModel)]="selectBus.capacidad"
+                  name="busCapacity">
+              </div>
             </div>
           </form>
         </div>
+        
         
         <!-- Modal Footer -->
         <div class="modal-footer">
