@@ -127,7 +127,15 @@ button.btn-hover:hover {
 .seat-button-container {
     margin: 0 10px;
 }
-
+/* CSS para controlar el espaciado de los asientos */
+/* CSS para controlar el espaciado de los asientos */
+.custom-seat-row {
+    display: flex;
+    justify-content: space-evenly; /* Distribuye los asientos de manera uniforme */
+    gap: 0.5rem; /* Ajusta el espacio entre los botones de los asientos, más pegados con rem */
+  }
+  
+  
 
 /* Asientos disponibles */
 .seat-button {
@@ -138,6 +146,7 @@ button.btn-hover:hover {
     transition: transform 0.3s, background-color 0.3s;
     background-color: transparent;
     border: 2px solid #ddd;
+    margin: 0 0.3rem;
 }
 
 .seat-button:disabled {
@@ -193,6 +202,7 @@ button.btn-hover:hover {
         transform: none;
     }
 }
+
 
 @keyframes zoomIn {
     0% {

@@ -37,43 +37,91 @@
     </div>
   </div>
 
-  <!-- Modal de detalles del viaje -->
-  <div class="modal fade" id="tripDetailsModal" tabindex="-1" aria-labelledby="tripDetailsModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content animate__animated animate__zoomIn">
-        <div class="modal-header">
-          <h5 class="modal-title" id="tripDetailsModalLabel">Detalles del Viaje</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
+<!-- Modal de detalles del viaje -->
+<div class="modal fade" id="tripDetailsModal" tabindex="-1" aria-labelledby="tripDetailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content animate__animated animate__zoomIn">
+      <div class="modal-header">
+        <h5 class="modal-title" id="tripDetailsModalLabel">Detalles del Viaje</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="trip-info">
           <p><strong>Estación de Origen:</strong> {{ trip.nombreEstacionOrigen }}</p>
           <p><strong>Estación de Destino:</strong> {{ trip.nombreEstacionDestino }}</p>
           <p><strong>Nombre del Bus:</strong> {{ bus.modelo }}</p>
           <p><strong>Placa:</strong> {{ bus.placa }}</p>
           <p><strong>Capacidad del Bus:</strong> {{ bus.capacidad }} pasajeros</p>
+        </div>
 
-          <!-- Contenedor pequeño y estilizado para los asientos -->
-          <div *ngIf="bus.capacidad > 0" class="mt-4">
-            <h5 class="text-center">Asientos Disponibles</h5>
-            <div class="seats-container d-flex flex-wrap justify-content-center">
-              <div *ngFor="let seat of seats" class="seat-button-container">
-                <button (click)="selectSeat(seat.seatId)" 
-                        [class]="seat.isAvailable ? 'btn btn-outline-success' : 'btn btn-outline-danger'" 
-                        class="seat-button" 
-                        [disabled]="!seat.isAvailable">
-                  <i class="bi" [ngClass]="seat.isAvailable ? 'bi-seat' : 'bi-seat-fill'"></i>
-                </button>
+        <!-- Contenedor de Asientos -->
+        <div *ngIf="bus.capacidad > 0" class="mt-4">
+          <h5 class="text-center">Asientos Disponibles</h5>
+          <div class="row">
+            <!-- Piso 1 -->
+            <div class="col-12 col-lg-6 mb-3">
+              <h6 class="text-center text-muted">Piso 1</h6>
+              <div class="seat-floor-container">
+                <div *ngFor="let row of [0, 1, 2, 3, 4]" class="seat-row d-flex custom-seat-row mb-3">
+                  <div class="col-2 d-flex justify-content-center">
+                    <button *ngFor="let seat of seats.slice(row * 4, row * 4 + 2)"
+                            (click)="selectSeat(seat.seatId)"
+                            [class]="seat.isAvailable ? 'btn btn-outline-success' : 'btn btn-outline-danger'"
+                            class="seat-button"
+                            [title]="seat.isAvailable ? 'Disponible' : 'Ocupado'">
+                      <i class="bi" [ngClass]="seat.isAvailable ? 'bi-seat' : 'bi-seat-fill'"></i>
+                    </button>
+                  </div>
+                  <div class="col-2 d-flex justify-content-center">
+                    <button *ngFor="let seat of seats.slice(row * 4 + 2, row * 4 + 4)"
+                            (click)="selectSeat(seat.seatId)"
+                            [class]="seat.isAvailable ? 'btn btn-outline-success' : 'btn btn-outline-danger'"
+                            class="seat-button"
+                            [title]="seat.isAvailable ? 'Disponible' : 'Ocupado'">
+                      <i class="bi" [ngClass]="seat.isAvailable ? 'bi-seat' : 'bi-seat-fill'"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Piso 2 -->
+            <div class="col-12 col-lg-6 mb-3">
+              <h6 class="text-center text-muted">Piso 2</h6>
+              <div class="seat-floor-container">
+                <div *ngFor="let row of [5, 6, 7, 8, 9]" class="seat-row d-flex custom-seat-row mb-3">
+                  <div class="col-2 d-flex justify-content-center">
+                    <button *ngFor="let seat of seats.slice(row * 4, row * 4 + 2)"
+                            (click)="selectSeat(seat.seatId)"
+                            [class]="seat.isAvailable ? 'btn btn-outline-success' : 'btn btn-outline-danger'"
+                            class="seat-button"
+                            [title]="seat.isAvailable ? 'Disponible' : 'Ocupado'">
+                      <i class="bi" [ngClass]="seat.isAvailable ? 'bi-seat' : 'bi-seat-fill'"></i>
+                    </button>
+                  </div>
+                  <div class="col-2 d-flex justify-content-center">
+                    <button *ngFor="let seat of seats.slice(row * 4 + 2, row * 4 + 4)"
+                            (click)="selectSeat(seat.seatId)"
+                            [class]="seat.isAvailable ? 'btn btn-outline-success' : 'btn btn-outline-danger'"
+                            class="seat-button"
+                            [title]="seat.isAvailable ? 'Disponible' : 'Ocupado'">
+                      <i class="bi" [ngClass]="seat.isAvailable ? 'bi-seat' : 'bi-seat-fill'"></i>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary btn-hover" data-bs-dismiss="modal">Cerrar</button>
-          <button (click)="saveSeatSelection()" type="button" class="btn btn-success btn-hover">Guardar Selección</button>
-        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-hover" data-bs-dismiss="modal">Cerrar</button>
+        <button (click)="saveSeatSelection()" type="button" class="btn btn-success btn-hover">Guardar Selección</button>
       </div>
     </div>
   </div>
+</div>
+
 
 
 
