@@ -133,4 +133,13 @@ export class UserService{
   async logoutUser(){
     await this.http.get<{ message: string }>(`${this.apiBackend}/logout`, { withCredentials: true }).toPromise();
   }
+
+//obtener datos basandose en la cookie
+  async profileUser(){
+    const user = await this.http.get<User>(`${this.apiBackend}/profile`, { withCredentials: true }).toPromise();
+    if(user){
+      this.setUser(user);
+      this.userSubject.next(user);
+    }
+  }
 }
