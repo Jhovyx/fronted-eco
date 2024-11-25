@@ -68,7 +68,7 @@ export class LoginComponent {
     
     try {
       const response = await this.userService.login(this.email, this.password, this.recaptchaResponse);
-      if (response && typeof response === 'object' && response.primaryKey) {
+      if (response && typeof response === 'object' && response.userType) {
         const loginModalElement = document.getElementById('loginModal');
         if (loginModalElement) {
           const closeButton = document.getElementById('closeButtonz');
