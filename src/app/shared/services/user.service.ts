@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, Observable, of, throwError } from 'rxjs';
-import { ImgBBResponse, User } from '../interfaces/user.interface';
+import { ImgBBResponse, User, UserResponse } from '../interfaces/user.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -86,9 +86,10 @@ export class UserService{
     }   
 
     //loguin
-    async login(email: string, password: string) {
+    async login(email: string, password: string, recaptchaResponse: string) {
       try {
-        const user = await this.http.post<User>(`${this.apiBackend}/login`, { email, password }).toPromise();
+        const result = await this.http.post<UserResponse>(`${this.apiBackend}/login`, { email, password, recaptchaResponse }, { withCredentials: true }).toPromise();
+        const user = result?.user
         if (user) {
           this.setUser(user);
           this.userSubject.next(user); // Emitir el nuevo usuario
