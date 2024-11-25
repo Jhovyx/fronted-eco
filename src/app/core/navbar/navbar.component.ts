@@ -22,6 +22,7 @@ export class NavbarComponent implements OnInit {
   ) {    this.loadUserData()  }
   ngOnInit(): void {
     this.initializePopovers();
+    this.userService.profileUser();
     this.userService.user$.subscribe(user => {
       if(user){
         this.userRol = user?.userType; 
