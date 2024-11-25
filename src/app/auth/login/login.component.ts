@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { UserService } from '../../shared/services/user.service';
 import { Router } from '@angular/router';
 
+declare var grecaptcha: any; 
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -11,8 +13,27 @@ export class LoginComponent {
   email!: string;
   password!: string;
   isLoading: boolean = false;
+  recaptchaResponse: string | null = null;
 
   constructor( private readonly userService: UserService,  private router: Router) {}
+
+  // Este método se ejecuta después de que la vista ha sido inicializada
+  ngAfterViewInit(): void {
+    // Aquí renderizamos el widget de reCAPTCHA
+    if (typeof grecaptcha !== 'undefined') {
+      grecaptcha.render('recaptcha', {
+        sitekey: '6Ld7UIQqAAAAAIkfL8kIJQEcwkq79VGgh5EvFoT6',
+        callback: (response: string) => {
+          this.recaptchaResponse = response; // Guardamos la respuesta en recaptchaResponse
+        }
+      });
+    }
+  }
+
+  // Método para obtener la respuesta del reCAPTCHA
+  getRecaptchaResponse(): string | null {
+    return grecaptcha.getResponse(); // Devuelve la respuesta obtenida del widget
+  }
 
   async login() {
     this.isLoading = true;
@@ -37,9 +58,16 @@ export class LoginComponent {
       this.isLoading = false;
       return;
     }
+
+    // Validación de reCAPTCHA
+    if (!this.recaptchaResponse) {
+      this.showCustomAlert("Por favor, confirma que no eres un robot.", 'error');
+      this.isLoading = false;
+      return;
+    }
     
     try {
-      const response = await this.userService.login(this.email, this.password);
+      const response = await this.userService.login(this.email, this.password, this.recaptchaResponse);
       if (response && typeof response === 'object' && response.primaryKey) {
         const loginModalElement = document.getElementById('loginModal');
         if (loginModalElement) {
