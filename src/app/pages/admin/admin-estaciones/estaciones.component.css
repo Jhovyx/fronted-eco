@@ -26,3 +26,65 @@
   flex-grow: 1; /* Hace que cada item ocupe el mismo tamaño */
   text-align: center;
 }
+
+/* General del contenedor del formulario */
+form {
+  background-color: #ffffff; /* Fondo blanco */
+  border-radius: 12px; /* Bordes redondeados */
+  border: 1px solid #e3e6f0; /* Borde ligero */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Sombra profunda */
+  padding: 1.5rem;
+}
+
+/* Etiquetas del formulario */
+.form-label {
+  font-size: 1rem;
+  color: #343a40;
+  font-weight: 600;
+}
+
+/* Input groups */
+.input-group-text {
+  border-radius: 50px 0 0 50px;
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  background-color: #f8f9fc; /* Fondo claro */
+  border: 1px solid #ced4da; /* Borde claro */
+}
+
+/* Inputs */
+.form-control {
+  border-radius: 0 50px 50px 0;
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  background-color: #f8f9fc; /* Fondo claro */
+  border: 1px solid #ced4da; /* Borde claro */
+}
+
+/* Efecto en foco */
+.form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+/* Espaciado y bordes entre inputs */
+.mb-4 {
+  margin-bottom: 1.5rem !important;
+}
+
+/* Colores principales */
+.text-primary {
+  color: #007bff !important;
+}
+.bg-light {
+  background-color: #f8f9fc !important;
+}
+
+/* Sombra suave */
+.shadow-lg {
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.minor-margin{
+  margin: 0!important;
+}
