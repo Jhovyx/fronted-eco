@@ -145,38 +145,51 @@ export class TripDetailComponent implements OnInit {
       seat.isAvailable = !this.selectedSeats.includes(seat.seatId);
     });
   }
+  notificationVisible: boolean = false;
   saveSeatSelection(): void {
     sessionStorage.setItem('selectedSeats', JSON.stringify(this.selectedSeats));
-    alert('Selección de asientos guardada!');
-  }
+    // Mostrar la notificación
+    this.notificationVisible = true;
+    
 
-  confirmSeatSelection(): void {
-    const selectedSeatsCount = this.selectedSeats.length;
-    // Reducir la capacidad del bus
-    this.bus.capacidad -= selectedSeatsCount;
-    sessionStorage.setItem('bus-capacidad', JSON.stringify(this.bus.capacidad));
+    // Ocultar la notificación después de 3 segundos
+    setTimeout(() => {
+      this.notificationVisible = false;
+    }, 3000);
+    
+   // Cerrar el modal de forma programática
+   const modalElement = document.getElementById('tripDetailsModal');
+   if (modalElement) {
+     const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+     modalInstance.hide();
+   }
+ }
+
   
-    this.selectedSeats.forEach(seatId => {
-      const seat = this.seats.find(s => s.seatId === seatId);
-      if (seat) {
-        seat.isAvailable = false;
-        sessionStorage.setItem(`seat-${this.bus.primaryKey}-${seatId}`, JSON.stringify({ isAvailable: false }));
-      }
-    });
-  
-    // Cerrar el modal de selección de asientos
-    const seatModalElement = document.getElementById('seatSelectionModal');
-    if (seatModalElement) {
-      const seatModal = new bootstrap.Modal(seatModalElement);
-      seatModal.hide();
+ confirmSeatSelection(): void {
+  const selectedSeatsCount = this.selectedSeats.length;
+  // Reducir la capacidad del bus
+  this.bus.capacidad -= selectedSeatsCount;
+  sessionStorage.setItem('bus-capacidad', JSON.stringify(this.bus.capacidad));
+
+  this.selectedSeats.forEach(seatId => {
+    const seat = this.seats.find(s => s.seatId === seatId);
+    if (seat) {
+      seat.isAvailable = false;
+      sessionStorage.setItem(`seat-${this.bus.primaryKey}-${seatId}`,JSON.stringify({ isAvailable: false }));
     }
-  
-    // Actualizar el modal de detalles para mostrar la nueva capacidad
-    this.loadSeats();
+  });
+
+  // Cerrar el modal de selección de asientos
+  const seatModalElement = document.getElementById('seatSelectionModal');
+  if (seatModalElement) {
+    const seatModal = new bootstrap.Modal(seatModalElement);
+    seatModal.hide();
   }
-  
 
-
+  // Actualizar el modal de detalles para mostrar la nueva capacidad
+  this.loadSeats();
+}
 
   reserveXd(): void {
     if (!this.user) {
@@ -188,12 +201,27 @@ export class TripDetailComponent implements OnInit {
     } else {
       this.reservaService.setTrip(this.trip);
       this.reservaService.setUser(this.user);
-
+  
+      // Crear el objeto con los datos de la reserva
+      const tripData = {
+        user: this.user,
+        trip: this.trip,
+        bus: this.bus,
+        station: {
+          origen: this.estacionOrigen,
+          destino: this.estacionDestino
+        },
+        seats: this.selectedSeats
+      };
+  
+      // Guardar los datos en sessionStorage
+      sessionStorage.setItem('reservationDetails', JSON.stringify(tripData));
+  
       const reservaModalElement = document.getElementById('tripModall');
       if (reservaModalElement) {
         const reservaModal = new bootstrap.Modal(reservaModalElement);
         reservaModal.show();
       }
     }
-  }
+  }  
 }
