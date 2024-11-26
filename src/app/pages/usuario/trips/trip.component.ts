@@ -86,3 +86,5 @@ export class TripComponent implements OnInit {
     return null; // Si no se encuentra la cookie, retornamos null
   }
 }
+
+  
