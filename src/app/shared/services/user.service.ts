@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, Observable, of, throwError } from 'rxjs';
-import { ImgBBResponse, User } from '../interfaces/user.interface';
+import { ImgBBResponse, User, UserResponse } from '../interfaces/user.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -19,7 +19,7 @@ export class UserService{
     constructor(private http : HttpClient){}
     
     async getUsers() {
-      return await this.http.get<User[]>(`${this.apiBackend}`).toPromise();
+      return await this.http.get<User[]>(`${this.apiBackend}`, { withCredentials: true }).toPromise();
     }
     
     async getUserById(id: string) {
@@ -86,20 +86,8 @@ export class UserService{
     }   
 
     //loguin
-    async login(email: string, password: string) {
-      try {
-        const user = await this.http.post<User>(`${this.apiBackend}/login`, { email, password }).toPromise();
-        if (user) {
-          this.setUser(user);
-          this.userSubject.next(user); // Emitir el nuevo usuario
-          return user;
-        } else {
-          throw new Error('Ocurrió un error al ingresar al sistema.');
-        }
-      } catch (error) {
-        // Lanza la excepción para que el componente lo maneje
-        throw new Error('Credenciales incorrectas o problema con el servidor.');
-      }
+    async login(email: string, password: string, recaptchaResponse: string) {
+        return await this.http.post<UserResponse>(`${this.apiBackend}/login`, { email, password, recaptchaResponse }, { withCredentials: true }).toPromise();
     }
     
 
@@ -108,6 +96,7 @@ export class UserService{
           // Limpiar el sessionStorage
       sessionStorage.removeItem('user');
       this.userSubject.next(null);
+      this.logoutUser();
   }
 
   //almacenar en sesion storage
@@ -126,5 +115,18 @@ export class UserService{
       }
     }
   }
-  
+
+  //cerrar sesion en backend
+  async logoutUser(){
+    await this.http.get<{ message: string }>(`${this.apiBackend}/logout`, { withCredentials: true }).toPromise();
+  }
+
+//obtener datos basandose en la cookie
+  async profileUser(){
+    const user = await this.http.get<User>(`${this.apiBackend}/profile`, { withCredentials: true }).toPromise();
+    if(user){
+      this.setUser(user);
+      this.userSubject.next(user);
+    }
+  }
 }

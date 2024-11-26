@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnDestroy } from "@angular/core";
 import { UserService } from "../../shared/services/user.service";
 import { ImgBBResponse, User } from "../../shared/interfaces/user.interface";
 import { Observable, of, throwError } from 'rxjs';
@@ -9,7 +9,7 @@ import { catchError } from 'rxjs/operators';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent {
+export class ProfileComponent implements OnDestroy {
 
   imagePreview: string | ArrayBuffer | null = null; // Vista previa de la imagen
   selectedFile: File | null = null; // Imagen seleccionada
@@ -45,8 +45,36 @@ export class ProfileComponent {
   confirmNewPassword: string = '';
   isLoading: boolean = false;
 
+  private cookieCheckInterval: any;
+  
   constructor(private userService: UserService) {
-    this.loadUserData(); // Cargar los datos del usuario al inicializar
+    this.loadUserData();
+  }
+
+
+  ngOnDestroy(): void {
+    if (this.cookieCheckInterval) {
+      clearInterval(this.cookieCheckInterval); // Detenemos el chequeo cuando el componente se destruye
+    }
+  }
+
+  private getCookie(name: string): any {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) {
+      const cookieValue = parts.pop()?.split(';').shift() || null;
+      if (cookieValue) {
+        const decodeCookie = decodeURIComponent(cookieValue);
+        try {
+          const date = JSON.parse(decodeCookie);
+          return date;
+        } catch (error) {
+          console.error('Error parsing cookie', error);
+          return null;
+        }
+      }
+    }
+    return null;
   }
 
   onFileChange(event: any) {
@@ -268,10 +296,10 @@ export class ProfileComponent {
     );
   }
 
-  private loadUserData(): void {
-    const userData = sessionStorage.getItem('user');
+  loadUserData(): void {
+    const userData = this.getCookie('user')
     if (userData) {
-      this.originalUser = JSON.parse(userData);
+      this.originalUser = {...userData};
       this.user = { ...this.originalUser }; // Inicializa el objeto `user`
     }
   }

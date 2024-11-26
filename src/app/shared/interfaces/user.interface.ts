@@ -33,3 +33,8 @@ export interface User {
     success: boolean;
     status: number;
   }
+
+  export interface UserResponse {
+    message: string;
+    userType: string;
+  }

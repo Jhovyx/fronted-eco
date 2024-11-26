@@ -116,7 +116,7 @@
         <div class="modal-content">
             <div class="modal-header bg-primary">
                 <h5 class="modal-title text-white" id="updateModalLabel" style="text-align: center; width: 100%;">Actualizar Datos</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="loadUserData()"></button>
             </div>
             <div class="modal-body">
                 <form>
@@ -176,7 +176,7 @@
                 </button>
             
                 <!-- Botón de cancelar -->
-                <button type="button" class="btn btn-action btn-secondary m-2" data-bs-dismiss="modal">
+                <button type="button" class="btn btn-action btn-secondary m-2" data-bs-dismiss="modal" (click)="loadUserData()">
                     <i class="bi bi-x-circle me-2"></i>Cancelar
                 </button>
             
