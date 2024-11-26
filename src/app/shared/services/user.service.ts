@@ -19,7 +19,7 @@ export class UserService{
     constructor(private http : HttpClient){}
     
     async getUsers() {
-      return await this.http.get<User[]>(`${this.apiBackend}`).toPromise();
+      return await this.http.get<User[]>(`${this.apiBackend}`, { withCredentials: true }).toPromise();
     }
     
     async getUserById(id: string) {
@@ -87,20 +87,7 @@ export class UserService{
 
     //loguin
     async login(email: string, password: string, recaptchaResponse: string) {
-      try {
-        const result = await this.http.post<UserResponse>(`${this.apiBackend}/login`, { email, password, recaptchaResponse }, { withCredentials: true }).toPromise();
-        const user = result?.user
-        if (user) {
-          this.setUser(user);
-          this.userSubject.next(user); // Emitir el nuevo usuario
-          return user;
-        } else {
-          throw new Error('Ocurrió un error al ingresar al sistema.');
-        }
-      } catch (error) {
-        // Lanza la excepción para que el componente lo maneje
-        throw new Error('Credenciales incorrectas o problema con el servidor.');
-      }
+        return await this.http.post<UserResponse>(`${this.apiBackend}/login`, { email, password, recaptchaResponse }, { withCredentials: true }).toPromise();
     }
     
 

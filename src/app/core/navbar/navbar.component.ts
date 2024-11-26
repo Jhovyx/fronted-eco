@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../shared/services/user.service';
 import { User } from '../../shared/interfaces/user.interface';
@@ -9,48 +9,72 @@ declare var bootstrap: any;
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
 
   userRol?: string;
   userNombre?: string;
   userCorreo?: string;
   imgProfile!: string;
+  private cookieCheckInterval: any;
 
   constructor(
     private router: Router,
     private userService: UserService
   ) {    this.loadUserData()  }
+
+
+
   ngOnInit(): void {
     this.initializePopovers();
-    this.userService.profileUser();
-    this.userService.user$.subscribe(user => {
-      if(user){
-        this.userRol = user?.userType; 
-        this.userNombre = user?.firstName;
-        this.userCorreo = user?.email;
-        if(user.profilePictureUrl && user.profilePictureUrl.length !== 0){
-          this.imgProfile = user.profilePictureUrl;
-        }
-      }
-    });
+    this.loadUserData();
+    this.startCookieCheck(); // Inicia el chequeo periódico de la cookie
+  }
+
+  ngOnDestroy(): void {
+    if (this.cookieCheckInterval) {
+      clearInterval(this.cookieCheckInterval); // Detenemos el chequeo cuando el componente se destruye
+    }
   }
 
   private loadUserData(): void {
-    const data = sessionStorage.getItem('user');
+    const data = this.getCookie('user');
     if (data) {
-      const user: User = JSON.parse(data);
-      this.userRol = user.userType; 
+      const user: User = { ...data };
+      this.userRol = user.userType;
       this.userNombre = user.firstName;
       this.userCorreo = user.email;
-      if(user.profilePictureUrl && user.profilePictureUrl.length !== 0){
-        this.imgProfile = user.profilePictureUrl;
-      }
-    }else{
+      this.imgProfile = user.profilePictureUrl || '';
+    } else {
       this.userRol = '';
       this.userNombre = '';
       this.userCorreo = '';
       this.imgProfile = '';
     }
+  }
+
+  private getCookie(name: string): any {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) {
+      const cookieValue = parts.pop()?.split(';').shift() || null;
+      if (cookieValue) {
+        const decodeCookie = decodeURIComponent(cookieValue);
+        try {
+          return JSON.parse(decodeCookie);
+        } catch (error) {
+          console.error('Error parsing cookie', error);
+          return null;
+        }
+      }
+    }
+    return null;
+  }
+
+  private startCookieCheck(): void {
+    // Comienza a revisar la cookie cada 1000ms (1 segundo)
+    this.cookieCheckInterval = setInterval(() => {
+      this.loadUserData(); // Revisa y carga los datos del usuario de la cookie
+    }, 1000); // Revisa cada 1 segundo
   }
 
   initializePopovers(): void {
