@@ -35,7 +35,10 @@ const routes: Routes = [
   { path: 'trip-detail', component: TripDetailComponent },
   { path: 'boleta', component: BoletaComponent },//boleta
   { path: 'pago-detalle', component: PaymentDetailComponent },//detalles del pago
-  { path: '**', redirectTo: '/home' } // Manejo de rutas no encontradas
+ /* { path: '**', redirectTo: '/home' } // Manejo de rutas no encontradas*/
+ 
+ { path: '', redirectTo: '/home', pathMatch: 'full' }
+
 ];
 
 @NgModule({
