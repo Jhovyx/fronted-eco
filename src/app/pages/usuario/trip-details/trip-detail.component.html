@@ -1,6 +1,6 @@
 <div class="container py-5">
   <!-- Detalles del viaje -->
-  <div *ngIf="trip" class="trip-details-card shadow-lg p-5 rounded-4 mb-5 animate__animated animate__fadeInUp">
+  <div *ngIf="trip" class="trip-details-card shadow-lg p-5 rounded-4 mb-5 animate_animated animate_fadeInUp">
     <h2 class="text-center text-primary mb-4 display-4 fw-bold">{{ trip.nombre }}</h2>
     <div class="row">
       <div class="col-lg-6 mb-4">
@@ -36,51 +36,94 @@
       </div>
     </div>
   </div>
+<!-- Contenedor para la notificación emergente -->
+<div id="notification" class="notification" *ngIf="notificationVisible">
+  <p>¡Selección guardada exitosamente!</p>
+</div>
 
-  <!-- Modal de detalles del viaje -->
-  <div class="modal fade" id="tripDetailsModal" tabindex="-1" aria-labelledby="tripDetailsModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content animate__animated animate__zoomIn">
-        <div class="modal-header">
-          <h5 class="modal-title" id="tripDetailsModalLabel">Detalles del Viaje</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+
+<!-- Modal de detalles del viaje -->
+<div class="modal fade" id="tripDetailsModal" tabindex="-1" aria-labelledby="tripDetailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content animate_animated animate_zoomIn">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="tripDetailsModalLabel">🚍 Detalles del Viaje 🚍</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Información del viaje -->
+        <div class="trip-info p-3 rounded border bg-light">
+          <p><strong>🚏 Estación de Origen:</strong> {{ trip.nombreEstacionOrigen }}</p>
+          <p><strong>🚏 Estación de Destino:</strong> {{ trip.nombreEstacionDestino }}</p>
+          <p><strong>🚌 Nombre del Bus:</strong> {{ bus.modelo }}</p>
+          <p><strong>📄 Placa:</strong> {{ bus.placa }}</p>
+          <p><strong>👥 Capacidad del Bus:</strong> {{ bus.capacidad }} pasajeros</p>
         </div>
-        <div class="modal-body">
-          <p><strong>Estación de Origen:</strong> {{ trip.nombreEstacionOrigen }}</p>
-          <p><strong>Estación de Destino:</strong> {{ trip.nombreEstacionDestino }}</p>
-          <p><strong>Nombre del Bus:</strong> {{ bus.modelo }}</p>
-          <p><strong>Placa:</strong> {{ bus.placa }}</p>
-          <p><strong>Capacidad del Bus:</strong> {{ bus.capacidad }} pasajeros</p>
 
-          <!-- Contenedor pequeño y estilizado para los asientos -->
-          <div *ngIf="bus.capacidad > 0" class="mt-4">
-            <h5 class="text-center">Asientos Disponibles</h5>
-            <div class="seats-container d-flex flex-wrap justify-content-center">
-              <div *ngFor="let seat of seats" class="seat-button-container">
-                <button (click)="selectSeat(seat.seatId)" 
-                        [class]="seat.isAvailable ? 'btn btn-outline-success' : 'btn btn-outline-danger'" 
-                        class="seat-button" 
-                        [disabled]="!seat.isAvailable">
-                  <i class="bi" [ngClass]="seat.isAvailable ? 'bi-seat' : 'bi-seat-fill'"></i>
-                </button>
+        <!-- Contenedor de Asientos -->
+        <div *ngIf="bus.capacidad > 0" class="mt-4">
+          <h5 class="text-center text-secondary">Asientos Disponibles</h5>
+          <div class="row g-3">
+            <!-- Piso 1 -->
+            <div class="col-12 col-lg-6">
+              <h6 class="text-center text-muted">Piso 1</h6>
+              <div class="seat-floor-container border rounded p-2">
+                <div *ngFor="let row of [0, 1, 2, 3, 4]" class="seat-row d-flex custom-seat-row mb-3">
+                  <div class="col-auto" *ngFor="let col of [0, 1]">
+                    <button *ngFor="let seat of seats.slice((row * 4) + (col * 2), (row * 4) + (col * 2) + 2); let seatIndex = index"
+                            (click)="selectSeat(seat.seatId)"
+                            [class]="seat.isAvailable ? 'btn btn-sm btn-outline-success rounded-pill' : 'btn btn-sm btn-outline-danger rounded-pill'"
+                            [title]="seat.isAvailable ? 'Disponible' : 'Ocupado'">
+                      {{ ('0' + (row * 4 + col * 2 + seatIndex + 1)).slice(-2) }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Piso 2 -->
+            <div class="col-12 col-lg-6">
+              <h6 class="text-center text-muted">Piso 2</h6>
+              <div class="seat-floor-container border rounded p-2">
+                <div *ngFor="let row of [5, 6, 7, 8, 9]" class="seat-row d-flex custom-seat-row mb-3">
+                  <div class="col-auto" *ngFor="let col of [0, 1]">
+                    <button *ngFor="let seat of seats.slice((row * 4) + (col * 2), (row * 4) + (col * 2) + 2); let seatIndex = index"
+                            (click)="selectSeat(seat.seatId)"
+                            [class]="seat.isAvailable ? 'btn btn-sm btn-outline-success rounded-pill' : 'btn btn-sm btn-outline-danger rounded-pill'"
+                            [title]="seat.isAvailable ? 'Disponible' : 'Ocupado'">
+                      {{ ('0' + (row * 4 + col * 2 + seatIndex + 1)).slice(-2) }}
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary btn-hover" data-bs-dismiss="modal">Cerrar</button>
-          <button (click)="saveSeatSelection()" type="button" class="btn btn-success btn-hover">Guardar Selección</button>
-        </div>
       </div>
+
+      <!-- Pie del modal -->
+      <div class="modal-footer bg-gradient-light d-flex justify-content-between align-items-center">
+        <button type="button" class="btn btn-outline-secondary btn-hover px-4 py-2 fw-bold" data-bs-dismiss="modal">
+          <i class="bi bi-x-circle me-2"></i>Cerrar
+        </button>
+        <button (click)="saveSeatSelection()" type="button" class="btn btn-success btn-hover px-4 py-2 fw-bold">
+          <i class="bi bi-check-circle me-2"></i>Guardar Selección
+        </button>
+      </div>
+      
     </div>
   </div>
+</div>
+
+
 
 
 
   <!-- Modal de inicio de sesión -->
   <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content animate__animated animate__zoomIn">
+      <div class="modal-content animate_animated animate_zoomIn">
         <div class="modal-header">
           <h5 class="modal-title" id="loginModalLabel">Iniciar Sesión</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -98,7 +141,7 @@
   <!-- Modal de Reserva -->
   <div class="modal fade" id="tripModall" tabindex="-1" aria-labelledby="tripModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content animate__animated animate__zoomIn">
+      <div class="modal-content animate_animated animate_zoomIn">
         <div class="modal-header">
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
@@ -116,7 +159,7 @@
   </div>
 
   <!-- Perfil de Usuario -->
-  <div *ngIf="user" class="user-profile card shadow-lg p-5 mt-5 rounded-4 animate__animated animate__fadeInUp">
+  <div *ngIf="user" class="user-profile card shadow-lg p-5 mt-5 rounded-4 animate_animated animate_fadeInUp">
     <div class="d-flex align-items-center">
       <img [src]="user.profilePictureUrl" class="img-thumbnail me-3 profile-image" alt="Foto de perfil" />
       <div>
