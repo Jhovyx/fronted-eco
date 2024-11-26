@@ -35,6 +35,6 @@ export interface User {
   }
 
   export interface UserResponse {
-    message: string,
-    user: User
+    message: string;
+    userType: string;
   }
