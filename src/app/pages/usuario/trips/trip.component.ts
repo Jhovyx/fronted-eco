@@ -36,19 +36,55 @@ export class TripComponent implements OnInit {
 
   // Este método se llama cuando el usuario hace clic en "Reservar"
   onReserve(trip: Viaje) {
+    // Verificamos si el usuario está autenticado, si no lo está, intentamos cargarlo desde la cookie
     if (!this.user) {
-      // Si el usuario no está autenticado, redirigir al login
-      this.router.navigate(['/login']); 
+      this.loadUserData(); // Carga los datos del usuario desde la cookie
+  
+      // Si después de cargar los datos de la cookie, no tenemos usuario, redirigimos al login
+      if (!this.user) {
+        this.router.navigate(['/login']);
+        return; // Si no hay usuario, salimos de la función
+      }
+    }
+  
+    // Guardamos el viaje en sessionStorage
+    sessionStorage.setItem('selectedTrip', JSON.stringify(trip));
+  
+    // Guardamos el usuario en sessionStorage
+    sessionStorage.setItem('user', JSON.stringify(this.user));
+  
+    // Redirigir a la página de detalles del viaje
+    this.router.navigate(['/trip-detail']);
+  }
+
+  // Método para cargar los datos del usuario desde la cookie
+  private loadUserData(): void {
+    const data = this.getCookie('user');
+    if (data) {
+      this.user = { ...data }; // Asignamos los datos de la cookie a this.user
     } else {
-      // Guardamos el viaje en sessionStorage
-      sessionStorage.setItem('selectedTrip', JSON.stringify(trip));
-
-      // Guardamos el usuario en sessionStorage
-      sessionStorage.setItem('user', JSON.stringify(this.user));
-
-      // Redirigir a la página de detalles del viaje
-      this.router.navigate(['/trip-detail']);
+      this.user = null; // Si no hay datos, seteamos el usuario como null
     }
   }
+
+  // Método para obtener una cookie por su nombre
+  private getCookie(name: string): any {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) {
+      const cookieValue = parts.pop()?.split(';').shift() || null;
+      if (cookieValue) {
+        const decodeCookie = decodeURIComponent(cookieValue);
+        try {
+          return JSON.parse(decodeCookie); // Intentamos parsear la cookie como JSON
+        } catch (error) {
+          console.error('Error parsing cookie', error);
+          return null;
+        }
+      }
+    }
+    return null; // Si no se encuentra la cookie, retornamos null
+  }
 }
+
   
