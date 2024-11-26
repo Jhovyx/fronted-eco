@@ -26,4 +26,54 @@
     flex-grow: 1; /* Hace que cada item ocupe el mismo tamaño */
     text-align: center;
   }
-  
+  /* Estilo del contenedor del formulario */
+form {
+  background-color: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Etiquetas del formulario */
+.form-label {
+  font-size: 1rem;
+  color: #6c757d;
+}
+
+/* Grupo de entrada con íconos */
+.input-group-text {
+  border-radius: 50px 0 0 50px;
+  font-size: 1.2rem;
+  padding: 0.6rem 1rem;
+}
+
+/* Estilo para los campos de entrada */
+.form-control {
+  border-radius: 0 50px 50px 0;
+  font-size: 1rem;
+  padding: 0.6rem 1rem;
+}
+
+/* Sombra en campos al hacer foco */
+.form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+/* Colores personalizados */
+.bg-light {
+  background-color: #f8f9fa !important;
+}
+
+.text-primary {
+  color: #007bff !important;
+}
+
+.shadow-sm {
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+  .minor-margin{
+    margin: 0!important;
+  }
