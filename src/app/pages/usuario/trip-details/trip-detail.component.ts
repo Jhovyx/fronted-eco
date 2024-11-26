@@ -132,18 +132,24 @@ export class TripDetailComponent implements OnInit {
     }
   }
   selectSeat(seatId: number): void {
+    // Si el asiento está disponible y se selecciona, cambiamos su estado en selectedSeats.
     if (!this.selectedSeats.includes(seatId)) {
       this.selectedSeats.push(seatId);
     } else {
       this.selectedSeats = this.selectedSeats.filter(seat => seat !== seatId);
     }
+  
+    // Actualizamos el estado de los botones (cambiando de color)
     this.updateSeatStatus();
   }
-
   updateSeatStatus(): void {
+    // Los asientos seleccionados tendrán un color diferente, pero no se deshabilitan.
     this.seats.forEach(seat => {
-      seat.isAvailable = !this.selectedSeats.includes(seat.seatId);
+      seat.isAvailable = !this.selectedSeats.includes(seat.seatId); // Los asientos no seleccionados se marcan como disponibles
     });
+    
+    // Guardamos la selección de los asientos en sessionStorage
+    sessionStorage.setItem('selectedSeats', JSON.stringify(this.selectedSeats));
   }
   notificationVisible: boolean = false;
   saveSeatSelection(): void {
@@ -191,37 +197,38 @@ export class TripDetailComponent implements OnInit {
   this.loadSeats();
 }
 
-  reserveXd(): void {
-    if (!this.user) {
+reserveXd(): void {
+  if (!this.user) {
       const loginModalElement = document.getElementById('loginModal');
       if (loginModalElement) {
-        const loginModal = new bootstrap.Modal(loginModalElement);
-        loginModal.show();
+          const loginModal = new bootstrap.Modal(loginModalElement);
+          loginModal.show();
       }
-    } else {
+  } else {
+      // Guardar todos los datos de la reserva en sessionStorage
       this.reservaService.setTrip(this.trip);
       this.reservaService.setUser(this.user);
-  
+
       // Crear el objeto con los datos de la reserva
       const tripData = {
-        user: this.user,
-        trip: this.trip,
-        bus: this.bus,
-        station: {
-          origen: this.estacionOrigen,
-          destino: this.estacionDestino
-        },
-        seats: this.selectedSeats
+          user: this.user,
+          trip: this.trip,
+          bus: this.bus,
+          station: {
+              origen: this.estacionOrigen,
+              destino: this.estacionDestino
+          },
+          seats: this.selectedSeats
       };
-  
+
       // Guardar los datos en sessionStorage
       sessionStorage.setItem('reservationDetails', JSON.stringify(tripData));
-  
+
+      // Mostrar el modal de confirmación
       const reservaModalElement = document.getElementById('tripModall');
       if (reservaModalElement) {
-        const reservaModal = new bootstrap.Modal(reservaModalElement);
-        reservaModal.show();
+          const reservaModal = new bootstrap.Modal(reservaModalElement);
+          reservaModal.show();
       }
-    }
-  }  
-}
+  }
+}}
