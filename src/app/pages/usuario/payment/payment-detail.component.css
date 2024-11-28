@@ -12,13 +12,7 @@
     gap: 20px; /* Espacio entre las filas y columnas */
 }
 
-/* Estilo del encabezado */
-.header h1 {
-    grid-column: span 2; /* El encabezado ocupa ambas columnas del grid */
-    text-align: center; /* Alinea el texto al centro */
-    color: #333; /* Color del texto del encabezado */
-    margin-bottom: 20px; /* Margen inferior del encabezado: 20 píxeles */
-}
+
 
 /* Estilo de las etiquetas */
 .container label {
@@ -84,4 +78,107 @@
     grid-column: span 2; /* Asegura que el contenedor ocupa ambas columnas del grid */
     text-align: right; /* Alinea el contenido del contenedor a la derecha */
     margin-top: 20px; /* Margen superior del contenedor */
+}
+
+/* Estilo general del contenedor */
+#comprobante {
+    background-color: #fff; 
+    border-radius: 12px; 
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1); 
+    padding: 20px;
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* Encabezado */
+h1 {
+    font-family: 'Roboto', sans-serif;
+    font-size: 2rem;
+    color: #1E3A8A; /* Azul oscuro para el encabezado */
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+/* Estilo de los inputs */
+.form-control {
+    border: 2px solid #E5E7EB; 
+    border-radius: 8px; 
+    padding: 12px 15px; 
+    font-size: 1rem;
+    background-color: #F3F4F6; /* Fondo claro */
+    transition: border 0.3s ease; 
+}
+
+/* Estilo cuando el input está enfocado */
+.form-control:focus {
+    border-color: #34D399; /* Verde claro cuando está enfocado */
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(52, 211, 153, 0.5); /* Efecto sutil */
+    outline: none;
+}
+
+/* Botón de pagar */
+button.btn-success {
+    background-color: #10B981; /* Verde vibrante */
+    color: #fff;
+    padding: 15px;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    border: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0px 5px 15px rgba(16, 185, 129, 0.2); /* Sombra suave */
+}
+
+/* Efecto hover sobre el botón */
+button.btn-success:hover {
+    background-color: #059669;
+    transform: translateY(-2px);
+}
+
+/* Agregar espacio entre filas */
+.mb-3 {
+    margin-bottom: 20px;
+}
+
+/* Información de usuario y viaje */
+.row p {
+    font-size: 1rem;
+    color: #6B7280; /* Gris suave para texto secundario */
+    margin: 0;
+}
+
+/* Información en los bloques de datos (nombre, correo, etc.) */
+.row .col-6 {
+    padding-right: 20px;
+}
+
+strong {
+    font-weight: 600;
+    color: #333;
+}
+
+/* Animación de entrada de los campos */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Animación en el contenedor */
+#comprobante {
+    animation: fadeInUp 1s ease-out;
+}
+
+/* Fondo general */
+body {
+    background-color: #F3F4F6; /* Fondo gris claro */
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    padding: 40px;
 }

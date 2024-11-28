@@ -1,31 +1,96 @@
+<div class="d-flex align-items-center justify-content-center mt-5">
+  <div id="comprobante" class="shadow-lg p-4 rounded-lg bg-white w-100" style="max-width: 800px;">
+      <!-- Encabezado del formulario de pago -->
+      <div class="row mb-4">
+          <div class="col-12 text-center">
+              <h1 class="animate__animated animate__fadeIn text-primary">Detalles del Pago</h1>
+          </div>
+      </div>
 
-    <div class="container">
-        <div class="header">
-            <h1>Detalles del pago</h1>
-        </div>
-        <br>
-        <div class="container">
-            <label for="N° de tarjerta"> N° de tarjeta: </label>
-            <input type="number" id="N° de tarjeta" placeholder="N° de tarjeta">
-        </div>
-        <div class="container">
-            <label for="Nombre de la tarjerta"> Nombre de la tarjeta: </label>
-            <input type="text" id="Nombre de la tarjeta" placeholder="Nombre de la tarjeta">
-        </div>
-        <div class="container">
-            <label for="Fecha de Venc"> Fecha de Vencimiento: </label>
-            <input type="date" [min]="minDate" id="Fecha de Vencimiento" placeholder="Fecha de Vencimiento">
-        </div>
-        <div class="container">
-            <label for="Codigo de Seguridad"> Codigo de Seguridad: </label>
-            <input type="text" id="Codigo de Seguridad" placeholder=" Codigo de Seguridad">
-        </div>
-        <!-- <div class="button-container">
-            <button type="submit" class="btn-pagar"> PAGAR </button>
-        </div> -->
-        <div class="button-container">
-            <form action="/procesar_pago" method="POST">
-                <button type="submit" class="btn-pagar" [routerLink]="['/boleta']">Pagar</button>
-            </form>
-        </div>
-    </div>
+    <!-- Formulario de pago -->
+<form (ngSubmit)="handleSubmit()" action="/procesar_pago" method="POST">
+  <div class="container">
+      <!-- N° de tarjeta -->
+      <div class="mb-3">
+          <label for="numeroTarjeta" class="form-label">N° de tarjeta:</label>
+          <input type="text" id="numeroTarjeta" name="numeroTarjeta" class="form-control" placeholder="N° de tarjeta" required maxlength="16" pattern="^\d{0,16}$">
+      </div>
+
+      <!-- Selección del tipo de tarjeta -->
+      <div class="mb-3">
+          <label for="tipoTarjeta" class="form-label">Tipo de tarjeta:</label>
+          <select id="tipoTarjeta" name="tipoTarjeta" class="form-control" required>
+              <option value="">Selecciona el tipo de tarjeta</option>
+              <option value="visa">Visa</option>
+              <option value="mastercard">Mastercard</option>
+              <option value="americanexpress">American Express</option>
+              <option value="discover">BCP</option>
+              <option value="dinersclub">Interbank</option>
+          </select>
+      </div>
+
+      <!-- Fecha de vencimiento -->
+      <div class="mb-3">
+          <label for="fechaVencimiento" class="form-label">Fecha de Vencimiento:</label>
+          <input type="date" id="fechaVencimiento" name="fechaVencimiento" class="form-control" [min]="minDate" required>
+      </div>
+
+      <!-- Código de seguridad -->
+      <div class="mb-3">
+          <label for="codigoSeguridad" class="form-label">Código de Seguridad:</label>
+          <input type="text" id="codigoSeguridad" name="codigoSeguridad" class="form-control" placeholder="Código de Seguridad" required>
+      </div>
+
+      <!-- Mostrar datos del usuario y viaje -->
+      <div class="row mb-3">
+          <div class="col-6">
+              <strong>Nombre:</strong>
+              <p>{{ user ? user.firstName + ' ' + user.lastName : 'Cargando...' }}</p>
+          </div>
+          <div class="col-6">
+              <strong>Correo:</strong>
+              <p>{{ user ? user.email : 'Cargando...' }}</p>
+          </div>
+      </div>
+
+      <div class="row mb-3">
+          <div class="col-6">
+              <strong>Estacion de Destino:</strong>
+              <p>{{ trip.nombreEstacionDestino }}</p>
+          </div>
+          <div class="col-6">
+              <strong>Asientos:</strong>
+              <p>{{ selectedSeats.length }} Asientos seleccionados</p>
+          </div>
+      </div>
+
+      <div class="row mb-3">
+          <div class="col-6">
+              <strong>Fecha de Partida:</strong>
+              <p>{{ trip.fechaHoraSalida | date:'fullDate' }}</p>
+          </div>
+          <div class="col-6">
+              <strong>Fecha de Llegada:</strong>
+              <p>{{ trip.fechaHoraLlegada | date:'fullDate' }}</p>
+          </div>
+      </div>
+
+      <div class="row mb-3">
+          <div class="col-6">
+              <strong>Costo por Unidad:</strong>
+              <p>{{ trip.costo | currency }}</p>
+          </div>
+          <div class="col-6">
+              <strong>Costo total:</strong>
+              <p>{{ (trip.costo * selectedSeats.length) | currency }}</p>
+          </div>
+      </div>
+
+      <!-- Botón de pago -->
+      <div class="row mb-3 d-flex justify-content-center">
+          <div class="col-12">
+              <button type="submit" class="btn btn-success btn-lg w-75 shadow-lg transition-all hover:bg-green-600">Pagar</button>
+          </div>
+      </div>
+  </div>
+</form>
