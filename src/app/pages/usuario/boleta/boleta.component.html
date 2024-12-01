@@ -1,4 +1,3 @@
-
 <div class="d-flex align-items-center justify-content-center mt-5">
     <div id="comprobante">
         <div class="row mb-4">
@@ -22,25 +21,25 @@
             <tbody>
                 <tr>
                     <td><strong>RAZON SOCIAL</strong></td>
-                    <td id="razonSocial">HILDERASHO</td>
+                    <td id="razonSocial">{{ user ? user.firstName + ' ' + user.lastName : 'Cargando...' }}</td>
                     <td><strong>FECHA EMISIÓN</strong></td>
-                    <td id="fecha">24/02/2024</td>
+                    <td id="fecha">{{ fechaEmision }}</td>
                 </tr>
                 <tr>
                     <td><strong>RUC/DNI</strong></td>
-                    <td id="nDoc">72002411</td>
+                    <td id="nDoc">{{ user ? user.dni : 'Cargando...' }}</td>
                     <td><strong>MÉTODO DE PAGO</strong></td>
-                    <td id="metodoPago">TARJETA</td>
+                    <td id="metodoPago">{{ metodoPago }}</td>
                 </tr>
                 <tr>
                     <td><strong>TELÉFONO</strong></td>
-                    <td id="telefono">961258815</td>
+                    <td id="telefono">{{ user ? user.phone : 'Cargando...' }}</td>
                     <td><strong>CORREO</strong></td>
-                    <td id="correo">hilderarce565&commat;gmail.com</td>
+                    <td id="correo">{{ user ? user.email : 'Cargando...' }}</td>
                 </tr>
                 <tr>
                     <td><strong>DIRECCIÓN</strong></td>
-                    <td id="direccion" colspan="3">AREVALO</td>
+                    <td id="direccion" colspan="3">{{ user ? user.address : 'Cargando...' }}</td>
                 </tr>
             </tbody>
         </table>
@@ -59,10 +58,10 @@
             <tbody>
                 <tr>
                     <td>1.00</td>
-                    <td>Escapada de fin de año</td>
-                    <td>2.00</td>
-                    <td>S/ 20.00</td>
-                    <td>S/ 40.00</td>
+                    <td>{{ trip ? trip.descripcion : 'Cargando...' }}</td>
+                    <td>{{ selectedSeats.length }}</td>
+                    <td>{{ trip ? (trip.costo | currency) : 'Cargando...' }}</td>
+                    <td>{{ (subtotal | currency) }}</td>
                 </tr>
             </tbody>
         </table>
@@ -77,15 +76,15 @@
                     <tfoot>
                         <tr>
                             <td>SUBTOTAL</td>
-                            <td id="subtotal" class="text-end">S/ 240.00</td>
+                            <td id="subtotal" class="text-end">{{ subtotal | currency }}</td>
                         </tr>
                         <tr>
                             <td>IGV (18%)</td>
-                            <td id="igv" class="text-end">S/ 43.20</td>
+                            <td id="igv" class="text-end">{{ igv | currency }}</td>
                         </tr>
                         <tr>
                             <td>TOTAL</td>
-                            <td id="total" class="text-end">S/ 283.20</td>
+                            <td id="total" class="text-end">{{ total | currency }}</td>
                         </tr>
                     </tfoot>
                 </table>
@@ -103,7 +102,6 @@
 
 <!-- Botones -->
 <div class="d-flex align-items-center justify-content-center mt-4">
-    <button type="button" class="btn btn-primary m-2" onclick="Descargar()">Descargar</button>
-    <button type="button" class="btn btn-primary m-2" onclick="Imprimir()">Imprimir</button>
+    <button type="button" class="btn btn-primary m-2" (click)="Descargar()">Descargar</button>
+    <button type="button" class="btn btn-primary m-2" (click)="Imprimir()">Imprimir</button>
 </div>
-

@@ -1,15 +1,45 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
 @Component({
     selector: 'app-boleta',
     templateUrl: './boleta.component.html',
-    styleUrl: './boleta.component.css'
+    styleUrls: ['./boleta.component.css']
 })
 
-export class BoletaComponent{
-    //descargar
+export class BoletaComponent implements OnInit {
+    // Variables para los detalles del pago
+    user: any = null;
+    trip: any = null;
+    selectedSeats: any[] = [];
+    fechaEmision: string = new Date().toLocaleDateString();
+    metodoPago: string = "TARJETA";  // Suponiendo que es tarjeta siempre
+
+    // Totales
+    subtotal: number = 0;
+    igv: number = 0;
+    total: number = 0;
+
+    ngOnInit(): void {
+        // Recuperar los datos del sessionStorage
+        const paymentDetails = JSON.parse(sessionStorage.getItem('paymentDetails') || '{}');
+
+        // Asignar los datos del pago a las variables
+        this.user = paymentDetails.user;
+        this.trip = paymentDetails.trip;
+        this.selectedSeats = paymentDetails.selectedSeats;
+
+        // Calcular los totales
+        if (this.trip && this.selectedSeats.length > 0) {
+            const costPerSeat = this.trip.costo;
+            this.subtotal = costPerSeat * this.selectedSeats.length;
+            this.igv = this.subtotal * 0.18;  // Asumiendo un 18% de IGV
+            this.total = this.subtotal + this.igv;
+        }
+    }
+
+    // Función para descargar el comprobante
     Descargar() {
         const element = document.getElementById('comprobante');
         if (element) {
@@ -22,12 +52,12 @@ export class BoletaComponent{
                 doc.save('IMPORTEC.pdf');
             });
         } else {
-            return
+            return;
         }
     }
 
-     //imprimir 
-     Imprimir() {
+    // Función para imprimir el comprobante
+    Imprimir() {
         const printContents = document.getElementById('comprobante')?.innerHTML;
         const originalContents = document.body.innerHTML;
         if (printContents) {
@@ -35,7 +65,7 @@ export class BoletaComponent{
             window.print();
             document.body.innerHTML = originalContents;
         } else {
-            return
+            return;
         }
     }
 }
