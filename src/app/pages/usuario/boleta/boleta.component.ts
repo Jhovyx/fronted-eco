@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-
+import * as QRCode from 'qrcode'; // Importa el paquete QRCode para generar el código QR
+import { Router } from '@angular/router';
 @Component({
     selector: 'app-boleta',
     templateUrl: './boleta.component.html',
@@ -9,6 +10,8 @@ import jsPDF from 'jspdf';
 })
 
 export class BoletaComponent implements OnInit {
+    boletaId: string = ''; // Aquí se almacenará el ID de la boleta
+
     // Variables para los detalles del pago
     user: any = null;
     trip: any = null;
@@ -20,6 +23,11 @@ export class BoletaComponent implements OnInit {
     subtotal: number = 0;
     igv: number = 0;
     total: number = 0;
+
+
+     // Variables para el QR
+   qrCodeUrl: string = ''; // Variable para almacenar la URL de la imagen QR
+   constructor(private router: Router) {}  // Inyectar Router para redirigir
 
     ngOnInit(): void {
         // Recuperar los datos del sessionStorage
@@ -37,8 +45,29 @@ export class BoletaComponent implements OnInit {
             this.igv = this.subtotal * 0.18;  // Asumiendo un 18% de IGV
             this.total = this.subtotal + this.igv;
         }
+        // Dirección IP de la máquina en la red local 
+    const pdfUrl = `http://localhost:4200/usuario/boleta.pdf/${this.boletaId}`;
+
+    // Verificar si existe el PDF en sessionStorage y generar el QR
+    if (pdfUrl) {
+      this.qrCodeUrl = pdfUrl; // Usar la URL del PDF
+      this.generateQRCode(pdfUrl);  // Llamar a la función para generar el código QR con esta URL
+    }
+    }
+    // Función para generar el código QR con la URL del PDF
+  generateQRCode(url: string) {
+    QRCode.toDataURL(url, {
+      width: 200,
+      margin: 2
+    }).then((qrUrl) => {
+      this.qrCodeUrl = qrUrl; // Asignar la URL de la imagen del QR generada
+    }).catch((err) => {
+      console.error('Error al generar el código QR', err);
+    });
     }
 
+    
+  
     // Función para descargar el comprobante
     Descargar() {
         const element = document.getElementById('comprobante');
@@ -68,4 +97,4 @@ export class BoletaComponent implements OnInit {
             return;
         }
     }
-}
+ }
