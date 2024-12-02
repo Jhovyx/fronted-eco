@@ -16,26 +16,38 @@ import { AminBusesComponent } from './pages/admin/admin-buses/buses.component';
 import { AdminEstacionesComponent } from './pages/admin/admin-estaciones/estaciones.component';
 import { ViajesComponent } from './pages/admin/admin-viajes/viajes.component';
 import { TripDetailComponent } from './pages/usuario/trip-details/trip-detail.component';
+import { adminGuard } from './guards/admin.guard';
+import { clienteNoAuthGuard } from './guards/cliente-no-auth.guard';
+import { clienteGuard } from './guards/cliente.guard';
+import { adminClienteGuard } from './guards/admin-cliente.guard';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },//pordefecto
-  { path: 'home', component: HomeComponent },//home user
-  { path: 'notify', component: NotifyComponent },//notificaciones 
-  { path: 'admin-user', component: AdminUsersComponent },//adminitracion de usuarios
-  { path: 'reservas', component: ReservationManagementComponent },//administracion de reservas
-  { path: 'reservas-limit', component: ReservationLimitComponent },//administracion de reservas limite
-  { path: 'admin-dash', component: AdminDashComponent },//administracion de actividades
-  { path: 'admin-viajes', component: ViajesComponent },//administracion de viajes ruta padre
-  { path: 'admin-buses', component: AminBusesComponent },//administracion de buses
-  { path: 'admin-estaciones', component: AdminEstacionesComponent },//administracion de buses
-  { path: 'profile', component: ProfileComponent },//perfil del usuario
-  { path: 'promociones-list', component: PromocionesListComponent },//lista de promociones
-  { path: 'nosotros', component: NosotrosComponent },//info de nosotros
-  { path: 'destinos', component: TripComponent },//lista de destinos
-  { path: 'trip-detail', component: TripDetailComponent },
-  { path: 'boleta', component: BoletaComponent },//boleta
-  { path: 'pago-detalle', component: PaymentDetailComponent },//detalles del pago
-  { path: '**', redirectTo: '/home' } // Manejo de rutas no encontradas
+
+  { path: '', redirectTo: '/home', pathMatch: 'full'},//pordefecto
+  
+  //DONT` AUTH AND CLIENT
+  { path: 'home', component: HomeComponent, canActivate: [clienteNoAuthGuard] },//home user
+  { path: 'nosotros', component: NosotrosComponent, canActivate: [clienteNoAuthGuard] },//info de nosotros
+  { path: 'destinos', component: TripComponent, canActivate: [clienteNoAuthGuard] },//lista de destinos
+  { path: 'promociones-list', component: PromocionesListComponent, canActivate: [clienteNoAuthGuard] },//lista de promociones
+  
+  //ADMIN ROUTES
+  { path: 'admin-user', component: AdminUsersComponent, canActivate: [adminGuard] },//adminitracion de usuarios
+  { path: 'admin-dash', component: AdminDashComponent, canActivate: [adminGuard] },//administracion de actividades
+  { path: 'admin-viajes', component: ViajesComponent, canActivate: [adminGuard] },//administracion de viajes ruta padre
+  { path: 'admin-buses', component: AminBusesComponent, canActivate: [adminGuard] },//administracion de buses
+  { path: 'admin-estaciones', component: AdminEstacionesComponent, canActivate: [adminGuard] },//administracion de buses
+  
+  //CLIENT ROUTES
+  { path: 'pago-detalle', component: PaymentDetailComponent, canActivate: [clienteGuard] },//detalles del pago
+  { path: 'trip-detail', component: TripDetailComponent, canActivate: [clienteGuard] },
+
+  //ADMIN AND CLIENT
+  { path: 'notify', component: NotifyComponent, canActivate: [adminClienteGuard] },//notificaciones 
+  { path: 'reservas', component: ReservationManagementComponent, canActivate: [adminClienteGuard] },//administracion de reservas
+  { path: 'reservas-limit', component: ReservationLimitComponent, canActivate: [adminClienteGuard] },//administracion de reservas limite
+  { path: 'profile', component: ProfileComponent, canActivate: [adminClienteGuard] },//perfil del usuario
+  { path: 'boleta', component: BoletaComponent, canActivate: [adminClienteGuard] },//boleta
 ];
 
 @NgModule({

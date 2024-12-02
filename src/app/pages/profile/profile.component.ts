@@ -238,18 +238,20 @@ export class ProfileComponent implements OnDestroy {
       return;
     }
     // Llamar al servicio de actualización con los datos cambiados
-    const response = await this.userService.updateUser(this.user.primaryKey, updatedUserData);
-    if(response && typeof response === 'object' && response.primaryKey){
-      this.loadUserData();
-      this.isLoading = false;
-      const closeButton = document.getElementById('closeButtonProfile');
-      if (closeButton) {
-        closeButton.click(); // Simula un clic en el botón de cerrar
-      }
-      this.showCustomAlert('Los datos de actualizaron con éxito.', 'success');
-    }else{
-      this.showCustomAlert("Ocurrio un error al actilizar los datos.", 'error');
-      this.isLoading = false;
+    try {
+      const response = await this.userService.updateUser(this.user.primaryKey, this.user);
+        if(response && response.message === 'Usuario actulizado correctamente.'){
+          this.loadUserData();
+          const closeButton = document.getElementById('closeButtonProfile');
+          if (closeButton) {
+            closeButton.click(); // Simula un clic en el botón de cerrar
+          }
+          this.showCustomAlert('Los datos de actualizaron con éxito.', 'success');
+        }else{
+          this.showCustomAlert("Ocurrio un error al actualizar los datos.", 'error');
+        }
+    } catch (error) {
+      this.showCustomAlert("Ocurrio un error al actualizar los datos.", 'error');
     }
   }
 
@@ -368,20 +370,22 @@ export class ProfileComponent implements OnDestroy {
     }
 
     if (this.newPassword === this.confirmNewPassword) {
-      const response = await this.userService.updatePassword(this.user.primaryKey, this.oldPassword, this.newPassword);
-      if (response === 'Contraseña actualizada correctamente.') {
-        this.oldPassword = '';
-        this.newPassword = '';
-        this.confirmNewPassword = '';
-        this.isLoading = false
-        const closeButton = document.getElementById('closeButtonUpdatePassword');
-        if (closeButton) {
-          closeButton.click();
-        }
-        this.showCustomAlert(response, 'success'); 
-      } else {
-        this.showCustomAlert(response, 'error');
-        this.isLoading = false
+      try {
+        const response = await this.userService.updatePassword(this.user.primaryKey, this.oldPassword, this.newPassword);
+          if (response?.message === 'Contraseña actualizada correctamente.') {
+            this.oldPassword = '';
+            this.newPassword = '';
+            this.confirmNewPassword = '';
+            const closeButton = document.getElementById('closeButtonUpdatePassword');
+            if (closeButton) {
+              closeButton.click();
+            }
+            this.showCustomAlert(response.message, 'success'); 
+          } else {
+            this.showCustomAlert('Error al actualizar la contraseña', 'error');
+          }
+      } catch (error) {
+        this.showCustomAlert('Error al actualizar la contraseña', 'error');
       }
     } else {
       this.showCustomAlert('Las contraseñas no coinciden.', 'info');
