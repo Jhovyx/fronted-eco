@@ -120,8 +120,10 @@ export class RegisterComponent {
       this.isLoading = false;
       return;
     }
+    
+    try {
       const response = await this.userService.createUser(this.user);
-      if(response  === 'Usuario creado con éxito.'){
+      if(response?.message  === 'Usuario creado con éxito.'){
         // Cerrar el modal de registro
         const registerModalElement = document.getElementById('registroModal');
         if (registerModalElement) {
@@ -131,8 +133,7 @@ export class RegisterComponent {
             closeButton.click(); // Simula un clic en el botón de cerrar
           }
         }
-        this.showCustomAlert(response, 'success');
-        this.isLoading = false;
+        this.showCustomAlert(response?.message, 'success');
         this.resetForm();
         
         // Mostrar el modal de inicio de sesión
@@ -146,12 +147,13 @@ export class RegisterComponent {
         }
         
       }else{
-        this.showCustomAlert(response, 'error');
-        this.isLoading = false;
-        return;
+        this.showCustomAlert('Error al crear la cuenta.', 'error');
       }
+    } catch (error) {
+      this.showCustomAlert('Error al crear la cuenta.', 'error');
+    }finally{
       this.isLoading = false;
-      return;
+    }
 
   }
 

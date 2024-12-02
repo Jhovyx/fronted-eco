@@ -87,13 +87,10 @@ export class AminBusesComponent {
   userAdminId?: string
   userAdmin?: string
   private loadUserData(): void {
-    const data = sessionStorage.getItem('user');
-    if (data) {
-      const userx: User = JSON.parse(data);
-      if(userx){
-        this.userAdminId = userx.primaryKey; 
-        this.userAdmin = userx.userType; 
-      }
+    const user = this.userService.getCookie('user');
+    if (user) {
+        this.userAdminId = user.primaryKey; 
+        this.userAdmin = user.userType; 
     }
   }
 
@@ -176,21 +173,7 @@ export class AminBusesComponent {
 
     //formatear la fecha
     public formatDate(unixTimestamp: number) {
-      if(unixTimestamp === 0){
-        return `No hay ninguna actulización.`;
-      }
-      const timestampMs = unixTimestamp.toString().length === 10 ? unixTimestamp * 1000 : unixTimestamp;
-      
-      // Crea el objeto Date usando el timestamp en milisegundos
-      const date = new Date(Number(timestampMs));
-      const day = date.getUTCDate().toString().padStart(2, '0');
-      const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
-      const year = date.getUTCFullYear();
-      const hours = date.getUTCHours().toString().padStart(2, '0');
-      const minutes = date.getUTCMinutes().toString().padStart(2, '0');
-      const seconds = date.getUTCSeconds().toString().padStart(2, '0');
-
-      return `${day}/${month}/${year} ${hours}:${minutes}:${seconds} UTC`;
+      return this.userService.formatDate(unixTimestamp)
     }
 
 }

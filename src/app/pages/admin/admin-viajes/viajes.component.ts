@@ -19,14 +19,12 @@ export class ViajesComponent implements OnInit {
 
   //users
   users: User[] = [];
-  filteredUsers: User[] = [];
   selectedUser: User = {primaryKey: '',firstName: '',lastName: '',documentNumber: '',documentType: '',email: '',phoneNumber: '',profilePictureUrl: '',userType: '',};
   
   //cargar user desde la bd
   async loadUser(){
       const data =  await this.userService.getUsers();
       this.users = data ?? [];
-      this.filteredUsers = this.users;
   }
 
 
@@ -34,37 +32,16 @@ export class ViajesComponent implements OnInit {
   //buses
   buses: Bus[] = [];
   selectedBus: Bus = {capacidad: 0,modelo: '',placa: '',primaryKey: '',estado: false,createdAt: 0,updatedAt: 0,userAdminId: ''}
-  filteredBuses: Bus[] = []
-  busSearchQuery: string = '';
-  filteredBusResults: Bus[] = [];
  
   // Cargar buses desde la bd
   async loadBuses() {
     const data = await this.busService.findAll();
     this.buses = data ?? [];
-    this.filteredBuses = this.buses;
-    this.filteredBusResults = this.buses.slice(0, 5);
-  }
-
-  // Método para filtrar buses según la consulta
-  filterBuses() {
-    if (this.busSearchQuery.trim().length > 0) {
-      // Filtrar buses basados en el modelo o la placa
-      const query = this.busSearchQuery.toLowerCase();
-      this.filteredBusResults = this.buses
-        .filter(bus => bus.modelo.toLowerCase().includes(query) || bus.placa.toLowerCase().includes(query))
-        .slice(0, 5); // Limitar a 5 resultados
-    } else {
-      // Si no hay búsqueda, mostrar las 5 primeras opciones
-      this.filteredBusResults = this.buses.slice(0, 5);
-    }
   }
 
 
-  
   //estaciones
   estaciones: Estacion[] = [];
-  filteredEstacion: Estacion[] = []
   selectEstacionOrigen: Estacion = {nombre: '',ubicacion: '',primaryKey: '',estado: false,createdAt: 0,updatedAt: 0,userAdminId: ''}
   selectEstacionDestino: Estacion = {nombre: '',ubicacion: '',primaryKey: '',estado: false,createdAt: 0,updatedAt: 0,userAdminId: ''}
   
@@ -72,7 +49,6 @@ export class ViajesComponent implements OnInit {
   async loadEstaciones() {
     const data = await this.estacionService.findAll();
     this.estaciones = data ?? [];
-    this.filteredEstacion = this.estaciones
   }
   
   
@@ -100,50 +76,17 @@ export class ViajesComponent implements OnInit {
     async loadViajes() {
       const data = await this.viajeService.findAll();
       this.viajes = data ?? [];
-      this.filteredViajes= this.viajes
     }
 
     //add viaje
   async addViaje(viaje: Viaje) {
     this.loadUserData();
-    if((this.userAdmin && this.userAdmin === 'admin') && (this.userAdminId)){
-      // Cambiar el estado del usuario
-      const data: Viaje = {
-        ...viaje,
-        userAdminId: this.userAdminId
-      }
+   
+  }
 
-      //actualiza
-      if(viaje.primaryKey && viaje.primaryKey.length !== 0){
-        const response = await this.viajeService.update(viaje.primaryKey,data);
-        if(response && typeof response === 'object' && response.primaryKey){
-          const closeButton = document.getElementById('closeButtonModalViaje');
-          if (closeButton) {
-            closeButton.click();
-          }
-          this.showCustomAlert('Se actualizo correctamente el viaje.', 'success');
-          this.loadViajes();
-        }else{
-          this.showCustomAlert('Error al actualizar el viaje.', "error");
-        }
-      }else{//registra
-        const response = await this.viajeService.create(data);
-        if(response && typeof response === 'object' && response.primaryKey){
-          const closeButton = document.getElementById('closeButtonModalEstacion');
-          if (closeButton) {
-            closeButton.click();
-          }
-          this.showCustomAlert('Se creo correctamente el viaje.', 'success');
-          this.loadViajes();
-        }else{
-          this.showCustomAlert('Error al crear el viaje.', "error");
-        }
-      }
+  async updateViaje(viaje: Viaje) {
+    this.loadUserData();
 
-    }else{
-      this.loadViajes();
-      this.showCustomAlert('Este usuario no esta permitido que realice esta acción.',"error");
-    }
   }
 
   async updateStatus(viaje: Viaje){
@@ -155,13 +98,10 @@ export class ViajesComponent implements OnInit {
   userAdminId?: string
   userAdmin?: string
   private loadUserData(): void {
-    const data = sessionStorage.getItem('user');
-    if (data) {
-      const userx: User = JSON.parse(data);
-      if(userx){
-        this.userAdminId = userx.primaryKey; 
-        this.userAdmin = userx.userType; 
-      }
+    const user = this.userService.getCookie('user');
+    if (user) {
+        this.userAdminId = user.primaryKey; 
+        this.userAdmin = user.userType; 
     }
   }
 
@@ -239,7 +179,6 @@ export class ViajesComponent implements OnInit {
         }, 1500);
       }
     
-  
       refresh(){
         this.startDate = '';
         this.endDate = '';
@@ -248,21 +187,7 @@ export class ViajesComponent implements OnInit {
   
       //formatear la fecha
       public formatDate(unixTimestamp: number) {
-        if(unixTimestamp === 0){
-          return `No hay ninguna actulización.`;
-        }
-        const timestampMs = unixTimestamp.toString().length === 10 ? unixTimestamp * 1000 : unixTimestamp;
-        
-        // Crea el objeto Date usando el timestamp en milisegundos
-        const date = new Date(Number(timestampMs));
-        const day = date.getUTCDate().toString().padStart(2, '0');
-        const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
-        const year = date.getUTCFullYear();
-        const hours = date.getUTCHours().toString().padStart(2, '0');
-        const minutes = date.getUTCMinutes().toString().padStart(2, '0');
-        const seconds = date.getUTCSeconds().toString().padStart(2, '0');
-  
-        return `${day}/${month}/${year} ${hours}:${minutes}:${seconds} UTC`;
+        return this.userService.formatDate(unixTimestamp);
       }
   
 }

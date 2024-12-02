@@ -26,6 +26,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initializePopovers();
+    this.userService.setNavbarComponent(this);
     this.loadUserData();
     this.startCookieCheck(); // Inicia el chequeo periódico de la cookie
   }
@@ -37,9 +38,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   private loadUserData(): void {
-    const data = this.getCookie('user');
-    if (data) {
-      const user: User = { ...data };
+    const user = this.userService.getCookie('user');
+    if (user) {
       this.userRol = user.userType;
       this.userNombre = user.firstName;
       this.userCorreo = user.email;
@@ -52,23 +52,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getCookie(name: string): any {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) {
-      const cookieValue = parts.pop()?.split(';').shift() || null;
-      if (cookieValue) {
-        const decodeCookie = decodeURIComponent(cookieValue);
-        try {
-          return JSON.parse(decodeCookie);
-        } catch (error) {
-          console.error('Error parsing cookie', error);
-          return null;
-        }
-      }
-    }
-    return null;
-  }
 
   private startCookieCheck(): void {
     // Comienza a revisar la cookie cada 1000ms (1 segundo)
@@ -85,7 +68,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
   
   cerrarSesion(): void {
-    this.userService.logout()
+    this.userService.logoutUser()
     this.router.navigate(['/home']);
     this.userRol = undefined;
     this.userCorreo = undefined;
