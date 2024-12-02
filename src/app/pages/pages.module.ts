@@ -28,6 +28,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { BoletaComponent } from './usuario/boleta/boleta.component';
+import { AsientosComponent } from './usuario/asientos/asientos.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { BoletaComponent } from './usuario/boleta/boleta.component';
     PaymentDetailComponent,
     AminBusesComponent,
     AdminEstacionesComponent,
+    AsientosComponent,
     ViajesComponent,
     BoletaComponent
   ],
@@ -82,6 +84,7 @@ import { BoletaComponent } from './usuario/boleta/boleta.component';
     AminBusesComponent,
     AdminEstacionesComponent,
     ViajesComponent,
+    AsientosComponent,
     BoletaComponent
   ]
 })
