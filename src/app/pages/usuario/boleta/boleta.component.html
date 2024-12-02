@@ -44,6 +44,29 @@
             </tbody>
         </table>
 
+     <!-- Sección Extra con los datos de los pasajeros -->
+<div class="extra-info">
+    <h5>{{ selectedSeats.length === 1 ? 'Datos del pasajero:' : 'Datos de los pasajeros:' }}</h5>
+    <table class="table table-bordered mb-4 table-striped table-sm">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>DNI</th>
+                <th>Teléfono</th>
+                <th>Correo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let passenger of seatForms">
+                <td>{{ passenger.formData.fullName }}</td>
+                <td>{{ passenger.formData.docNumber }}</td>
+                <td>{{ passenger.formData.phoneNumber }}</td>
+                <td>{{ passenger.formData.email }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
         <!-- Detalles de los productos -->
         <table class="table table-bordered mb-4">
             <thead>
@@ -60,8 +83,8 @@
                     <td>1.00</td>
                     <td>{{ trip ? trip.descripcion : 'Cargando...' }}</td>
                     <td>{{ selectedSeats.length }}</td>
-                    <td>{{ trip ? (trip.costo | currency) : 'Cargando...' }}</td>
-                    <td>{{ (subtotal | currency) }}</td>
+                    <td>S/. {{ trip ? (trip.costo) : 'Cargando...' }}</td>
+                    <td>S/. {{ (total) }}</td>
                 </tr>
             </tbody>
         </table>
@@ -76,15 +99,15 @@
                     <tfoot>
                         <tr>
                             <td>SUBTOTAL</td>
-                            <td id="subtotal" class="text-end">{{ subtotal | currency }}</td>
+                            <td id="subtotal" class="text-end">S/. {{ subtotal}}</td>
                         </tr>
                         <tr>
                             <td>IGV (18%)</td>
-                            <td id="igv" class="text-end">{{ igv | currency }}</td>
+                            <td id="igv" class="text-end">S/. {{ igv }}</td>
                         </tr>
                         <tr>
                             <td>TOTAL</td>
-                            <td id="total" class="text-end">{{ total | currency }}</td>
+                            <td id="total" class="text-end">S/. {{ total }}</td>
                         </tr>
                     </tfoot>
                 </table>
@@ -99,9 +122,10 @@
         </div>
     </div>
 </div>
-
 <!-- Botones -->
 <div class="d-flex align-items-center justify-content-center mt-4">
     <button type="button" class="btn btn-primary m-2" (click)="Descargar()">Descargar</button>
     <button type="button" class="btn btn-primary m-2" (click)="Imprimir()">Imprimir</button>
+    <!-- Botón Aceptar -->
+    <button type="button" class="btn btn-success m-2" (click)="Aceptar()">Aceptar</button>
 </div>

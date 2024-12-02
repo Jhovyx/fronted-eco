@@ -66,6 +66,10 @@ export class TripDetailComponent implements OnInit {
   constructor(private reservaService: ReservaService, private router: Router, private http: HttpClient) {}
 
   ngOnInit(): void {
+    // Limpiar los asientos seleccionados si estamos cambiando de viaje
+    sessionStorage.removeItem('selectedSeats');
+    this.selectedSeats = [];
+
     const selectedTrip = sessionStorage.getItem('selectedTrip');
     if (selectedTrip) {
       this.trip = JSON.parse(selectedTrip);
@@ -76,11 +80,11 @@ export class TripDetailComponent implements OnInit {
     if (userData) {
       this.user = JSON.parse(userData);
     }
-    // Cargar la capacidad del bus desde sessionStorage
-  const storedCapacity = sessionStorage.getItem('bus-capacidad');
-  if (storedCapacity) {
-    this.bus.capacidad = JSON.parse(storedCapacity);
-  }
+
+    const storedCapacity = sessionStorage.getItem('bus-capacidad');
+    if (storedCapacity) {
+      this.bus.capacidad = JSON.parse(storedCapacity);
+    }
   }
 
   loadBusAndStations(): void {
@@ -141,7 +145,11 @@ export class TripDetailComponent implements OnInit {
   
     // Actualizamos el estado de los botones (cambiando de color)
     this.updateSeatStatus();
-  }
+
+    // Guardar los asientos seleccionados en sessionStorage
+    sessionStorage.setItem('selectedSeats', JSON.stringify(this.selectedSeats));
+}
+
   updateSeatStatus(): void {
     // Los asientos seleccionados tendrán un color diferente, pero no se deshabilitan.
     this.seats.forEach(seat => {
@@ -197,6 +205,23 @@ export class TripDetailComponent implements OnInit {
   this.loadSeats();
 }
 
+confirmarReserva(): void {
+  if (this.selectedSeats.length === 0) {
+    // Mostrar la notificación de que se deben seleccionar asientos
+    this.notificationVisible = true;
+    setTimeout(() => {
+      this.notificationVisible = false;
+    }, 3000);
+  } else {
+    // Guardar la selección de asientos en sessionStorage
+    sessionStorage.setItem('selectedSeats', JSON.stringify(this.selectedSeats));
+
+    // Redirigir a la página de AsientosComponent
+    this.router.navigate(['/asientos']);
+  }
+}
+
+
 reserveXd(): void {
   if (!this.user) {
       const loginModalElement = document.getElementById('loginModal');
@@ -231,4 +256,6 @@ reserveXd(): void {
           reservaModal.show();
       }
   }
-}}
+}
+
+}
