@@ -17,6 +17,10 @@ import { AdminEstacionesComponent } from './pages/admin/admin-estaciones/estacio
 import { ViajesComponent } from './pages/admin/admin-viajes/viajes.component';
 import { TripDetailComponent } from './pages/usuario/trip-details/trip-detail.component';
 import { AsientosComponent } from './pages/usuario/asientos/asientos.component';
+import { adminGuard } from './guards/admin.guard';
+import { clienteNoAuthGuard } from './guards/cliente-no-auth.guard';
+import { clienteGuard } from './guards/cliente.guard';
+import { adminClienteGuard } from './guards/admin-cliente.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },//pordefecto
@@ -36,7 +40,6 @@ const routes: Routes = [
   { path: 'trip-detail', component: TripDetailComponent },
   { path: 'boleta', component: BoletaComponent },//boleta
   { path: 'pago-detalle', component: PaymentDetailComponent },//detalles del pago
-  {path:'asientos', component: AsientosComponent }, //formulario de asientos
   { path: '**', redirectTo: '/home' } // Manejo de rutas no encontradas
 ];
 

@@ -115,13 +115,21 @@
         </div>
 
         <!-- QR code -->
-        <div class="row mt-4">
+        <!--div class="row mt-4">
             <div class="col-12 text-center qr-code">
                 <img src="https://th.bing.com/th/id/OIP.AzGsz6YA4Aup3paQ_poIAwHaHa?w=1160&h=1160&rs=1&pid=ImgDetMain" alt="QR Code">
             </div>
         </div>
     </div>
+</div-->
+<!-- Aquí va el contenido del comprobante -->
+<div class="row mt-4">
+    <div class="col-12 text-center">
+        <img *ngIf="qrCodeUrl" [src]="qrCodeUrl" alt="QR Code">
+    </div>
 </div>
+
+
 <!-- Botones -->
 <div class="d-flex align-items-center justify-content-center mt-4">
     <button type="button" class="btn btn-primary m-2" (click)="Descargar()">Descargar</button>

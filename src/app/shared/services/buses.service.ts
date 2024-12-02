@@ -1,43 +1,38 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Bus } from '../interfaces/bus.interface';
+import { API_CONFIG } from '../../config/api.config';
 
 @Injectable({
     providedIn: 'root'
 })
 
 export class BusService{
-  //ya esta verificado
-    private apiBackend = 'http://localhost:3000/v1/buses'//backend
+  
+    //ACCEDIENDO ALAS VARIBLES DE CONFIGURACION
+    private readonly apiBackend = API_CONFIG.apiBackend;
+
+    //INJECTANDO A HttpClient PARA MANEJAR PETICIONES HTTP
     constructor(private http : HttpClient){}
 
-    //retorna todos
+    //OBTENER TODOS
     async findAll(){
-        return await this.http.get<Bus[]>(`${this.apiBackend}`).toPromise();
+        return await this.http.get<Bus[]>(`${this.apiBackend}/buses`, { withCredentials: true }).toPromise();
     }
 
-    //retorna por id
+    //OBTENER POR ID
     async findById(id: string){
-        return await this.http.get<Bus>(`${this.apiBackend}/${id}`).toPromise();
+        return await this.http.get<Bus>(`${this.apiBackend}/buses/${id}`, { withCredentials: true }).toPromise();
     }
 
-    //crear
+    //CREAR
     async create(bus: Bus){
-        const response = await this.http.post<Bus>(`${this.apiBackend}`, bus).toPromise();
-        if(response){
-            return response
-        }else{
-            return 'Ocurrio un error al crear el bus.';
-        }
+        return await this.http.post<Bus>(`${this.apiBackend}/buses`, bus, { withCredentials: true }).toPromise();
     }
 
+    //ACTUALIZAR
     async update(id: string, bus: Partial<Bus>){
-        const response = await this.http.patch<Bus>(`${this.apiBackend}/${id}`, bus).toPromise()
-        if(response){
-          return response
-        }else{
-          return 'Ocurrio un error al actualizar el bus.';
-        }
+      return await this.http.patch<Bus>(`${this.apiBackend}/buses/${id}`, bus, { withCredentials: true }).toPromise()
     }
 
 }

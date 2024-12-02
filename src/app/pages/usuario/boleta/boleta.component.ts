@@ -22,8 +22,10 @@ export class BoletaComponent implements OnInit {
     subtotal: number = 0;
     igv: number = 0;
     total: number = 0;
-     // Inyectamos el Router
-  constructor(private router: Router) {}
+     // Variables para el QR
+     qrCodeUrl: string = ''; // Variable para almacenar la URL de la imagen QR
+     constructor(private router: Router) {}  // Inyectar Router para redirigir
+  
 
     ngOnInit(): void {
        // Recuperar los datos del sessionStorage

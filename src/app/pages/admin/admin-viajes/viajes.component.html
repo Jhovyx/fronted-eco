@@ -81,11 +81,6 @@
           list="userList"
         ><!--enviar el usuario-->
       </div>
-      <datalist id="userList">
-        <option *ngFor="let user of filteredUsers.slice(0, 5)" [value]="user.firstName" class="itemxd">
-          {{ user.firstName }}
-        </option>
-      </datalist>
     </div>
   </div>
 
@@ -171,7 +166,7 @@
           <div class="mb-3">
             <label for="idEstacionOrigen" class="form-label">Estación de Origen</label>
             <select id="idEstacionOrigen" [(ngModel)]="selectViaje.idEstacionOrigen" name="idEstacionOrigen" class="form-control" required>
-              <option *ngFor="let estacion of filteredEstacion" [value]="estacion.primaryKey">{{ estacion.nombre }}</option>
+              <option *ngFor="let estacion of estaciones" [value]="estacion.primaryKey">{{ estacion.nombre }}</option>
             </select>
           </div>
 
@@ -179,7 +174,7 @@
           <div class="mb-3">
             <label for="idEstacionDestino" class="form-label">Estación de Destino</label>
             <select id="idEstacionDestino" [(ngModel)]="selectViaje.idEstacionDestino" name="idEstacionDestino" class="form-control" required>
-              <option *ngFor="let estacion of filteredEstacion" [value]="estacion.primaryKey">{{ estacion.nombre }}</option>
+              <option *ngFor="let estacion of estaciones" [value]="estacion.primaryKey">{{ estacion.nombre }}</option>
             </select>
           </div>
 
@@ -187,11 +182,13 @@
           <div class="mb-3">
             <label for="idBus" class="form-label">Seleccionar Bus</label>
             <select id="idBus" [(ngModel)]="selectViaje.idBus" name="idBus" class="form-control" required>
-              <option *ngFor="let bus of filteredBusResults" [value]="bus.primaryKey">{{ bus.modelo }} - {{ bus.placa }}</option>
+              <option *ngFor="let bus of buses" [value]="bus.primaryKey">{{ bus.modelo }} - {{ bus.placa }}</option>
             </select>
           </div>
-          
-          <button type="button" class="btn btn-primary" (click)="addViaje(selectViaje)">{{ selectViaje.primaryKey ? 'Actualizar' : 'Crear' }}</button>
+          <div class="d-flex align-items-center justify-content-center">
+            <button type="button" class="btn btn-primary w-50 m-1" (click)="updateViaje(selectViaje)">Crear Viaje</button>
+            <button type="button" class="btn btn-primary w-50 m-1" (click)="addViaje(selectViaje)">Actualizar Viaje</button>
+          </div>
         </form>
       </div>
     </div>
