@@ -121,6 +121,9 @@ export class RegisterComponent {
       return;
     }
     
+    if (this.router.url !== '/admin-user') {
+      this.loadUserData();
+    }
     try {
       const response = await this.userService.createUser(this.user);
       if(response?.message  === 'Usuario creado con éxito.'){
@@ -155,6 +158,13 @@ export class RegisterComponent {
       this.isLoading = false;
     }
 
+  }
+
+  private loadUserData(): void {
+    const user = this.userService.getCookie('user');
+    if (user) {
+      this.user.userAdminId = user.primaryKey;
+    }
   }
 
   onEnter(event: KeyboardEvent) {

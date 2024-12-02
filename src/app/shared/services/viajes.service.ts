@@ -26,7 +26,7 @@ export class ViajesService{
     }
 
     //CREAR
-    async create(viaje: Viaje){
+    async create(viaje: Omit<Viaje, 'primaryKey'>){
         return await this.http.post<Viaje>(`${this.apiBackend}/viajes`, viaje, { withCredentials: true }).toPromise();
     }
 
