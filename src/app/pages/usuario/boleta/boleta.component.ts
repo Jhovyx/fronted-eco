@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import * as QRCode from 'qrcode'; // Importa el paquete QRCode para generar el código QR
-import { Router } from '@angular/router';
+
 @Component({
     selector: 'app-boleta',
     templateUrl: './boleta.component.html',
@@ -10,12 +10,11 @@ import { Router } from '@angular/router';
 })
 
 export class BoletaComponent implements OnInit {
-    boletaId: string = ''; // Aquí se almacenará el ID de la boleta
-
     // Variables para los detalles del pago
     user: any = null;
     trip: any = null;
     selectedSeats: any[] = [];
+    seatForms: any[] = [];  // Asegúrate de definir esta propiedad
     fechaEmision: string = new Date().toLocaleDateString();
     metodoPago: string = "TARJETA";  // Suponiendo que es tarjeta siempre
 
@@ -23,78 +22,85 @@ export class BoletaComponent implements OnInit {
     subtotal: number = 0;
     igv: number = 0;
     total: number = 0;
-
-
      // Variables para el QR
-   qrCodeUrl: string = ''; // Variable para almacenar la URL de la imagen QR
-   constructor(private router: Router) {}  // Inyectar Router para redirigir
+     qrCodeUrl: string = ''; // Variable para almacenar la URL de la imagen QR
+     constructor(private router: Router) {}  // Inyectar Router para redirigir
+  
 
     ngOnInit(): void {
-        // Recuperar los datos del sessionStorage
-        const paymentDetails = JSON.parse(sessionStorage.getItem('paymentDetails') || '{}');
+       // Recuperar los datos del sessionStorage
+  const paymentDetails = JSON.parse(sessionStorage.getItem('paymentDetails') || '{}');
+  const seatForms = JSON.parse(sessionStorage.getItem('seatForms') || '[]');
+  const storedSelectedSeats = JSON.parse(sessionStorage.getItem('selectedSeats') || '[]');
 
-        // Asignar los datos del pago a las variables
         this.user = paymentDetails.user;
         this.trip = paymentDetails.trip;
-        this.selectedSeats = paymentDetails.selectedSeats;
+        this.selectedSeats = storedSelectedSeats.length > 0 ? storedSelectedSeats : paymentDetails.selectedSeats;
+        this.seatForms = seatForms;  // Cargar la información de los pasajeros
+// Calcular los totales
+if (this.trip && this.selectedSeats.length > 0) {
+    const costPerSeatWithIgv = this.trip.costo;  // El precio que ya incluye el IGV
+    const igvPercentage = 0.18;  // 18% de IGV
 
-        // Calcular los totales
-        if (this.trip && this.selectedSeats.length > 0) {
-            const costPerSeat = this.trip.costo;
-            this.subtotal = costPerSeat * this.selectedSeats.length;
-            this.igv = this.subtotal * 0.18;  // Asumiendo un 18% de IGV
-            this.total = this.subtotal + this.igv;
-        }
-        // Dirección IP de la máquina en la red local 
-    const pdfUrl = `http://localhost:4200/usuario/boleta.pdf/${this.boletaId}`;
+    // Subtotal: Precio unitario dividido entre (1 + IGV) para obtener el valor sin IGV
+    this.subtotal = +(costPerSeatWithIgv / (1 + igvPercentage) * this.selectedSeats.length).toFixed(2);
 
-    // Verificar si existe el PDF en sessionStorage y generar el QR
-    if (pdfUrl) {
-      this.qrCodeUrl = pdfUrl; // Usar la URL del PDF
-      this.generateQRCode(pdfUrl);  // Llamar a la función para generar el código QR con esta URL
-    }
-    }
-    // Función para generar el código QR con la URL del PDF
-  generateQRCode(url: string) {
-    QRCode.toDataURL(url, {
-      width: 200,
-      margin: 2
-    }).then((qrUrl) => {
-      this.qrCodeUrl = qrUrl; // Asignar la URL de la imagen del QR generada
-    }).catch((err) => {
-      console.error('Error al generar el código QR', err);
-    });
-    }
+    // El IGV es la diferencia entre el precio total y el subtotal (sin IGV)
+    this.igv = +(costPerSeatWithIgv * this.selectedSeats.length - this.subtotal).toFixed(2);
 
-    
-  
-    // Función para descargar el comprobante
+    // Total: Precio total por los asientos seleccionados (que ya incluye IGV)
+    this.total = +(costPerSeatWithIgv * this.selectedSeats.length).toFixed(2);
+}
+
+
+
+  }
+
+
+    // Función para descargar el comprobante de cada pasajero
     Descargar() {
-        const element = document.getElementById('comprobante');
-        if (element) {
-            html2canvas(element).then(canvas => {
-                const imgData = canvas.toDataURL('image/png');
-                const doc = new jsPDF();
-                const imgWidth = 210; // Ancho en mm para un documento A4
-                const imgHeight = (canvas.height * imgWidth) / canvas.width;
-                doc.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-                doc.save('IMPORTEC.pdf');
-            });
-        } else {
-            return;
-        }
+        this.seatForms.forEach(passenger => {
+            const element = document.getElementById('comprobante');
+            if (element) {
+                // Modificar los datos del pasajero en la plantilla para reflejar el nombre de cada uno
+                const passengerElement = element.cloneNode(true) as HTMLElement;
+                passengerElement.querySelector('#pasajeroNombre')!.textContent = passenger.formData.fullName;  // Aquí asumes que has agregado un lugar para mostrar el nombre del pasajero.
+
+                html2canvas(passengerElement).then(canvas => {
+                    const imgData = canvas.toDataURL('image/png');
+                    const doc = new jsPDF();
+                    const imgWidth = 210; // Ancho en mm para un documento A4
+                    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                    doc.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+                    doc.save(`${passenger.formData.fullName}_boleta.pdf`);
+                });
+            }
+        });
     }
 
-    // Función para imprimir el comprobante
+    // Función para imprimir la boleta para cada pasajero
     Imprimir() {
-        const printContents = document.getElementById('comprobante')?.innerHTML;
-        const originalContents = document.body.innerHTML;
-        if (printContents) {
-            document.body.innerHTML = printContents;
-            window.print();
-            document.body.innerHTML = originalContents;
-        } else {
-            return;
-        }
+        this.seatForms.forEach(passenger => {
+            const element = document.getElementById('comprobante');
+            if (element) {
+                // Modificar los datos del pasajero en la plantilla
+                const passengerElement = element.cloneNode(true) as HTMLElement;
+                passengerElement.querySelector('#pasajeroNombre')!.textContent = passenger.formData.fullName; // Colocar el nombre del pasajero.
+
+                const printContents = passengerElement.innerHTML;
+                const originalContents = document.body.innerHTML;
+                document.body.innerHTML = printContents;
+                window.print();
+                document.body.innerHTML = originalContents;
+            }
+        });
     }
- }
+
+    Aceptar() {
+        // Aquí puedes limpiar el sessionStorage si lo deseas
+        sessionStorage.clear();
+        
+        // Redirigir al home (ajusta la ruta según tu aplicación)
+        this.router.navigate(['/home']);  // Redirige al Home
+      }
+}

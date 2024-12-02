@@ -4,15 +4,22 @@
     max-width: 1000px; /* Ancho máximo del contenedor: 1000 píxeles */
     margin: 0 auto; /* Centra el contenedor horizontalmente */
     padding: 20px; /* Espacio interno del contenedor: 20 píxeles en todos los lados */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra suave alrededor del contenedor */
-    border-radius: 8px; /* Bordes redondeados del contenedor: radio de 8 píxeles */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Sombra suave alrededor del contenedor */
+    border-radius: 12px; /* Bordes redondeados del contenedor: radio de 12 píxeles */
     background-color: #f9f9f9; /* Color de fondo del contenedor */
     display: grid; /* Utiliza el modelo de diseño de cuadrícula (grid) */
     grid-template-columns: repeat(2, 1fr); /* Dos columnas de igual tamaño (fracción del espacio disponible) */
     gap: 20px; /* Espacio entre las filas y columnas */
+    animation: fadeInUp 1s ease-out; /* Animación de entrada para el contenedor */
+    transform: translateY(10px); /* Desplazamiento inicial para la animación */
+    opacity: 0; /* Desaparece al principio */
+    transition: all 0.5s ease-out; /* Transición suave */
 }
 
-
+.container:hover {
+    transform: translateY(0); /* Movimiento hacia arriba al hacer hover */
+    opacity: 1; /* Se hace visible */
+}
 
 /* Estilo de las etiquetas */
 .container label {
@@ -20,6 +27,12 @@
     margin: 10px 0 5px; /* Margen superior de 10 píxeles y margen inferior de 5 píxeles */
     font-weight: bold; /* Hace el texto de las etiquetas en negrita */
     color: #555; /* Color del texto de las etiquetas */
+    font-size: 1.1rem; /* Tamaño de fuente más grande para mejor legibilidad */
+    transition: color 0.3s ease; /* Transición suave para el color */
+}
+
+.container label:hover {
+    color: #4CAF50; /* Cambio de color de la etiqueta al pasar el ratón sobre ella */
 }
 
 /* Estilo para los campos de entrada y el selector */
@@ -27,12 +40,15 @@
 .container input[type="number"],
 .container input[type="date"],
 .container select {
-    width: 105%; /* Ancho de los campos: 105% del ancho del contenedor (puede causar desbordamiento) */
-    padding: 10px; /* Espacio interno de los campos: 10 píxeles en todos los lados */
+    width: 100%; /* Se ajusta el ancho de los campos al 100% */
+    padding: 12px 15px; /* Espacio interno de los campos */
     border: 1px solid #ddd; /* Borde de 1 píxel sólido con color gris claro */
-    border-radius: 4px; /* Bordes redondeados de los campos: radio de 4 píxeles */
+    border-radius: 8px; /* Bordes redondeados */
     box-sizing: border-box; /* Incluye el padding y el borde en el ancho total del campo */
-    margin-bottom: 15px; /* Margen inferior de los campos: 15 píxeles */
+    margin-bottom: 20px; /* Margen inferior de los campos */
+    background-color: #f3f4f6; /* Fondo claro */
+    font-size: 1rem; /* Tamaño de fuente */
+    transition: all 0.3s ease; /* Transición suave */
 }
 
 /* Estilo cuando los campos están enfocados */
@@ -40,74 +56,89 @@
 .container input[type="number"]:focus,
 .container input[type="date"]:focus,
 .container select:focus {
-    border-color: #4CAF50; /* Color del borde cuando el campo está enfocado: verde */
+    border-color: #4CAF50; /* Color verde cuando el campo está enfocado */
     outline: none; /* Elimina el borde de enfoque predeterminado del navegador */
+    box-shadow: 0 0 5px rgba(52, 211, 153, 0.5); /* Sombra suave alrededor del campo */
+    background-color: #fff; /* Cambia a blanco cuando está enfocado */
+    transform: scale(1.02); /* Agrega un ligero aumento en el tamaño para hacerlo más notorio */
 }
 
 /* Estilo para los grupos de radio buttons */
 .form-group {
     grid-column: span 2; /* Ocupa ambas columnas del grid */
-    margin-bottom: 10px; /* Margen inferior del grupo de radio buttons: 10 píxeles */
+    margin-bottom: 10px; /* Margen inferior del grupo de radio buttons */
     display: flex; /* Utiliza el modelo de diseño flexible (flexbox) */
-    gap: 10px; /* Espacio entre los elementos dentro del grupo: 10 píxeles */
+    gap: 15px; /* Espacio entre los elementos dentro del grupo */
+    animation: fadeInUp 1s ease-out; /* Animación de entrada para los grupos */
+    opacity: 0; /* Inicialmente invisibles */
+    transform: translateY(20px); /* Desplazamiento inicial para la animación */
+    transition: all 0.5s ease-out; /* Transición suave */
+}
+
+.form-group:hover {
+    opacity: 1; /* Se hace visible cuando pasa el ratón sobre el grupo */
+    transform: translateY(0); /* Movimiento hacia arriba al hacer hover */
 }
 
 /* Estilo para el botón de pagar */
 .btn-pagar {
-    background-color: #4CAF50; /* Color de fondo del botón: verde */
+    background-color: #4CAF50; /* Color de fondo del botón */
     border: none; /* Sin borde alrededor del botón */
-    color: white; /* Color del texto del botón: blanco */
-    padding: 15px 32px; /* Espacio interno del botón: 15 píxeles arriba y abajo, 32 píxeles a los lados */
-    text-align: center; /* Alinea el texto del botón al centro */
-    text-decoration: none; /* Elimina el subrayado del texto del botón */
-    display: inline-block; /* Muestra el botón como un elemento en línea con bloque */
-    font-size: 16px; /* Tamaño de la fuente del texto del botón */
-    margin: 20px 0; /* Margen superior e inferior del botón: 20 píxeles */
-    cursor: pointer; /* Cambia el cursor al pasar sobre el botón a una mano (indicador de clic) */
-    border-radius: 4px; /* Bordes redondeados del botón: radio de 4 píxeles */
-    transition: background-color 0.3s; /* Suaviza el cambio de color de fondo cuando se pasa el mouse */
+    color: white; /* Color del texto del botón */
+    padding: 15px 32px; /* Espacio interno del botón */
+    font-size: 16px; /* Tamaño de la fuente */
+    text-align: center; /* Alineación del texto */
+    text-decoration: none; /* Elimina el subrayado */
+    display: inline-block; /* Se comporta como un bloque en línea */
+    border-radius: 8px; /* Bordes redondeados */
+    transition: all 0.3s ease-out; /* Transición suave */
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2); /* Sombra suave */
 }
 
-/* Estilo para el botón de pagar cuando se pasa el ratón sobre él */
+/* Efecto hover sobre el botón */
 .btn-pagar:hover {
-    background-color: #45a049; /* Cambia el color de fondo cuando el botón está en estado hover (pasar el ratón sobre él) */
+    background-color: #45a049; /* Cambio de color al pasar el ratón */
+    transform: scale(1.05); /* Aumento ligero al hacer hover */
 }
 
 /* Estilo para el contenedor del botón */
 .button-container {
-    grid-column: span 2; /* Asegura que el contenedor ocupa ambas columnas del grid */
-    text-align: right; /* Alinea el contenido del contenedor a la derecha */
-    margin-top: 20px; /* Margen superior del contenedor */
+    grid-column: span 2; /* Asegura que el contenedor ocupa ambas columnas */
+    text-align: center; /* Centra el contenido */
+    margin-top: 30px; /* Margen superior */
+    animation: fadeInUp 1s ease-out; /* Animación de entrada para el botón */
 }
 
-/* Estilo general del contenedor */
+/* Estilo para el contenedor del comprobante */
 #comprobante {
-    background-color: #fff; 
-    border-radius: 12px; 
-    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1); 
-    padding: 20px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 25px;
     max-width: 800px;
     width: 100%;
     margin: 0 auto;
+    animation: fadeInUp 1s ease-out; /* Animación de entrada */
 }
 
 /* Encabezado */
 h1 {
     font-family: 'Roboto', sans-serif;
-    font-size: 2rem;
-    color: #1E3A8A; /* Azul oscuro para el encabezado */
-    font-weight: 600;
-    margin-bottom: 20px;
+    font-size: 2.2rem; /* Tamaño de fuente aumentado */
+    color: #1E3A8A; /* Azul oscuro */
+    font-weight: 700; /* Negrita */
+    margin-bottom: 25px; /* Espacio debajo del encabezado */
+    animation: fadeInUp 1s ease-out; /* Animación de entrada */
 }
 
 /* Estilo de los inputs */
 .form-control {
-    border: 2px solid #E5E7EB; 
-    border-radius: 8px; 
-    padding: 12px 15px; 
+    border: 2px solid #E5E7EB;
+    border-radius: 8px;
+    padding: 12px 15px;
     font-size: 1rem;
-    background-color: #F3F4F6; /* Fondo claro */
-    transition: border 0.3s ease; 
+    background-color: #F3F4F6;
+    transition: all 0.3s ease;
 }
 
 /* Estilo cuando el input está enfocado */
@@ -116,9 +147,10 @@ h1 {
     background-color: #fff;
     box-shadow: 0 0 5px rgba(52, 211, 153, 0.5); /* Efecto sutil */
     outline: none;
+    transform: scale(1.02); /* Aumenta ligeramente el tamaño del campo */
 }
 
-/* Botón de pagar */
+/* Estilo para el botón de pagar */
 button.btn-success {
     background-color: #10B981; /* Verde vibrante */
     color: #fff;
@@ -126,25 +158,25 @@ button.btn-success {
     font-size: 1.2rem;
     border-radius: 8px;
     border: none;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    transition: all 0.3s ease, transform 0.2s ease;
     box-shadow: 0px 5px 15px rgba(16, 185, 129, 0.2); /* Sombra suave */
 }
 
 /* Efecto hover sobre el botón */
 button.btn-success:hover {
     background-color: #059669;
-    transform: translateY(-2px);
+    transform: translateY(-3px); /* Efecto de desplazamiento */
 }
 
 /* Agregar espacio entre filas */
 .mb-3 {
-    margin-bottom: 20px;
+    margin-bottom: 25px; /* Espacio inferior mayor */
 }
 
 /* Información de usuario y viaje */
 .row p {
     font-size: 1rem;
-    color: #6B7280; /* Gris suave para texto secundario */
+    color: #6B7280;
     margin: 0;
 }
 
@@ -168,11 +200,6 @@ strong {
         opacity: 1;
         transform: translateY(0);
     }
-}
-
-/* Animación en el contenedor */
-#comprobante {
-    animation: fadeInUp 1s ease-out;
 }
 
 /* Fondo general */

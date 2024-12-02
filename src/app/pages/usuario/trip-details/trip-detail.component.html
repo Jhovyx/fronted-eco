@@ -20,12 +20,16 @@
           <li><strong>Fecha Fin:</strong> {{ trip.fechaHoraLlegada | date:'fullDate' }}</li>
           <li><strong>Costo:</strong> {{ trip.costo | currency }}</li>
         </ul>
-        <!-- Botón para Reservar -->
-        <div class="d-flex justify-content-center">
-          <button (click)="reserveXd()" class="btn btn-primary btn-lg mt-3 shadow-lg rounded-pill w-75 btn-hover">
-            Reservar Ahora
-          </button>
-        </div>
+
+       <!-- Botón para Reservar -->
+<div class="d-flex justify-content-center">
+  <button (click)="reserveXd()" 
+          [disabled]="selectedSeats.length === 0" 
+          class="btn btn-primary btn-lg mt-3 shadow-lg rounded-pill w-75 btn-hover">
+    Reservar Ahora
+  </button>
+</div>
+
         
         <!-- Botón de detalles del viaje con ícono de bus -->
         <div class="d-flex justify-content-center mt-4">
@@ -42,9 +46,8 @@
 </div>
 
 
-
 <!-- Modal de detalles del viaje -->
-<div class="modal fade" id="tripDetailsModal" tabindex="-1" aria-labelledby="tripDetailsModalLabel" aria-hidden="true">
+<div class="modal fade" id="tripDetailsModal" tabindex="-1" aria-labelledby="tripDetailsModalLabel" [attr.inert]="notificationVisible ? true : null">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content animate_animated animate_zoomIn">
       <div class="modal-header bg-primary text-white">
@@ -116,23 +119,6 @@
   </div>
 </div>
 
-  <!-- Modal de inicio de sesión -->
-  <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content animate_animated animate_zoomIn">
-        <div class="modal-header">
-          <h5 class="modal-title" id="loginModalLabel">Iniciar Sesión</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body text-center">
-          <p>Por favor, inicie sesión para continuar con la reserva.</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger btn-hover" data-bs-dismiss="modal">Cerrar</button>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- Modal de Reserva -->
   <div class="modal fade" id="tripModall" tabindex="-1" aria-labelledby="tripModalLabel" aria-hidden="true">
@@ -146,10 +132,18 @@
           <img class="img-fluid rounded-3 mb-3 shadow-lg" [src]="trip.urlImagen" alt="{{ trip.nombre }}" />
           <p>¿Está seguro de que desea reservar este viaje?</p>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary btn-hover" data-bs-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn btn-primary btn-hover"  data-bs-dismiss="modal" routerLink="/pago-detalle">Confirmar Reserva</button>
-        </div>
+       <!-- Modal de Reserva -->
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary btn-hover" data-bs-dismiss="modal">Cerrar</button>
+  <button type="button" 
+          (click)="confirmarReserva()" 
+          [disabled]="selectedSeats.length === 0" 
+          class="btn btn-primary btn-hover" 
+          data-bs-dismiss="modal">
+    Confirmar Reserva
+  </button>
+</div>
+
       </div>
     </div>
   </div>

@@ -10,7 +10,8 @@ export class PaymentDetailComponent {
     trip: any = null;  // Datos del viaje (costo, etc.)
     user: any = null;  // Información del usuario
     selectedSeats: any[] = [];  // Asientos seleccionados
-  
+    seatForms: any[] = [];  // Información de los pasajeros
+    
     minDate: string = new Date().toISOString().split("T")[0]; // Fecha mínima para la selección (hoy)
   
     constructor(private router: Router) {}
@@ -18,12 +19,14 @@ export class PaymentDetailComponent {
     ngOnInit(): void {
         // Recuperar los datos de sessionStorage
         const reservationDetails = JSON.parse(sessionStorage.getItem('reservationDetails') || '{}');
+        const seatForms = JSON.parse(sessionStorage.getItem('seatForms') || '[]');
     
         // Asignar los datos a las variables del componente
         this.user = reservationDetails.user || null;
         this.trip = reservationDetails.trip || null;
         this.selectedSeats = reservationDetails.seats || [];
-        
+        this.seatForms = seatForms;  // Cargar los datos de los pasajeros
+
         // Establecer la fecha mínima para el campo de fecha de vencimiento
         this.minDate = new Date().toISOString().split('T')[0];  // Esto establece la fecha mínima a la fecha actual.
     }
@@ -50,6 +53,6 @@ export class PaymentDetailComponent {
         sessionStorage.setItem('paymentDetails', JSON.stringify(paymentDetails));
 
         // Ahora, si quieres redirigir al usuario a otra página, puedes hacerlo aquí.
-         this.router.navigate(['/boleta']);
+        this.router.navigate(['/boleta']);
     }
 }
