@@ -105,21 +105,52 @@
 
 </div>
 
- <!-- Mostrar los viajes con tarjetas (cards) -->
- <div class="row">
-  <div class="col-md-4 mb-4" *ngFor="let viaje of filteredViajes">
-    <div class="card" style="width: 18rem;">
-      <img class="card-img-top" [src]="viaje.urlImagen" alt="Imagen del viaje" (click)="viewDetails(viaje)">
-      <div class="card-body">
-        <h5 class="card-title">{{ viaje.nombre }}</h5>
-        <p class="card-text">{{ viaje.descripcion | slice:0:50 }}...</p>
-        <div class="d-flex align-items-center justify-content-center">
-          <button class="btn m-2" [ngClass]="{'btn-success': viaje.estado, 'btn-danger': !viaje.estado}" (click)="updateStatus(viaje)">
-            {{ viaje.estado ? 'Activo' : 'Inactivo' }}
-          </button>
-          <button class="btn btn-warning m-2" (click)="btnEdit(viaje)"  data-bs-toggle="modal" data-bs-target="#viajeModal">Editar</button>
-          <button class="btn btn-primary m-2" (click)="viewDetails(viaje)"  data-bs-toggle="modal" data-bs-target="#viajeDetalleModal">Detalle</button>
+
+<!-- Mostrar los viajes con tarjetas (cards) -->
+<div class="container py-5">
+  <div class="row g-4">
+    <div class="col-sm-6 col-md-4 col-lg-3" *ngFor="let viaje of viajes">
+      <div class="card h-100 shadow-sm border-0 animate__animated animate__fadeIn position-relative">
+        <!-- Imagen con animación al pasar el mouse -->
+        <div class="image-container" (click)="viewDetails(viaje)">
+          <!-- El modal se abre al hacer click en la imagen -->
+            <img 
+              class="card-img-top rounded-top img-fluid" 
+              [src]="viaje.urlImagen" 
+              alt="Imagen del viaje" 
+              style="object-fit: cover; height: 200px;">
+          <div class="overlay d-flex align-items-center justify-content-center">
+            <span class="text-white fw-bold">Ver Detalles</span>
+          </div>
         </div>
+        
+        <!-- Información del viaje -->
+        <div class="card-body d-flex flex-column align-items-center justify-content-between" style="height: 100%;">
+          <!-- Título del viaje -->
+          <h5 class="card-title text-dark fw-bold mb-3">{{ viaje.nombre }}</h5>
+        
+          <!-- Descripción del viaje -->
+          <p class="card-text text-muted text-center" style="font-size: 0.9rem;">
+            {{ viaje.descripcion | slice: 0:50 }}...
+          </p>
+        
+          <!-- Botones alineados y con márgenes consistentes -->
+          <div class="d-flex justify-content-center mt-4 gap-3">
+            <button 
+              class="btn btn-sm" 
+              [ngClass]="{'btn-success': viaje.estado, 'btn-danger': !viaje.estado}" 
+              (click)="updateStatus(viaje)">
+              {{ viaje.estado ? 'Activo' : 'Inactivo' }}
+            </button>
+            <button 
+              class="btn btn-warning btn-sm" 
+              (click)="btnEdit(viaje)" 
+              data-bs-toggle="modal" 
+              data-bs-target="#viajeModal">
+              <i class="bi bi-pencil-square"></i> Editar
+            </button>
+          </div>
+        </div>        
       </div>
     </div>
   </div>
@@ -131,65 +162,266 @@
 </div>
 
 
-<!--modal para agreggar--> <!--mostrar la estaciones de origen y destino para poder seleccionar el bus a seleccionar  -->
-
+<!-- Modal con diseño más avanzado -->
 <div class="modal fade" id="viajeModal" tabindex="-1" aria-labelledby="viajeModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="viajeModalLabel">{{ selectViaje.primaryKey ? 'Editar viaje' : 'Nuevo viaje' }}</h5>
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content shadow-lg animate__animated animate__fadeIn animate__delay-1s">
+      <!-- Encabezado del Modal -->
+      <div class="modal-header text-white" style="background: linear-gradient(45deg, #007bff, #0056b3);">
+        <h5 class="modal-title d-flex align-items-center">
+          <i class="bi bi-compass-fill me-2"></i>
+          {{ selectViaje.primaryKey ? 'Actualizar Viaje' : 'Crear Nuevo Viaje' }}
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <!-- Cuerpo del Modal -->
+      <div class="modal-body bg-light">
+        <div class="container">
+          <form>
+            <div class="row gy-4">
+              <!-- Sección: Datos Generales -->
+              <div class="col-lg-6">
+                <div class="card border-0 shadow-sm hover-zoom-in h-100">
+                  <div class="card-header text-white text-center bg-primary">
+                    <h6><i class="bi bi-info-circle-fill"></i> Datos Generales</h6>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-floating mb-3">
+                      <input type="text" id="nombre" [(ngModel)]="selectViaje.nombre" name="nombre" class="form-control" placeholder=" " required>
+                      <label for="nombre"><i class="bi bi-pencil-fill text-primary"></i> Nombre del Viaje</label>
+                    </div>
+                    <div class="form-floating">
+                      <textarea id="descripcion" [(ngModel)]="selectViaje.descripcion" name="descripcion" class="form-control" rows="3" placeholder=" " required></textarea>
+                      <label for="descripcion"><i class="bi bi-chat-text-fill text-primary"></i> Descripción</label>
+                    </div>
+                    <div class="form-floating mb-3 mt-3">
+                      <input type="url" id="imagenUrl" [(ngModel)]="selectViaje.urlImagen" name="imagenUrl" class="form-control" placeholder=" ">
+                      <label for="imagenUrl"><i class="bi bi-image-fill text-success"></i> URL de la Imagen</label>
+                    </div>
+              
+                    <!-- Vista previa de la imagen -->
+                    <div class="text-center" *ngIf="selectViaje.urlImagen">
+                      <img [src]="selectViaje.urlImagen" alt="Vista previa" class="img-fluid rounded shadow-sm" style="max-height: 200px;">
+                      <p class="text-muted mt-2">Vista previa de la imagen</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sección: Fechas -->
+              <div class="col-lg-6">
+                <div class="card border-0 shadow-sm hover-zoom-in h-100">
+                  <div class="card-header text-white text-center bg-primary">
+                    <h6><i class="bi bi-calendar-check-fill"></i> Fechas</h6>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-floating mb-3">
+                      <input type="datetime-local" id="fechaHoraSalida" [(ngModel)]="selectViaje.fechaHoraSalida" name="fechaHoraSalida" class="form-control" required>
+                      <label for="fechaHoraSalida"><i class="bi bi-clock-fill text-success"></i> Fecha y Hora de Salida</label>
+                    </div>
+                    <div class="form-floating">
+                      <input type="datetime-local" id="fechaHoraLlegada" [(ngModel)]="selectViaje.fechaHoraLlegada" name="fechaHoraLlegada" class="form-control" required>
+                      <label for="fechaHoraLlegada"><i class="bi bi-clock-history-fill text-success"></i> Fecha y Hora de Llegada</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sección: Estaciones -->
+              <div class="col-lg-6">
+                <div class="card border-0 shadow-sm hover-zoom-in h-100">
+                  <div class="card-header text-white text-center bg-primary">
+                    <h6><i class="bi bi-geo-alt-fill"></i> Estaciones</h6>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-floating mb-3">
+                      <select id="idEstacionOrigen" [(ngModel)]="selectViaje.idEstacionOrigen" name="idEstacionOrigen" class="form-select" required>
+                        <option value="">-- Seleccionar --</option>
+                        <option *ngFor="let estacion of estaciones" [value]="estacion.primaryKey">{{ estacion.nombre }}</option>
+                      </select>
+                      <label for="idEstacionOrigen"><i class="bi bi-arrow-up-right-circle-fill text-warning"></i> Origen</label>
+                    </div>
+                    <div class="form-floating">
+                      <select id="idEstacionDestino" [(ngModel)]="selectViaje.idEstacionDestino" name="idEstacionDestino" class="form-select" required>
+                        <option value="">-- Seleccionar --</option>
+                        <option *ngFor="let estacion of estaciones" [value]="estacion.primaryKey">{{ estacion.nombre }}</option>
+                      </select>
+                      <label for="idEstacionDestino"><i class="bi bi-arrow-down-left-circle-fill text-warning"></i> Destino</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sección: Detalles del Viaje -->
+              <div class="col-lg-6">
+                <div class="card border-0 shadow-sm hover-zoom-in h-100">
+                  <div class="card-header text-white text-center bg-primary">
+                    <h6><i class="bi bi-truck-flatbed"></i> Detalles del Viaje</h6>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-floating mb-3">
+                      <select id="idBus" [(ngModel)]="selectViaje.idBus" name="idBus" class="form-select" required>
+                        <option value="">-- Seleccionar --</option>
+                        <option *ngFor="let bus of buses" [value]="bus.primaryKey">{{ bus.modelo }} - {{ bus.placa }}</option>
+                      </select>
+                      <label for="idBus"><i class="bi bi-bus-front-fill text-danger"></i> Bus</label>
+                    </div>
+                    <div class="form-floating">
+                      <input type="number" id="costo" [(ngModel)]="selectViaje.costo" name="costo" class="form-control" placeholder=" " required>
+                      <label for="costo"><i class="bi bi-currency-dollar text-danger"></i> Costo</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Sección: Opciones -->
+              <div class="col-12">
+                <div class="card border-0 shadow-sm hover-zoom-in">
+                  <div class="card-header text-white text-center" style="background: #6c757d;">
+                    <h6><i class="bi bi-gear-fill"></i> Opciones</h6>
+                  </div>
+                  <div class="card-body">
+                    <div class="row g-3">
+                      <!-- Estado -->
+                      <div class="col-md-6 col-lg-4 d-flex align-items-center">
+                        <div class="form-check">
+                          <input 
+                            type="checkbox" 
+                            id="estado" 
+                            [(ngModel)]="selectViaje.estado" 
+                            name="estado" 
+                            class="form-check-input">
+                          <label for="estado" class="form-check-label">
+                            <i class="bi bi-check-circle"></i> Estado (Activo)
+                          </label>
+                        </div>
+                      </div>
+                      <!-- Promoción -->
+                      <div class="col-md-6 col-lg-4 d-flex align-items-center">
+                        <div class="form-check">
+                          <input 
+                            type="checkbox" 
+                            id="statusPromo" 
+                            [(ngModel)]="selectViaje.statusPromo" 
+                            name="statusPromo" 
+                            class="form-check-input">
+                          <label for="statusPromo" class="form-check-label">
+                            <i class="bi bi-tag"></i> ¿Tiene Promoción?
+                          </label>
+                        </div>
+                      </div>
+                      <!-- Porcentaje de Descuento -->
+                      <div 
+                        *ngIf="selectViaje.statusPromo" 
+                        class="col-md-6 col-lg-4">
+                        <label for="descuento" class="form-label text-primary fw-bold">
+                          <i class="bi bi-percent"></i> Porcentaje de Descuento
+                        </label>
+                        <div class="input-group">
+                          <input 
+                            type="number" 
+                            id="descuento" 
+                            class="form-control" 
+                            [(ngModel)]="selectViaje.descuentoPorcentaje" 
+                            name="descuento" 
+                            min="0" 
+                            max="100" 
+                            step="1" 
+                            placeholder="Ej. 20" 
+                            aria-describedby="descuentoHelp">
+                          <span class="input-group-text bg-primary text-white">%</span>
+                        </div>
+                        <small id="descuentoHelp" class="form-text text-muted">
+                          Ingrese un valor entre 0 y 100.
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+
+            <!-- Botones de Acción -->
+            <div class="text-center mt-4">
+              <button type="button" class="btn btn-primary btn-lg me-2 px-5" (click)="selectViaje.primaryKey ? updateViaje(selectViaje) : addViaje(selectViaje)">
+                <i class="bi bi-check-circle-fill"></i> {{ selectViaje.primaryKey ? 'Actualizar Viaje' : 'Crear Viaje' }}
+              </button>
+              <button type="button" class="btn btn-secondary btn-lg px-5" data-bs-dismiss="modal">
+                <i class="bi bi-x-circle-fill"></i> Cancelar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de detalles -->
+<div class="modal fade" id="viajeDetalleModal" tabindex="-1" aria-labelledby="viajeDetalleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content custom-modal">
+      
+      <!-- Modal Header -->
+      <div class="modal-header custom-modal-header p-4">
+        <h5 class="modal-title" id="viajeDetalleModalLabel">
+          <span class="fw-bold text-gradient">{{ selectViaje.nombre }}</span><br>
+          <small class="text-muted">{{ selectViaje.fechaHoraSalida | date:'dd MMM yyyy' }}</small>
+        </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <form>
-          <div class="mb-3">
-            <label for="nombre" class="form-label">Nombre</label>
-            <input type="text" id="nombre" [(ngModel)]="selectViaje.nombre" name="nombre" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label for="descripcion" class="form-label">Descripción</label>
-            <textarea id="descripcion" [(ngModel)]="selectViaje.descripcion" name="descripcion" class="form-control" required></textarea>
-          </div>
-          <div class="mb-3">
-            <label for="costo" class="form-label">Costo</label>
-            <input type="number" id="costo" [(ngModel)]="selectViaje.costo" name="costo" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label for="fechaHoraSalida" class="form-label">Fecha y hora de salida</label>
-            <input type="datetime-local" id="fechaHoraSalida" [(ngModel)]="selectViaje.fechaHoraSalida" name="fechaHoraSalida" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label for="fechaHoraLlegada" class="form-label">Fecha y hora de llegada</label>
-            <input type="datetime-local" id="fechaHoraLlegada" [(ngModel)]="selectViaje.fechaHoraLlegada" name="fechaHoraLlegada" class="form-control" required>
-          </div>
-          <!-- Selección de estación de origen -->
-          <div class="mb-3">
-            <label for="idEstacionOrigen" class="form-label">Estación de Origen</label>
-            <select id="idEstacionOrigen" [(ngModel)]="selectViaje.idEstacionOrigen" name="idEstacionOrigen" class="form-control" required>
-              <option *ngFor="let estacion of estaciones" [value]="estacion.primaryKey">{{ estacion.nombre }}</option>
-            </select>
+
+      <!-- Modal Body -->
+      <div class="modal-body custom-modal-body p-4">
+        <div class="row">
+          <div class="col-md-6">
+            <!-- Tarjeta de Descripción -->
+            <div class="card mb-3">
+              <div class="card-body">
+                <h6 class="text-muted"><i class="bi bi-pencil-square me-2"></i>Descripción</h6>
+                <p class="text-dark">{{ selectViaje.descripcion }}</p>
+              </div>
+            </div>
+
+            <!-- Tarjeta de Usuario -->
+            <div class="card mb-3">
+              <div class="card-body">
+                <h6 class="text-muted"><i class="bi bi-person-badge me-2"></i>Usuario</h6>
+                <p class="text-dark">{{ selectedUser.firstName }} {{ selectedUser.lastName }}</p>
+                <p class="small text-muted">{{ selectedUser.email }} | {{ selectedUser.phoneNumber }}</p>
+              </div>
+            </div>
+
+            <!-- Tarjeta de Fechas -->
+            <div class="card mb-3">
+              <div class="card-body">
+                <h6 class="text-muted"><i class="bi bi-calendar-event me-2"></i>Fechas</h6>
+                <p class="text-dark"><strong>Salida:</strong> {{ selectViaje.fechaHoraSalida | date:'dd/MM/yyyy HH:mm' }}</p>
+                <p class="text-dark"><strong>Llegada:</strong> {{ selectViaje.fechaHoraLlegada | date:'dd/MM/yyyy HH:mm' }}</p>
+              </div>
+            </div>
           </div>
 
-          <!-- Selección de estación de destino -->
-          <div class="mb-3">
-            <label for="idEstacionDestino" class="form-label">Estación de Destino</label>
-            <select id="idEstacionDestino" [(ngModel)]="selectViaje.idEstacionDestino" name="idEstacionDestino" class="form-control" required>
-              <option *ngFor="let estacion of estaciones" [value]="estacion.primaryKey">{{ estacion.nombre }}</option>
-            </select>
+          <div class="col-md-6">
+            <!-- Tarjeta de Imagen -->
+            <div class="card">
+              <div class="card-body">
+                <img [src]="selectViaje.urlImagen" class="img-fluid rounded shadow-lg custom-image" alt="Imagen del viaje">
+              </div>
+            </div>
           </div>
+        </div>
+      </div>
 
-          <!-- Búsqueda y selección de bus -->
-          <div class="mb-3">
-            <label for="idBus" class="form-label">Seleccionar Bus</label>
-            <select id="idBus" [(ngModel)]="selectViaje.idBus" name="idBus" class="form-control" required>
-              <option *ngFor="let bus of buses" [value]="bus.primaryKey">{{ bus.modelo }} - {{ bus.placa }}</option>
-            </select>
-          </div>
-          <div class="d-flex align-items-center justify-content-center">
-            <button type="button" class="btn btn-primary w-50 m-1" (click)="updateViaje(selectViaje)">Crear Viaje</button>
-            <button type="button" class="btn btn-primary w-50 m-1" (click)="addViaje(selectViaje)">Actualizar Viaje</button>
-          </div>
-        </form>
+      <!-- Modal Footer -->
+      <div class="modal-footer custom-modal-footer p-4 justify-content-center">
+        <button type="button" class="btn btn-outline-dark custom-btn" data-bs-dismiss="modal">
+          <i class="bi bi-x-circle"></i> Cerrar
+        </button>
+        <a href="https://www.google.com/maps" target="_blank" class="btn btn-primary custom-btn">
+          <i class="bi bi-geo-alt-fill"></i> Ver en Google Maps
+        </a>
       </div>
     </div>
   </div>

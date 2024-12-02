@@ -7,6 +7,7 @@ import { Bus } from '../../../shared/interfaces/bus.interface';
 import { Estacion } from '../../../shared/interfaces/estaciones.interface';
 import { BusService } from '../../../shared/services/buses.service';
 import { EstacionService } from '../../../shared/services/estaciones.service';
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-viajes',
@@ -81,12 +82,28 @@ export class ViajesComponent implements OnInit {
     //add viaje
   async addViaje(viaje: Viaje) {
     this.loadUserData();
-   
+    if (viaje.fechaHoraSalida) {
+      viaje.fechaHoraSalida = new Date(viaje.fechaHoraSalida).getTime();
+    }
+    if (viaje.fechaHoraLlegada) {
+      viaje.fechaHoraLlegada = new Date(viaje.fechaHoraLlegada).getTime();
+    }
+    const {primaryKey,...v} = viaje;
+    await this.viajeService.create(v);
+    this.ngOnInit();
   }
 
   async updateViaje(viaje: Viaje) {
     this.loadUserData();
-
+    if (viaje.fechaHoraSalida) {
+      viaje.fechaHoraSalida = new Date(viaje.fechaHoraSalida).getTime();
+    }
+    if (viaje.fechaHoraLlegada) {
+      viaje.fechaHoraLlegada = new Date(viaje.fechaHoraLlegada).getTime();
+    }
+    const {primaryKey,...v} = viaje;
+    await this.viajeService.update(primaryKey,v);
+    this.ngOnInit();
   }
 
   async updateStatus(viaje: Viaje){
@@ -100,27 +117,35 @@ export class ViajesComponent implements OnInit {
   private loadUserData(): void {
     const user = this.userService.getCookie('user');
     if (user) {
+      this.selectViaje.userAdminId = user.primaryKey;
         this.userAdminId = user.primaryKey; 
         this.userAdmin = user.userType; 
     }
   }
 
   //btns
-  async viewDetails(viaje: Viaje){
-    if(viaje.userAdminId,viaje.idBus,viaje.idEstacionOrigen,viaje.idEstacionDestino){
+  async viewDetails(viaje: Viaje) {
+    if (viaje.userAdminId && viaje.idBus && viaje.idEstacionOrigen && viaje.idEstacionDestino) {
       const dataUser = await this.userService.getUserById(viaje.userAdminId);
       const dataBus = await this.busService.findById(viaje.idBus);
       const dataEstacionOrigen = await this.estacionService.findById(viaje.idEstacionOrigen);
       const dataEstacionDestino = await this.estacionService.findById(viaje.idEstacionDestino);
-      if(dataUser && dataBus && dataEstacionOrigen && dataEstacionDestino){
-        this.selectedUser = {...dataUser};
-        this.selectedBus = {...dataBus};
-        this.selectEstacionOrigen = {...dataEstacionOrigen};
-        this.selectEstacionDestino = {...dataEstacionDestino};
+  
+      if (dataUser && dataBus && dataEstacionOrigen && dataEstacionDestino) {
+        this.selectedUser = { ...dataUser };
+        this.selectedBus = { ...dataBus };
+        this.selectEstacionOrigen = { ...dataEstacionOrigen };
+        this.selectEstacionDestino = { ...dataEstacionDestino };
       }
-      this.selectViaje = {...viaje}
+      this.selectViaje = { ...viaje };
+      const registerModalElement = document.getElementById('viajeDetalleModal');
+      if (registerModalElement) {
+        const registerModal = new bootstrap.Modal(registerModalElement);
+        registerModal.show();
+      }
     }
   }
+  
 
   btnEdit(viaje: Viaje){
     this.selectViaje = {...viaje}
