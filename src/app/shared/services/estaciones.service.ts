@@ -22,7 +22,7 @@ export class EstacionService{
 
     //OBTENER TODOS LOS ACTIVOS
     async findAllTrue(){
-        return await this.http.get<Estacion[]>(`${this.apiBackend}/estaciones/estacion`, { withCredentials: true }).toPromise();
+        return await this.http.get<Estacion[]>(`${this.apiBackend}/estaciones/estacionestrue`, { withCredentials: true }).toPromise();
     }
 
     //OBTENER POR ID

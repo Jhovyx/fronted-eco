@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Viaje } from '../../../shared/interfaces/viaje.interface';
-import { User } from '../../../shared/interfaces/user.interface';
 import { UserService } from '../../../shared/services/user.service';
 import { ViajesService } from '../../../shared/services/viajes.service';
 import { Bus } from '../../../shared/interfaces/bus.interface';
 import { Estacion } from '../../../shared/interfaces/estaciones.interface';
 import { BusService } from '../../../shared/services/buses.service';
 import { EstacionService } from '../../../shared/services/estaciones.service';
+import { User } from '../../../shared/interfaces/user.interface';
 declare var bootstrap: any;
 
 @Component({
@@ -18,16 +18,7 @@ export class ViajesComponent implements OnInit {
 
   constructor(private viajeService: ViajesService, private userService: UserService, private busService: BusService, private estacionService: EstacionService){}
 
-  //users
-  users: User[] = [];
   selectedUser: User = {primaryKey: '',firstName: '',lastName: '',documentNumber: '',documentType: '',email: '',phoneNumber: '',profilePictureUrl: '',userType: '',};
-  
-  //cargar user desde la bd
-  async loadUser(){
-      const data =  await this.userService.getUsers();
-      this.users = data ?? [];
-  }
-
 
   
   //buses
@@ -36,7 +27,7 @@ export class ViajesComponent implements OnInit {
  
   // Cargar buses desde la bd
   async loadBuses() {
-    const data = await this.busService.findAll();
+    const data = await this.busService.findAllTrue();
     this.buses = data ?? [];
   }
 
@@ -48,15 +39,9 @@ export class ViajesComponent implements OnInit {
   
   // Cargar estaciones desde la bd
   async loadEstaciones() {
-    const data = await this.estacionService.findAll();
+    const data = await this.estacionService.findAllTrue();
     this.estaciones = data ?? [];
   }
-  
-  
-  
-  
-  
-  
   
   // Viajes
   minDate: string = '2024-01-01';
@@ -69,7 +54,6 @@ export class ViajesComponent implements OnInit {
     fechaHoraSalida: 0, fechaHoraLlegada: 0, estado: false,statusPromo: false, descuentoPorcentaje: 0,userAdminId: '',urlImagen: '',createdAt: 0,updatedAt: 0,};
     ngOnInit(): void {
       this.loadViajes();
-      this.loadUser();
       this.loadBuses();
       this.loadEstaciones();
     }
@@ -77,10 +61,75 @@ export class ViajesComponent implements OnInit {
     async loadViajes() {
       const data = await this.viajeService.findAll();
       this.viajes = data ?? [];
+      this.filteredViajes = [...this.viajes];
     }
 
     //add viaje
   async addViaje(viaje: Viaje) {
+
+    //validacion de campos
+    if (viaje.nombre.length === 0) {
+      this.showCustomAlert('El nombre del viaje es obligatorio.', 'error');
+      return;
+    }
+
+    if (viaje.descripcion.length === 0) {
+      this.showCustomAlert('La descripción es obligatoria.', 'error');
+      return;
+    }
+
+    if (viaje.urlImagen.length === 0) {
+      this.showCustomAlert('El viaje debe de tener una imagen.', 'error');
+      return;
+    }
+
+    if (!viaje.idBus) {
+      this.showCustomAlert('Debe seleccionar un bus.', 'error');
+      return;
+    }
+
+    if (!viaje.idEstacionOrigen) {
+      this.showCustomAlert('Debe seleccionar una estación de origen.', 'error');
+      return;
+    }
+
+    if (!viaje.idEstacionDestino) {
+      this.showCustomAlert('Debe seleccionar una estación de destino.', 'error');
+      return;
+    }
+
+    if (viaje.idEstacionOrigen === viaje.idEstacionDestino) {
+      this.showCustomAlert('La estación de origen y destino no pueden ser la misma.', 'error');
+      return;
+    }
+
+    if (!viaje.fechaHoraSalida) {
+      this.showCustomAlert('Debe ingresar una fecha y hora de salida.', 'error');
+      return;
+    }
+
+    if (!viaje.fechaHoraLlegada) {
+      this.showCustomAlert('Debe ingresar una fecha y hora de llegada.', 'error');
+      return;
+    }
+
+    if (new Date(viaje.fechaHoraSalida).getTime() >= new Date(viaje.fechaHoraLlegada).getTime()) {
+      this.showCustomAlert('La fecha de llegada debe ser posterior a la fecha de salida.', 'error');
+      return;
+    }
+
+    if (!viaje.statusPromo) {
+      // Si no hay promoción,
+      viaje.descuentoPorcentaje = 0;
+    }
+    if (viaje.statusPromo) {
+      // Si no hay promoción,
+      if(viaje.descuentoPorcentaje < 1 || viaje.descuentoPorcentaje < 100) {
+        this.showCustomAlert('Ingrese un porcentaje valido.', 'error');
+        return;
+      }
+    }
+
     this.loadUserData();
     if (viaje.fechaHoraSalida) {
       viaje.fechaHoraSalida = new Date(viaje.fechaHoraSalida).getTime();
@@ -94,6 +143,75 @@ export class ViajesComponent implements OnInit {
   }
 
   async updateViaje(viaje: Viaje) {
+
+    //validacion de campos
+    if (viaje.nombre.length === 0) {
+      this.showCustomAlert('El nombre del viaje es obligatorio.', 'error');
+      return;
+    }
+
+    if (viaje.descripcion.length === 0) {
+      this.showCustomAlert('La descripción es obligatoria.', 'error');
+      return;
+    }
+
+    if (viaje.urlImagen.length === 0) {
+      this.showCustomAlert('El viaje debe de tener una imagen.', 'error');
+      return;
+    }
+
+    if (viaje.costo < 1) {
+      this.showCustomAlert('El costo debe ser un valor positivo.', 'error');
+      return;
+    }
+
+    if (!viaje.idBus) {
+      this.showCustomAlert('Debe seleccionar un bus.', 'error');
+      return;
+    }
+
+    if (!viaje.idEstacionOrigen) {
+      this.showCustomAlert('Debe seleccionar una estación de origen.', 'error');
+      return;
+    }
+
+    if (!viaje.idEstacionDestino) {
+      this.showCustomAlert('Debe seleccionar una estación de destino.', 'error');
+      return;
+    }
+
+    if (viaje.idEstacionOrigen === viaje.idEstacionDestino) {
+      this.showCustomAlert('La estación de origen y destino no pueden ser la misma.', 'error');
+      return;
+    }
+
+    if (!viaje.fechaHoraSalida) {
+      this.showCustomAlert('Debe ingresar una fecha y hora de salida.', 'error');
+      return;
+    }
+
+    if (!viaje.fechaHoraLlegada) {
+      this.showCustomAlert('Debe ingresar una fecha y hora de llegada.', 'error');
+      return;
+    }
+
+    if (new Date(viaje.fechaHoraSalida).getTime() >= new Date(viaje.fechaHoraLlegada).getTime()) {
+      this.showCustomAlert('La fecha de llegada debe ser posterior a la fecha de salida.', 'error');
+      return;
+    }
+
+    if (!viaje.statusPromo) {
+      // Si no hay promoción,
+      viaje.descuentoPorcentaje = 0;
+    }
+    if (viaje.statusPromo) {
+      // Si no hay promoción,
+      if(viaje.descuentoPorcentaje < 1 || viaje.descuentoPorcentaje < 100) {
+        this.showCustomAlert('Ingrese un porcentaje valido.', 'error');
+        return;
+      }
+    }
+
     this.loadUserData();
     if (viaje.fechaHoraSalida) {
       viaje.fechaHoraSalida = new Date(viaje.fechaHoraSalida).getTime();
@@ -146,7 +264,6 @@ export class ViajesComponent implements OnInit {
     }
   }
   
-
   btnEdit(viaje: Viaje){
     this.selectViaje = {...viaje}
   }
@@ -176,7 +293,7 @@ export class ViajesComponent implements OnInit {
       const endOfDayUnix = endUnix + oneDayInMillis - 1; // Ajustar a las 23:59:59.999 del día
 
       // Filtrar las actividades usando el valor ajustado
-      filtered = filtered.filter(viaje => viaje.createdAt && viaje.createdAt <= endOfDayUnix);
+      this.filteredViajes = filtered.filter(viaje => viaje.createdAt && viaje.createdAt <= endOfDayUnix);
     }
 
     this.filteredViajes = filtered;
@@ -208,6 +325,7 @@ export class ViajesComponent implements OnInit {
         this.startDate = '';
         this.endDate = '';
         this.loadViajes();
+        this.filteredViajes = [...this.viajes];
       }
   
       //formatear la fecha

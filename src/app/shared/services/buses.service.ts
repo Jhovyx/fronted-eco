@@ -20,9 +20,14 @@ export class BusService{
         return await this.http.get<Bus[]>(`${this.apiBackend}/buses`, { withCredentials: true }).toPromise();
     }
 
+    //OBTENER TODOS los activos
+    async findAllTrue(){
+        return await this.http.get<Bus[]>(`${this.apiBackend}/buses/busestrue`, { withCredentials: true }).toPromise();
+    }
+
     //OBTENER POR ID
     async findById(id: string){
-        return await this.http.get<Bus>(`${this.apiBackend}/buses/${id}`, { withCredentials: true }).toPromise();
+        return await this.http.get<Bus>(`${this.apiBackend}/buses/bus/${id}`, { withCredentials: true }).toPromise();
     }
 
     //CREAR

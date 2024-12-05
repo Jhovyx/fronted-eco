@@ -93,11 +93,6 @@
   transition: background-color 0.3s ease;
 }
 
-.custom-btn:hover {
-  background-color: #007bff;
-  color: #fff;
-}
-
 /* Botones con animaciones y transiciones */
 .modal-footer .btn {
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;

@@ -36,7 +36,7 @@
 
 <!---->
 
-<div class="row bg-primary rounded p-3 shadow-lg mb-5">
+<div class="row bg-primary d-flex justify-content-between rounded p-3 shadow-lg">
           
   <!--BUSCAR POR FECHAS DE CREACION-->
   <div class="col-md-3 d-flex justify-content-center align-items-center mb-2">
@@ -69,24 +69,10 @@
     </div>
   </div>
 
-  <div class="col-md-2 d-flex justify-content-center align-items-center mb-2">
-    <div class="input-group mb-1 animate__animated animate__fadeIn animate__delay-1s">
-      <div class="input-group mb-0">
-        <label class="input-group-text" for="userInput">NAME</label>
-        <input 
-          type="text" 
-          class="form-control" 
-          id="userInput" 
-          placeholder="Buscar..." 
-          list="userList"
-        ><!--enviar el usuario-->
-      </div>
-    </div>
-  </div>
 
-  <div class="col-md-2 d-flex justify-content-center align-items-center mb-2">
+  <div class="col-md-3 d-flex justify-content-end align-items-center mb-2">
     <div class="input-group mb-1 animate__animated animate__fadeIn animate__delay-1s">
-        <button type="button" (click)="btnAdd()" class="btn bg-white" data-bs-toggle="modal" data-bs-target="#viajeModal">
+        <button type="button" (click)="btnAdd()" class="btn w-100 bg-white" data-bs-toggle="modal" data-bs-target="#viajeModal">
             <i class="bi bi-plus-square"></i>
             Agregar Viaje
         </button>
@@ -109,7 +95,7 @@
 <!-- Mostrar los viajes con tarjetas (cards) -->
 <div class="container py-5">
   <div class="row g-4">
-    <div class="col-sm-6 col-md-4 col-lg-3" *ngFor="let viaje of viajes">
+    <div class="col-sm-6 col-md-4 col-lg-3" *ngFor="let viaje of filteredViajes ">
       <div class="card h-100 shadow-sm border-0 animate__animated animate__fadeIn position-relative">
         <!-- Imagen con animación al pasar el mouse -->
         <div class="image-container" (click)="viewDetails(viaje)">
@@ -324,7 +310,7 @@
                             class="form-control" 
                             [(ngModel)]="selectViaje.descuentoPorcentaje" 
                             name="descuento" 
-                            min="0" 
+                            min="1" 
                             max="100" 
                             step="1" 
                             placeholder="Ej. 20" 

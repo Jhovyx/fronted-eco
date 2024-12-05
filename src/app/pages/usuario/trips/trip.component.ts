@@ -30,7 +30,7 @@ export class TripComponent implements OnInit {
 
   // Cargar viajes desde el servicio
   async loadViajes() {
-    const data = await this.viajeService.findAll();
+    const data = await this.viajeService.findAllTrue();
     this.viajes = data ?? [];
   }
 
