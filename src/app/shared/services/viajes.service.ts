@@ -20,9 +20,14 @@ export class ViajesService{
         return await this.http.get<Viaje[]>(`${this.apiBackend}/viajes`, { withCredentials: true }).toPromise();
     }
 
+    //OBTENER TODOS los activos
+    async findAllTrue(){
+        return await this.http.get<Viaje[]>(`${this.apiBackend}/viajes/viajestrue`, { withCredentials: true }).toPromise();
+    }
+
     //IBTENR POR ID
     async findById(id: string){
-        return await this.http.get<Viaje>(`${this.apiBackend}/viajes/${id}`, { withCredentials: true }).toPromise();
+        return await this.http.get<Viaje>(`${this.apiBackend}/viajes/viaje/${id}`, { withCredentials: true }).toPromise();
     }
 
     //CREAR
