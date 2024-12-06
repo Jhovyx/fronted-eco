@@ -138,7 +138,17 @@ export class ViajesComponent implements OnInit {
       viaje.fechaHoraLlegada = new Date(viaje.fechaHoraLlegada).getTime();
     }
     const {primaryKey,...v} = viaje;
-    await this.viajeService.create(v);
+    const response = await this.viajeService.create(v);
+    if(response && typeof response === 'object' && response.primaryKey){
+      const closeButton = document.getElementById('closeButtonModalViaje');
+      if (closeButton) {
+        closeButton.click();
+      }
+      this.showCustomAlert('Se creo correctamente el viaje.', 'success');
+      this.loadBuses();
+    }else{
+      this.showCustomAlert('Error al crear el viaje.', "error");
+    }
     this.ngOnInit();
   }
 
@@ -206,7 +216,7 @@ export class ViajesComponent implements OnInit {
     }
     if (viaje.statusPromo) {
       // Si no hay promoción,
-      if(viaje.descuentoPorcentaje < 1 || viaje.descuentoPorcentaje < 100) {
+      if(viaje.descuentoPorcentaje < 1 || viaje.descuentoPorcentaje > 100) {
         this.showCustomAlert('Ingrese un porcentaje valido.', 'error');
         return;
       }
@@ -220,14 +230,31 @@ export class ViajesComponent implements OnInit {
       viaje.fechaHoraLlegada = new Date(viaje.fechaHoraLlegada).getTime();
     }
     const {primaryKey,...v} = viaje;
-    await this.viajeService.update(primaryKey,v);
+    const response = await this.viajeService.update(primaryKey,v);
+    if(response && typeof response === 'object' && response.primaryKey){
+      const closeButton = document.getElementById('closeButtonModalViaje');
+      if (closeButton) {
+        closeButton.click();
+      }
+      this.showCustomAlert('Se creo actualizo correctamente el viaje.', 'success');
+      this.loadBuses();
+    }else{
+      this.showCustomAlert('Error al actualizar el viaje.', "error");
+    }
     this.ngOnInit();
   }
 
   async updateStatus(viaje: Viaje){
     this.selectViaje = {...viaje};
     this.selectViaje.estado = !viaje.estado;
-    await this.addViaje(this.selectViaje)
+    const response = await this.viajeService.update(this.selectViaje.primaryKey, this.selectViaje);
+    if(response && typeof response === 'object' && response.primaryKey){
+      this.showCustomAlert('Se creo actualizo correctamente el viaje.', 'success');
+      this.loadBuses();
+    }else{
+      this.showCustomAlert('Error al actualizar el viaje.', "error");
+    }
+    this.ngOnInit();
   }
 
   userAdminId?: string
