@@ -88,17 +88,19 @@ export class TripDetailComponent implements OnInit {
   }
 
   loadBusAndStations(): void {
-    this.http.get<Bus>(`http://localhost:3000/v1/buses/${this.trip.idBus}`).subscribe((busData) => {
+    this.http.get<Bus>(`http://localhost:3000/v1/buses/bus/${this.trip.idBus}`, {
+      withCredentials: true, // Asegúrate de que las cookies se envíen
+    }).subscribe((busData) => {
       this.bus = busData;
-      this.loadSeats(); // Cargar los asientos después de obtener los datos del bus
+      this.loadSeats(); 
     });
-
-    this.http.get<Estacion>(`http://localhost:3000/v1/estaciones/${this.trip.idEstacionOrigen}`).subscribe((estacionData) => {
+    
+    this.http.get<Estacion>(`http://localhost:3000/v1/estaciones/estacion/${this.trip.idEstacionOrigen}`).subscribe((estacionData) => {
       this.estacionOrigen = estacionData;
       this.trip.nombreEstacionOrigen = estacionData.nombre; 
     });
 
-    this.http.get<Estacion>(`http://localhost:3000/v1/estaciones/${this.trip.idEstacionDestino}`).subscribe((estacionData) => {
+    this.http.get<Estacion>(`http://localhost:3000/v1/estaciones/estacion/${this.trip.idEstacionDestino}`).subscribe((estacionData) => {
       this.estacionDestino = estacionData;
       this.trip.nombreEstacionDestino = estacionData.nombre; 
     });
