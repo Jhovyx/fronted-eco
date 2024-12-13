@@ -36,16 +36,7 @@ export class TripComponent implements OnInit {
 
   // Este método se llama cuando el usuario hace clic en "Reservar"
   onReserve(trip: Viaje) {
-    // Verificamos si el usuario está autenticado, si no lo está, intentamos cargarlo desde la cookie
-    if (!this.user) {
-      this.loadUserData(); // Carga los datos del usuario desde la cookie
-  
-      // Si después de cargar los datos de la cookie, no tenemos usuario, redirigimos al login
-      if (!this.user) {
-        this.router.navigate(['/login']);
-        return; // Si no hay usuario, salimos de la función
-      }
-    }
+
   
     // Guardamos el viaje en sessionStorage
     sessionStorage.setItem('selectedTrip', JSON.stringify(trip));

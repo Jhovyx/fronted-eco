@@ -48,7 +48,7 @@ const routes: Routes = [
   // Client Routes (only accessible by authenticated clients)
   { path: 'profile', component: ProfileComponent, canActivate: [clienteGuard] }, // User Profile
   { path: 'pago-detalle', component: PaymentDetailComponent, canActivate: [clienteGuard] }, // Payment Details
-  { path: 'trip-detail', component: TripDetailComponent, canActivate: [clienteGuard] }, // Trip Details
+  { path: 'trip-detail', component: TripDetailComponent, canActivate: [clienteNoAuthGuard] }, // Trip Details
   { path: 'boleta', component: BoletaComponent, canActivate: [clienteGuard] }, // Ticket (Boleta)
   { path: 'asientos', component: AsientosComponent, canActivate: [clienteGuard] }, // Seat selection form
 

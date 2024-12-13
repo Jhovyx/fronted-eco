@@ -95,12 +95,12 @@ export class TripDetailComponent implements OnInit {
       this.loadSeats(); 
     });
     
-    this.http.get<Estacion>(`http://localhost:3000/v1/estaciones/estacion/${this.trip.idEstacionOrigen}`).subscribe((estacionData) => {
+    this.http.get<Estacion>(`http://localhost:3000/v1/estaciones/${this.trip.idEstacionOrigen}`).subscribe((estacionData) => {
       this.estacionOrigen = estacionData;
       this.trip.nombreEstacionOrigen = estacionData.nombre; 
     });
 
-    this.http.get<Estacion>(`http://localhost:3000/v1/estaciones/estacion/${this.trip.idEstacionDestino}`).subscribe((estacionData) => {
+    this.http.get<Estacion>(`http://localhost:3000/v1/estaciones/${this.trip.idEstacionDestino}`).subscribe((estacionData) => {
       this.estacionDestino = estacionData;
       this.trip.nombreEstacionDestino = estacionData.nombre; 
     });
