@@ -7,12 +7,12 @@
         </div>
 
         <!-- Formulario de pago -->
-        <form (ngSubmit)="handleSubmit()" #paymentForm="ngForm" action="/procesar_pago" method="POST">
+        <form (ngSubmit)="handleSubmit()" #paymentForm="ngForm">
             <div class="container">
                 <!-- N° de tarjeta -->
                 <div class="mb-3">
                     <label for="numeroTarjeta" class="form-label">N° de tarjeta:</label>
-                    <input type="text" id="numeroTarjeta" name="numeroTarjeta" class="form-control" placeholder="N° de tarjeta" required maxlength="16" pattern="^\d{0,16}$" ngModel #numeroTarjeta="ngModel">
+                    <input type="text" id="numeroTarjeta" name="numeroTarjeta" class="form-control" placeholder="N° de tarjeta" required maxlength="16" pattern="^\d{16}$" ngModel #numeroTarjeta="ngModel">
                     <div *ngIf="numeroTarjeta.invalid && numeroTarjeta.touched" class="text-danger">El número de tarjeta es obligatorio y debe ser numérico.</div>
                 </div>
 
@@ -24,8 +24,8 @@
                         <option value="visa">Visa</option>
                         <option value="mastercard">Mastercard</option>
                         <option value="americanexpress">American Express</option>
-                        <option value="discover">BCP</option>
-                        <option value="dinersclub">Interbank</option>
+                        <option value="bcp">BCP</option>
+                        <option value="interbank">Interbank</option>
                     </select>
                     <div *ngIf="tipoTarjeta.invalid && tipoTarjeta.touched" class="text-danger">Selecciona un tipo de tarjeta.</div>
                 </div>
@@ -40,7 +40,7 @@
                 <!-- Código de seguridad -->
                 <div class="mb-3">
                     <label for="codigoSeguridad" class="form-label">Código de Seguridad:</label>
-                    <input type="text" id="codigoSeguridad" name="codigoSeguridad" class="form-control" placeholder="Código de Seguridad" required ngModel #codigoSeguridad="ngModel">
+                    <input type="text" id="codigoSeguridad" name="codigoSeguridad" class="form-control" placeholder="Código de Seguridad" required maxlength="4" pattern="^\d{3,4}$" ngModel #codigoSeguridad="ngModel">
                     <div *ngIf="codigoSeguridad.invalid && codigoSeguridad.touched" class="text-danger">El código de seguridad es obligatorio.</div>
                 </div>
 
@@ -59,7 +59,7 @@
                 <div class="row mb-3">
                     <div class="col-6">
                         <strong>Estación de Destino:</strong>
-                        <p>{{ trip.nombreEstacionDestino }}</p>
+                        <p>{{ trip?.nombreEstacionDestino }}</p>
                     </div>
                     <div class="col-6">
                         <strong>Asientos:</strong>
@@ -70,22 +70,22 @@
                 <div class="row mb-3">
                     <div class="col-6">
                         <strong>Fecha de Partida:</strong>
-                        <p>{{ trip.fechaHoraSalida | date:'fullDate' }}</p>
+                        <p>{{ trip?.fechaHoraSalida | date:'fullDate' }}</p>
                     </div>
                     <div class="col-6">
                         <strong>Fecha de Llegada:</strong>
-                        <p>{{ trip.fechaHoraLlegada | date:'fullDate' }}</p>
+                        <p>{{ trip?.fechaHoraLlegada | date:'fullDate' }}</p>
                     </div>
                 </div>
 
                 <div class="row mb-3">
                     <div class="col-6">
                         <strong>Costo por Unidad:</strong>
-                        <p>{{ trip.costo | currency }}</p>
+                        <p>{{ trip?.costo | currency }}</p>
                     </div>
                     <div class="col-6">
                         <strong>Costo total:</strong>
-                        <p>{{ (trip.costo * selectedSeats.length) | currency }}</p>
+                        <p>{{ (trip?.costo * selectedSeats.length) | currency }}</p>
                     </div>
                 </div>
 

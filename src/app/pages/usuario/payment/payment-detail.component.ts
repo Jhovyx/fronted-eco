@@ -1,26 +1,27 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
+import { HttpClient } from '@angular/common/http';
 
 @Component({
     selector: 'app-payment-detail',
     templateUrl: './payment-detail.component.html',
     styleUrls: ['./payment-detail.component.css']
 })
-export class PaymentDetailComponent {
+export class PaymentDetailComponent implements OnInit {
     trip: any = null;  // Datos del viaje (costo, etc.)
     user: any = null;  // Información del usuario
     selectedSeats: any[] = [];  // Asientos seleccionados
     seatForms: any[] = [];  // Información de los pasajeros
-    
+
     minDate: string = new Date().toISOString().split("T")[0]; // Fecha mínima para la selección (hoy)
-  
-    constructor(private router: Router) {}
-  
+
+    constructor(private router: Router, private http: HttpClient) {}
+
     ngOnInit(): void {
         // Recuperar los datos de sessionStorage
         const reservationDetails = JSON.parse(sessionStorage.getItem('reservationDetails') || '{}');
         const seatForms = JSON.parse(sessionStorage.getItem('seatForms') || '[]');
-    
+
         // Asignar los datos a las variables del componente
         this.user = reservationDetails.user || null;
         this.trip = reservationDetails.trip || null;
@@ -41,7 +42,7 @@ export class PaymentDetailComponent {
         // Crear un objeto con los detalles del pago
         const paymentDetails = {
             numeroTarjeta,
-            tipoTarjeta,
+            tipoTarjeta,  // Usar el mismo nombre que el campo del formulario
             fechaVencimiento,
             codigoSeguridad,
             user: this.user,
@@ -49,7 +50,16 @@ export class PaymentDetailComponent {
             selectedSeats: this.selectedSeats
         };
 
-        // Guardar los detalles en sessionStorage
+        // Enviar los detalles del pago al backend
+        this.http.post('/api/pago-detalle', paymentDetails).subscribe(response => {
+            console.log('Pago realizado con éxito', response);
+            // Redirigir al usuario a otra página si el pago es exitoso
+            this.router.navigate(['/boleta']);
+        }, error => {
+            console.error('Error al realizar el pago', error);
+        });
+
+        // Guardar los detalles en sessionStorage (opcional, para referencia futura)
         sessionStorage.setItem('paymentDetails', JSON.stringify(paymentDetails));
 
         // Ahora, si quieres redirigir al usuario a otra página, puedes hacerlo aquí.
