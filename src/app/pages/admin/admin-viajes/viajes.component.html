@@ -359,7 +359,7 @@
       <div class="modal-header custom-modal-header p-4">
         <h5 class="modal-title" id="viajeDetalleModalLabel">
           <span class="fw-bold text-gradient">{{ selectViaje.nombre }}</span><br>
-          <small class="text-muted">{{ selectViaje.fechaHoraSalida | date:'dd MMM yyyy' }}</small>
+          <small class="text-muted">{{ formatDate(selectViaje.fechaHoraSalida) }}</small>
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -389,8 +389,8 @@
             <div class="card mb-3">
               <div class="card-body">
                 <h6 class="text-muted"><i class="bi bi-calendar-event me-2"></i>Fechas</h6>
-                <p class="text-dark"><strong>Salida:</strong> {{ selectViaje.fechaHoraSalida | date:'dd/MM/yyyy HH:mm' }}</p>
-                <p class="text-dark"><strong>Llegada:</strong> {{ selectViaje.fechaHoraLlegada | date:'dd/MM/yyyy HH:mm' }}</p>
+                <p class="text-dark"><strong>Salida:</strong> {{ formatDate(selectViaje.fechaHoraSalida)}}</p>
+                <p class="text-dark"><strong>Llegada:</strong> {{ formatDate(selectViaje.fechaHoraLlegada) }}</p>
               </div>
             </div>
           </div>

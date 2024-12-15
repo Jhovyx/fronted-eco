@@ -79,7 +79,6 @@ export class LoginComponent {
         this.showCustomAlert('Bienvenido, acceso ha sido autorizado.', 'success');
         this.password = ''; // Limpiar el campo de contraseña
         this.email = ''; // Limpiar el campo de correo
-        if (response.userType === "cliente") this.router.navigate(['/home']);
         if (response.userType === "admin") this.router.navigate(['/admin-viajes']);
       }
     } catch (error) {

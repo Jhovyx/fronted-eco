@@ -77,12 +77,6 @@ export class AdminEstacionesComponent implements OnInit {
     }
   }
 
-  async updateStatus(estacion: Estacion){
-    this.selectEstacion = {...estacion};
-    this.selectEstacion.estado = !estacion.estado;
-    await this.addEstacion(this.selectEstacion)
-  }
-
   userAdminId?: string
   userAdmin?: string
   private loadUserData(): void {

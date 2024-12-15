@@ -39,7 +39,7 @@ export class ViajesComponent implements OnInit {
   
   // Cargar estaciones desde la bd
   async loadEstaciones() {
-    const data = await this.estacionService.findAllTrue();
+    const data = await this.estacionService.findAll();
     this.estaciones = data ?? [];
   }
   

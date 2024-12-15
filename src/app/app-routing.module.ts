@@ -13,10 +13,8 @@ import { AsientosComponent } from './pages/usuario/asientos/asientos.component';
 
 // Admin Components
 import { AdminUsersComponent } from './pages/admin/admin-users/admin-users.component';
-import { NotifyComponent } from './pages/admin/notify/notify.component';
 import { ReservationManagementComponent } from './pages/admin/reservation-management/reservation-management.component';
 import { AdminDashComponent } from './pages/admin/admin-dash/admin-dash.component';
-import { ReservationLimitComponent } from './pages/admin/reservation-limit/reservation-limit.component';
 import { AminBusesComponent } from './pages/admin/admin-buses/buses.component';
 import { AdminEstacionesComponent } from './pages/admin/admin-estaciones/estaciones.component';
 import { ViajesComponent } from './pages/admin/admin-viajes/viajes.component';
@@ -27,6 +25,7 @@ import { clienteGuard } from './guards/cliente.guard';
 import { clienteNoAuthGuard } from './guards/cliente-no-auth.guard';
 import { adminClienteGuard } from './guards/admin-cliente.guard';
 import { ProfileComponent } from './pages/profile/profile.component';
+import { ReservaComponent } from './pages/usuario/reserva/reserva.component';
 
 const routes: Routes = [
   // Default route
@@ -48,14 +47,13 @@ const routes: Routes = [
   // Client Routes (only accessible by authenticated clients)
   { path: 'profile', component: ProfileComponent, canActivate: [clienteGuard] }, // User Profile
   { path: 'pago-detalle', component: PaymentDetailComponent, canActivate: [clienteGuard] }, // Payment Details
-  { path: 'trip-detail', component: TripDetailComponent, canActivate: [clienteGuard] }, // Trip Details
+  { path: 'trip-detail', component: TripDetailComponent, canActivate: [clienteNoAuthGuard] }, // Trip Details
   { path: 'boleta', component: BoletaComponent, canActivate: [clienteGuard] }, // Ticket (Boleta)
   { path: 'asientos', component: AsientosComponent, canActivate: [clienteGuard] }, // Seat selection form
 
   // Routes accessible by both Admin and Client (shared roles)
-  { path: 'notify', component: NotifyComponent, canActivate: [adminClienteGuard] }, // Notifications
   { path: 'reservas', component: ReservationManagementComponent, canActivate: [adminClienteGuard] }, // Reservation Management
-  { path: 'reservas-limit', component: ReservationLimitComponent, canActivate: [adminClienteGuard] }, // Reservation Limit Management
+  { path: 'reserva', component: ReservaComponent, canActivate: [adminClienteGuard] }, // Reservation 
 
   // Catch-all route for undefined paths
   { path: '**', redirectTo: '/home' } // Redirect to home for any invalid routes

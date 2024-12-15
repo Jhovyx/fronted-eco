@@ -20,14 +20,9 @@ export class EstacionService{
         return await this.http.get<Estacion[]>(`${this.apiBackend}/estaciones`, { withCredentials: true }).toPromise();
     }
 
-    //OBTENER TODOS LOS ACTIVOS
-    async findAllTrue(){
-        return await this.http.get<Estacion[]>(`${this.apiBackend}/estaciones/estacionestrue`, { withCredentials: true }).toPromise();
-    }
-
     //OBTENER POR ID
     async findById(id: string){
-        return await this.http.get<Estacion>(`${this.apiBackend}/estaciones/estacion/${id}`, { withCredentials: true }).toPromise();
+        return await this.http.get<Estacion>(`${this.apiBackend}/estaciones/${id}`, { withCredentials: true }).toPromise();
     }
 
     //CREAR

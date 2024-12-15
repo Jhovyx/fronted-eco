@@ -1,65 +1,191 @@
-<app-search></app-search>
 
-<div class="">
-        <h1 class="text-center"><b>Encuentra tu destino</b></h1>
-    </div>
-<!-- Contenedor de los viajes -->
-<div class="container">
-  <div class="row">
-    <div *ngFor="let trip of viajes" class="col-12 col-sm-6 col-md-4 col-lg-3 p-3 d-flex align-items-center justify-content-center">
-      <div class="card mb-3 border-0" style="max-width: 100%; height: auto;">
-        <div class="card-body border-0 p-0">
-          <button style="border-radius: 10px;" class="btn btn-warning border-0 p-0 m-0">
-            <img class="img-fluid" style="border-radius: 10px;" [src]="trip.urlImagen" alt="{{ trip.nombre }}">
-          </button>
-          <div class="d-flex align-items-center justify-content-center">
-            <div>
-              <p style="margin-top: -60px;" class="text-white fs-3"><b>{{ trip.nombre }}</b></p>
-              <div class="d-flex align-items-center justify-content-center">
-                <button class="btn m-2 btn-primary" (click)="onReserve(trip)">Reservar</button>
-              </div>
+<div class="container my-5">
+<h1 class="text-center mb-4 fw-bold text-black text-uppercase fs-1 fs-md-2 fs-lg-3">
+  Encuentra tu destino
+</h1>
+
+  <!-- Contenedor de los viajes -->
+  <div class="row g-4">
+    <div *ngFor="let trip of viajes" class="col-12 col-sm-6 col-md-4 col-lg-3">
+      <div class="card shadow-lg border-0 h-100 position-relative animate-card">
+        <!-- Imagen con efecto de zoom al pasar el mouse -->
+        <div class="image-container btn position-relative" (click)="openTripDetails(trip)">
+          <img 
+            class="card-img-top img-fluid rounded-top animate-image" 
+            [src]="trip.urlImagen" 
+            alt="{{ trip.nombre }}" 
+            style="height: 200px; object-fit: cover;"
+            >
+            <div *ngIf="trip.statusPromo" class="badge bg-danger position-absolute top-0 end-0 m-3 p-2 text-white fs-5 rounded-pill">
+              Descuento {{ trip.descuentoPorcentaje}}%
             </div>
-          </div>
+            <div class="overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
+              <h5 class="text-white text-uppercase fw-bold">{{ trip.nombre }}</h5>
+            </div>
+        </div>
+
+        <!-- reserva del viaje -->
+        <div class="card-body text-center animate-content">
+          <h5 class="text-black text-dark">Precio: S/{{ trip.costo }}</h5>
+          <button 
+            class="btn btn-primary w-100 py-2 animate-button" 
+            (click)="onReserve(trip)">
+            Reservar
+          </button>
         </div>
       </div>
     </div>
   </div>
 </div>
+<!-- Modal para mostrar los detalles del viaje -->
+<div class="modal fade" id="tripModal" tabindex="-1" aria-labelledby="tripModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content animate__animated animate__fadeIn">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title text-center" id="tripModalLabel">{{ trip.nombre }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
 
-    
-<!--detalle-->
-    <div class="modal fade" id="tripDetailModall" tabindex="-1" aria-labelledby="tripDetailModalLabell" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="tripDetailModalLabell" style="text-align: center; width: 100%;">DETALLES DEL LUGAR</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="row g-4">
+          <div class="col-md-6">
+            
+            <!-- Sección de Descripción -->
+            <section class="mb-4">
+              <h5 class="fw-bold text-primary"><i class="fas fa-info-circle"></i> Descripción del viaje</h5>
+              <p>{{ trip.descripcion }}</p>
+              <p><strong>Salida:</strong> {{ formatDate(trip.fechaHoraSalida) }} </p>
+            </section>
+            
           </div>
-          <div class="modal-body">
-    
-            <app-trip-detail></app-trip-detail>
+          <div class="col-md-6">
+            
+            <!-- Sección de precio -->
+            <section class="mb-4 animate__animated animate__fadeIn animate__delay-1s">
+              <h5 class="fw-bold text-primary"><i class="fas fa-tag"></i> Precio del viaje</h5>
+              <p>
+                <span *ngIf="trip.statusPromo; else sinPromo">
+                  Precio original: <del class="text-danger">S/{{ trip.costo }}</del><br>
+                  Precio con descuento ({{ trip.descuentoPorcentaje }}%): 
+                  <span class="text-success fw-bold">
+                    S/{{ trip.costo - (trip.costo * (trip.descuentoPorcentaje / 100)) | number:'1.2-2' }}
+                  </span>
+                </span>
+                <ng-template #sinPromo>
+                  <span class="fw-bold">Precio: S/{{ trip.costo }}</span>
+                </ng-template>
+              </p>
+            </section>
             
           </div>
         </div>
-      </div>
-    </div>
 
-<!-- Modal de Reserva -->
-<div class="modal fade" id="tripModall" tabindex="-1" aria-labelledby="tripModalLabell" aria-hidden="true">
-  <div class="modal-dialog" style="max-width: 800px;">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="tripModalLabell" style="text-align: center; width: 100%;">Formulario de reserva</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body d-flex">
+        <div class="row g-4">
+          <!-- Sección de Bus -->
+          <div class="col-md-6">
+            <section class="animate__animated animate__fadeIn animate__delay-1s">
+              <h5 class="fw-bold text-primary"><i class="fas fa-bus"></i> Bus</h5>
+              <ul class="list-unstyled">
+                <li><strong>Placa:</strong> {{ bus.placa }}</li>
+                <li><strong>Modelo:</strong> {{ bus.modelo }}</li>
+                <li><strong>Capacidad:</strong> {{ bus.capacidad }} pasajeros</li>
+              </ul>
+            </section>
+          </div>
 
-        <app-add-reserva></app-add-reserva>
+          <!-- Sección de Estaciones -->
+          <div class="col-md-6">
+            <section class="animate__animated animate__fadeIn animate__delay-1s">
+              <h5 class="fw-bold text-primary"><i class="fas fa-map-marker-alt"></i> Estaciones</h5>
+              <ul class="list-unstyled">
+                <li><strong>Origen:</strong> {{ estacionOrigen.nombre }} - {{ estacionOrigen.ubicacion }}</li>
+                <li><strong>Destino:</strong> {{ estacionDestino.nombre }} - {{ estacionDestino.ubicacion }}</li>
+              </ul>
+            </section>
+          </div>
+        </div>
+
+        <div class="row row-cols-1 row-cols-md-3 text-center mt-3">
+          <div class="col">
+            <i class="fas fa-chair seat-icon seat-available"></i>
+            <p class="mt-2"><strong>DISPONIBLE</strong></p>
+          </div>
+          <div class="col">
+            <i class="fas fa-chair seat-icon seat-reserved"></i>
+            <p class="mt-2"><strong>OCUPADO</strong></p>
+          </div>
+          <div class="col">
+            <i class="fas fa-chair seat-icon seat-selected"></i>
+            <p class="mt-2"><strong>SELECCIONADO</strong></p>
+          </div>
+        </div>
         
+
+        <!-- Sección de Asientos -->
+        <section class="mt-4 animate__animated animate__fadeIn animate__delay-1s">
+          <div class="row g-3">
+            <!-- Primer Piso -->
+            <div class="col-12 col-md-5">
+              <h6 class="text-center text-secondary">Primer Piso</h6>
+              <div class="row row-cols-4 g-2">
+                <div *ngFor="let asiento of asientos | slice:0:20" class="col text-center">
+                  <div class="seat-container">
+                    <i 
+                      class="fas fa-chair seat-icon" 
+                      [ngClass]="{
+                        'seat-available': asiento.estado === 'DISPONIBLE',
+                        'seat-reserved': asiento.estado === 'RESERVADO',
+                        'seat-selected': asiento.estado === 'SELECCIONADO'
+                      }">
+                    </i>
+                    <p class="seat-number">{{ asiento.numero }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+             <!-- Línea vertical -->
+            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center">
+              <div class="vertical-divider"></div>
+            </div>
+
+            <!-- Segundo Piso -->
+            <div class="col-12 col-md-5">
+              <h6 class="text-center text-secondary">Segundo Piso</h6>
+              <div class="row row-cols-4 g-2">
+                <div *ngFor="let asiento of asientos | slice:20:40" class="col text-center">
+                  <div class="seat-container">
+                    <i 
+                      class="fas fa-chair seat-icon" 
+                      [ngClass]="{
+                        'seat-available': asiento.estado === 'DISPONIBLE',
+                        'seat-reserved': asiento.estado === 'RESERVADO',
+                        'seat-selected': asiento.estado === 'SELECCIONADO'
+                      }">
+                    </i>
+                    <p class="seat-number">{{ asiento.numero }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div class="modal-footer d-flex justify-content-center align-items-center">
+        <button type="button" id="closeTripxdModal" class="btn-close d-none" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button 
+          [ngClass]="{
+            'btn-primary': hayDisponibles,
+            'btn-danger': !hayDisponibles
+          }" 
+          class="btn m-2 btn-lg w-50" 
+          [disabled]="!hayDisponibles" 
+          (click)="btnReserveIr()">
+          <i class="fas fa-check-circle"></i> 
+          {{ hayDisponibles ? 'Ir a reservar' : 'No disponible' }}
+        </button>
+        <button type="button" class="btn m-2 btn-lg btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times-circle"></i> Cerrar</button>
       </div>
     </div>
   </div>
 </div>
-
-
-

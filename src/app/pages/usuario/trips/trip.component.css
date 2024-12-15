@@ -1,5 +1,109 @@
-.btn:hover img {
-    opacity: 0.5; /* Optionally, make the image semi-transparent */
-    transform: scale(1.02); /* Agranda la imagen en 2% */
-    transition: opacity 0.3s ease;
-}
+/* General */
+.card {
+    transition: transform 0.5s ease-in-out, box-shadow 0.5s ease-in-out;
+  }
+  .card:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Imagen */
+  .image-container {
+    overflow: hidden;
+    position: relative;
+  }
+  .image-container img {
+    transition: transform 0.5s ease-in-out;
+  }
+  .image-container:hover img {
+    transform: scale(1.1);
+  }
+  
+  /* Overlay */
+  .overlay {
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+  }
+  .image-container:hover .overlay {
+    opacity: 1;
+  }
+  
+  /* Botón */
+  .animate-button {
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+  }
+  .animate-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Card Content */
+  .animate-content {
+    animation: fadeInUp 1s ease-in-out;
+  }
+  
+  /* Animaciones */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .animate-card {
+    animation: slideIn 1s ease-out;
+  }
+  
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(-50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+
+  .seat-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .seat-icon {
+    font-size: 1.5rem;
+  }
+
+  .seat-number {
+    margin-top: 0.1em;
+    font-weight: bold;
+    font-size: 0.9rem;
+  }
+
+  .seat-available {
+    color: #007bff;
+  }
+
+  .seat-reserved {
+    color: #dc3545;
+  }
+
+  .seat-selected {
+    color: #ffc107;
+  }
+
+  .vertical-divider {
+    width: 2px;
+    height: 100%;
+    background-color: black; /* Color de la línea */
+    margin: 0 auto; /* Centrar la línea */
+  }
+  
