@@ -22,7 +22,7 @@ export class EstacionService{
 
     //OBTENER POR ID
     async findById(id: string){
-        return await this.http.get<Estacion>(`${this.apiBackend}/estaciones/estacion/${id}`, { withCredentials: true }).toPromise();
+        return await this.http.get<Estacion>(`${this.apiBackend}/estaciones/${id}`, { withCredentials: true }).toPromise();
     }
 
     //CREAR

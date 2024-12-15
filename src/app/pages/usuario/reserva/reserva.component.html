@@ -1,0 +1,133 @@
+<div class="container my-5">
+  <div class="modal-body">
+
+    <div class="row g-2">
+      <div class="col-md-6">
+        <!-- Sección de Descripción -->
+        <section class="animate__animated animate__fadeInLeft animate__delay-1s">
+          <h5 class="fw-bold text-primary text-center">
+            <i class="fas fa-info-circle"></i> {{ trip.nombre }}
+          </h5>
+        </section>
+
+        <section class="animate__animated animate__zoomIn animate__delay-2s">
+          <div class="image-container position-relative">
+            <img [src]="trip.urlImagen" class="rounded shadow-lg animate-image" alt="destino">
+            <div *ngIf="trip.statusPromo" class="badge bg-danger position-absolute top-0 end-0 m-3 p-2 text-white fs-5 rounded-pill">
+              Descuento {{ trip.descuentoPorcentaje}}%
+            </div>
+          </div>
+        </section>
+
+        <section class="animate__animated animate__fadeInRight animate__delay-3s">
+          <h5 class="fw-bold text-primary text-center">
+            <strong>Salidada: </strong> <i class="fas fa-clock"></i> {{ formatDate(trip.fechaHoraSalida) }}
+          </h5>
+        </section>
+      </div>
+
+      <div class="col-md-6">
+        <!-- Sección de precio -->
+        <section class="animate__animated animate__fadeInRight animate__delay-1s">
+          <h5 class="fw-bold text-primary">
+            <i class="fas fa-tag"></i> Precio del viaje
+          </h5>
+          <p>
+            <span *ngIf="trip.statusPromo; else sinPromo">
+              Precio original: <del class="text-danger">S/{{ trip.costo }}</del><br>
+              Precio con descuento ({{ trip.descuentoPorcentaje }}%):
+              <span class="text-success fw-bold">
+                S/{{ trip.costo - (trip.costo * (trip.descuentoPorcentaje / 100)) | number:'1.2-2' }}
+              </span>
+            </span>
+            <ng-template #sinPromo>
+              <span class="fw-bold">Precio: S/{{ trip.costo }}</span>
+            </ng-template>
+          </p>
+        </section>
+
+        <section class="animate__animated animate__fadeInUp animate__delay-2s">
+          <h5 class="fw-bold text-primary">
+            <i class="fas fa-bus"></i> Bus
+          </h5>
+          <ul class="list-unstyled">
+            <li><strong>Placa:</strong> {{ bus.placa }}</li>
+            <li><strong>Modelo:</strong> {{ bus.modelo }}</li>
+            <li><strong>Capacidad:</strong> {{ bus.capacidad }} pasajeros</li>
+          </ul>
+        </section>
+
+        <section class="animate__animated animate__fadeInUp animate__delay-3s">
+          <h5 class="fw-bold text-primary">
+            <i class="fas fa-map-marker-alt"></i> Estaciones
+          </h5>
+          <ul class="list-unstyled">
+            <li><strong>Origen:</strong> {{ estacionOrigen.nombre }} - {{ estacionOrigen.ubicacion }}</li>
+            <li><strong>Destino:</strong> {{ estacionDestino.nombre }} - {{ estacionDestino.ubicacion }}</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+
+    <section class="mt-5">
+      <div class="row g-3">
+        <!-- Primer Piso -->
+        <div class="col-12 col-md-5 animate__animated animate__fadeInLeft animate__delay-5s">
+          <h6 class="text-center text-secondary">Primer Piso</h6>
+          <div class="row row-cols-4 g-2">
+            <div *ngFor="let asiento of asientos | slice:0:20" class="col text-center">
+              <div class="seat-container">
+                <i 
+                  class="fas fa-chair seat-icon" 
+                  [ngClass]="{
+                    'seat-available': asiento.estado === 'DISPONIBLE' && !isAsientoReservedByOther(asiento),
+                    'seat-reserved': asiento.estado === 'RESERVADO',
+                    'seat-selected': asientosSeleccionados.includes(asiento.numero)
+                  }"
+                  (click)="toggleAsiento(asiento)">
+                </i>
+                <p class="seat-number">{{ asiento.numero }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Línea vertical -->
+        <div class="col-12 col-md-2 d-flex justify-content-center align-items-center animate__animated animate__zoomIn animate__delay-5s">
+          <div class="vertical-divider"></div>
+        </div>
+
+        <!-- Segundo Piso -->
+        <div class="col-12 col-md-5 animate__animated animate__fadeInRight animate__delay-5s">
+          <h6 class="text-center text-secondary">Segundo Piso</h6>
+          <div class="row row-cols-4 g-2">
+            <div *ngFor="let asiento of asientos | slice:20:40" class="col text-center">
+              <div class="seat-container">
+                <i 
+                  class="fas fa-chair seat-icon" 
+                  [ngClass]="{
+                    'seat-available': asiento.estado === 'DISPONIBLE' && !isAsientoReservedByOther(asiento),
+                    'seat-reserved': asiento.estado === 'RESERVADO',
+                    'seat-selected': asientosSeleccionados.includes(asiento.numero)
+                  }"
+                  (click)="toggleAsiento(asiento)">
+                </i>
+                <p class="seat-number">{{ asiento.numero }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="d-flex justify-content-center align-items-center mt-2">
+      <button  
+          class="btn m-2 btn-lg w-50 bg-primary" 
+          [disabled]="isBotonReservarDisabled()"
+          (click)="reservarAsientos()">
+          <i class="fas fa-check-circle"></i> 
+          {{ hayDisponibles ? 'Reservar asientos' : 'No disponible' }}
+        </button>
+    </section>
+  </div>
+</div>

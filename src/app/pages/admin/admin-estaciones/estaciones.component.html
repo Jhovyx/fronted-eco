@@ -117,19 +117,6 @@
                     <button class="btn x1 btn-warning btn-sm m-1 hover-zoom-in p-1" (click)="btnEdit(estacion)" data-bs-toggle="modal" data-bs-target="#addEstacionModal">
                         <i class="bi bi-pencil"></i> Editar
                     </button>
-                    <div class="form-check form-switch ms-2 d-flex align-items-center">
-                        <input 
-                          class="form-check-input" 
-                          type="checkbox" 
-                          [id]="'estacionActive' + estacion.primaryKey" 
-                          [checked]="estacion.estado" 
-                          (change)="updateStatus(estacion)" />
-                        <label 
-                          class="form-check-label ms-1" 
-                          [for]="'estacionActive' + estacion.primaryKey">
-                          {{ estacion.estado ? 'Activo' : 'Inactivo' }}
-                        </label>
-                      </div>
                   </td>
                 </tr>
               </tbody>

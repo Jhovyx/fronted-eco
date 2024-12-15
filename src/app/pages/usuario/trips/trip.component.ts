@@ -1,8 +1,18 @@
 import { Component, OnInit } from "@angular/core";
 import { Viaje } from "../../../shared/interfaces/viaje.interface";
 import { ViajesService } from "../../../shared/services/viajes.service";
-import { ReservaService } from "../../../shared/services/reseva.service";
 import { Router } from "@angular/router";
+import { UserService } from "../../../shared/services/user.service";
+import { User } from "../../../shared/interfaces/user.interface";
+import { Bus } from "../../../shared/interfaces/bus.interface";
+import { Estacion } from "../../../shared/interfaces/estaciones.interface";
+import { EstacionService } from "../../../shared/services/estaciones.service";
+import { BusService } from "../../../shared/services/buses.service";
+import { AsientoService } from "../../../shared/services/asientos.service";
+import { Asiento, EstadoAsiento } from "../../../shared/interfaces/asiento.interface";
+import { WebSocketService } from "../../../shared/services/websocket.service";
+
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-trip',
@@ -11,20 +21,90 @@ import { Router } from "@angular/router";
 })
 export class TripComponent implements OnInit {
   viajes: Viaje[] = [];
-  user: any = null;
+  asientos: Asiento[] = [];
+  user!: User;
+  
+  trip: Viaje = {primaryKey: '',nombre: '',descripcion: '',costo: 0,idBus: '',idEstacionOrigen: '',nombreEstacionOrigen: '',idEstacionDestino: '',nombreEstacionDestino: '',fechaHoraSalida: 0,fechaHoraLlegada: 0,estado: true,statusPromo: false,descuentoPorcentaje: 0,userAdminId: '',urlImagen: '',createdAt: 0,updatedAt: 0};
+  
+  bus: Bus = {primaryKey: '',placa: '',modelo: '',capacidad: 0,createdAt: 0,updatedAt: 0,estado: true,userAdminId: ''};
+  asientoVacio: Asiento = {primaryKey: '',numero: 0,idBus: '',userAdminId: '',estado: EstadoAsiento.DISPONIBLE,createdAt: 0,};
+  
+  estacionOrigen: Estacion = { primaryKey: '', nombre: '', ubicacion: '', estado: true };
+  estacionDestino: Estacion = { primaryKey: '', nombre: '', ubicacion: '', estado: true };
+
+  hayDisponibles: boolean = false;
 
   constructor(
     private router: Router,
     private viajeService: ViajesService,
-    private reservaService: ReservaService
+    private userservice: UserService,
+    private estacionService: EstacionService,
+    private busService: BusService,
+    private asientoService: AsientoService,
+    private websocketService: WebSocketService
   ) {}
 
   ngOnInit(): void {
     this.loadViajes();
-    // Cargar usuario desde sessionStorage
-    const userData = sessionStorage.getItem('user');
-    if (userData) {
-      this.user = JSON.parse(userData);
+    this.loadUserData();
+    // Suscribirse a los cambios de WebSocke
+    this.websocketService.listenAsientoActualizado().subscribe((asiento: Asiento) => {
+      this.updateAsiento(asiento);
+    });
+  }
+
+  // Actualiza el asiento en el frontend
+  private updateAsiento(asientoActualizado: Asiento): void {
+    const index = this.asientos.findIndex(asiento => asiento.primaryKey === asientoActualizado.primaryKey);
+    if (index !== -1) {
+      this.asientos[index] = asientoActualizado;
+    }
+  }
+
+  checkDisponibilidad() {
+    // Verificamos si hay algún asiento disponible
+    this.hayDisponibles = this.asientos.some(asiento => asiento.estado === 'DISPONIBLE');
+  }
+
+  async openTripDetails(trip: Viaje) {
+    const estacionOrigen = await this.loadEstacion(trip.idEstacionOrigen);
+    const estacionDestino = await this.loadEstacion(trip.idEstacionDestino);
+    if(estacionOrigen) this.estacionOrigen = estacionOrigen
+    if(estacionDestino) this.estacionDestino = estacionDestino
+    await this.loadBus(trip.idBus);
+    await this.loadAsientos(trip.idBus);
+    this.trip = trip
+    this.checkDisponibilidad();
+    const registerModalElement = document.getElementById('tripModal');
+    if (registerModalElement) {
+      const registerModal = new bootstrap.Modal(registerModalElement);
+      registerModal.show();
+    }
+  }
+
+  btnReserveIr(){
+    this.onReserve(this.trip);
+  }
+
+  onReserve(trip: Viaje) {
+    this.loadUserData();
+    if(!this.user){
+      const closeRegisterButton = document.getElementById('closeTripxdModal');
+      if (closeRegisterButton) {
+        closeRegisterButton.click();
+      }
+      const loginModalElement = document.getElementById('loginModal');
+      if (loginModalElement) {
+        const loginModal = new bootstrap.Modal(loginModalElement);
+        loginModal.show();
+      }
+    }else{
+      sessionStorage.setItem('trip', JSON.stringify(trip));
+      const closeRegisterButton = document.getElementById('closeTripxdModal');
+      if (closeRegisterButton) {
+        closeRegisterButton.click();
+      }
+      this.router.navigate(['/reserva'])
     }
   }
 
@@ -34,49 +114,40 @@ export class TripComponent implements OnInit {
     this.viajes = data ?? [];
   }
 
-  // Este método se llama cuando el usuario hace clic en "Reservar"
-  onReserve(trip: Viaje) {
-    // Verificamos si el usuario está autenticado, si no lo está, intentamos cargarlo desde la cookie
-    if (!this.user) {
-      this.loadUserData(); // Carga los datos del usuario desde la cookie
+  //cargar estacion
+  async loadEstacion(id: string) {
+    const estacion = await this.estacionService.findById(id);
+    if(estacion){
+      return estacion
     }
-  
-    // Guardamos el viaje en sessionStorage
-    sessionStorage.setItem('selectedTrip', JSON.stringify(trip));
-  
-    // Guardamos el usuario en sessionStorage
-    sessionStorage.setItem('user', JSON.stringify(this.user));
-  
-    // Redirigir a la página de detalles del viaje
-    this.router.navigate(['/trip-detail']);
+    return
   }
 
-  // Método para cargar los datos del usuario desde la cookie
+  //cargar bus
+  async loadBus(id: string) {
+    const bus = await this.busService.findById(id)
+    if(bus){
+      this.bus = bus 
+    }
+    return
+  }
+
+  //cargar asientos del bus
+  async loadAsientos(idBus: string) {
+    const data = await this.asientoService.findById(idBus);
+    this.asientos = data ?? [];
+  }
+
+  // cargar usuario
   private loadUserData(): void {
-    const data = this.getCookie('user');
-    if (data) {
-      this.user = { ...data }; // Asignamos los datos de la cookie a this.user
-    } else {
-      this.user = null; // Si no hay datos, seteamos el usuario como null
+    const user = this.userservice.getCookie('user');
+    if (user) {
+      this.user = user;
     }
   }
 
-  // Método para obtener una cookie por su nombre
-  private getCookie(name: string): any {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) {
-      const cookieValue = parts.pop()?.split(';').shift() || null;
-      if (cookieValue) {
-        const decodeCookie = decodeURIComponent(cookieValue);
-        try {
-          return JSON.parse(decodeCookie); // Intentamos parsear la cookie como JSON
-        } catch (error) {
-          console.error('Error parsing cookie', error);
-          return null;
-        }
-      }
-    }
-    return null; // Si no se encuentra la cookie, retornamos null
+  //formatear la fecha
+  public formatDate(unixTimestamp: number) {
+    return this.userservice.formatDate(unixTimestamp);
   }
 }

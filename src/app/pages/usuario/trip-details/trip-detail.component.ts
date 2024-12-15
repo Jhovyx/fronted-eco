@@ -13,51 +13,13 @@ import * as bootstrap from 'bootstrap';
 })
 export class TripDetailComponent implements OnInit {
 
-  trip: Viaje = {
-    primaryKey: '',
-    nombre: '',
-    descripcion: '',
-    costo: 0,
-    idBus: '',
-    idEstacionOrigen: '',
-    nombreEstacionOrigen: '',
-    idEstacionDestino: '',
-    nombreEstacionDestino: '',
-    fechaHoraSalida: 0,
-    fechaHoraLlegada: 0,
-    estado: true,
-    statusPromo: false,
-    descuentoPorcentaje: 0,
-    userAdminId: '',
-    urlImagen: '',
-    createdAt: 0,
-    updatedAt: 0
-  };
+  trip: Viaje = {primaryKey: '',nombre: '',descripcion: '',costo: 0,idBus: '',idEstacionOrigen: '',nombreEstacionOrigen: '',idEstacionDestino: '',nombreEstacionDestino: '',fechaHoraSalida: 0,fechaHoraLlegada: 0,estado: true,statusPromo: false,descuentoPorcentaje: 0,userAdminId: '',urlImagen: '',createdAt: 0,updatedAt: 0};
 
-  bus: Bus = {
-    primaryKey: '',
-    placa: '',
-    modelo: '',
-    capacidad: 0,
-    createdAt: 0,
-    updatedAt: 0,
-    estado: true,
-    userAdminId: ''
-  };
+  bus: Bus = {primaryKey: '',placa: '',modelo: '',capacidad: 0,createdAt: 0,updatedAt: 0,estado: true,userAdminId: ''};
 
-  estacionOrigen: Estacion = { 
-    primaryKey: '', 
-    nombre: '', 
-    ubicacion: '', 
-    estado: true 
-  };
+  estacionOrigen: Estacion = { primaryKey: '', nombre: '', ubicacion: '', estado: true };
 
-  estacionDestino: Estacion = { 
-    primaryKey: '', 
-    nombre: '', 
-    ubicacion: '', 
-    estado: true 
-  };
+  estacionDestino: Estacion = { primaryKey: '', nombre: '', ubicacion: '', estado: true };
 
   seats: { seatId: number, isAvailable: boolean }[] = [];
   selectedSeats: number[] = [];
