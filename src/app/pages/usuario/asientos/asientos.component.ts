@@ -1,5 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Asiento } from '../../../shared/interfaces/asiento.interface';
+import { UserService } from '../../../shared/services/user.service';
+import { Pasajero } from '../../../shared/interfaces/pasajero.interface';
+import { EstadoReserva, Reserva } from '../../../shared/interfaces/reserva.interface';
+import { User } from '../../../shared/interfaces/user.interface';
+import { Viaje } from '../../../shared/interfaces/viaje.interface';
+import { ReservaService } from '../../../shared/services/reseva.service';
 
 @Component({
   selector: 'app-asientos',
@@ -7,94 +14,144 @@ import { Router } from '@angular/router';
   styleUrls: ['./asientos.component.css']
 })
 export class AsientosComponent implements OnInit {
-  selectedSeats: number[] = [];
-  seatForms: { seatId: number, formData: any, isDataSaved: boolean }[] = [];
 
-  constructor(private router: Router) {}
+  currentPassengerIndex = 0;
+  asientos: Asiento[] = [];
+  pasajeros: Pasajero[] = [];
+  reserva: Reserva = {idUsuario: '',pasajeros: [],idViaje: '',estado: EstadoReserva.PENDIENTE,fechaViaje: 0,}
+
+  constructor(
+    private userService: UserService,
+    private reservaService: ReservaService,
+    private router: Router
+  ){}
 
   ngOnInit(): void {
-    // Recuperar los asientos seleccionados desde sessionStorage
-    const savedSeats = sessionStorage.getItem('selectedSeats');
-    console.log(savedSeats); // Para verificar qué asientos se están recuperando
+    this.loadAsientos();
+    this.loadUser();
+    this.loadTrip();
+  }
+
+  loadUser() {
+    const user = this.userService.getCookie('user');
+    if(user){
+      this.reserva.idUsuario = user.primaryKey
+    }
+  }
+
+  loadTrip() {
+    const data = sessionStorage.getItem('trip');
+    if(data){
+      let tripxd: Viaje = JSON.parse(data);
+      this.reserva.idViaje = tripxd.primaryKey!;
+      this.reserva.fechaViaje = tripxd.fechaHoraSalida!;
+      this.reserva.costoUnitario = tripxd.costo;
+      this.reserva.descuentoPorcentaje = tripxd.descuentoPorcentaje || 0; // Asigna el descuento 
+    }
+  }
+
+  //CARGAR ASIENTOS
+  loadAsientos() {
+    const data = sessionStorage.getItem('asientosSeleccionados');
+    if (data) {
+      this.asientos = JSON.parse(data);
+      // Inicializar el arreglo de pasajeros con el mismo número de asientos
+      this.pasajeros = this.asientos.map(() => ({firstName: '', registered: false,lastName: '',documentType: '',documentNumber: '',phoneNumber: '',email: '',idAsiento: ''}));
+    }
+  }
+
+    // Alerta de error o éxito
+    showCustomAlert(message: string, type: 'success' | 'error') {
+      const alertDiv = document.createElement('div');
+      alertDiv.style.position = 'fixed';
+      alertDiv.style.top = '50%';
+      alertDiv.style.left = '50%';
+      alertDiv.style.transform = 'translate(-50%, -50%)';
+      alertDiv.style.padding = '20px';
+      alertDiv.style.zIndex = '1055';
+      alertDiv.style.borderRadius = '5px';
+      alertDiv.style.color = '#fff';
+      alertDiv.style.fontSize = '16px';
+      alertDiv.style.textAlign = 'center';
+      alertDiv.style.minWidth = '300px';
+      alertDiv.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.3)';
+      alertDiv.style.backgroundColor = type === 'success' ? '#28a745' : '#dc3545';
+      alertDiv.textContent = message;
+      document.body.appendChild(alertDiv);
+      setTimeout(() => {
+        alertDiv.remove();
+      }, 1500);
+    }
+
+    nextPassenger() {
+      if (this.currentPassengerIndex < this.pasajeros.length - 1) {
+        this.currentPassengerIndex++;
+      }
+    }
   
-    if (savedSeats) {
-      const storedSeats = JSON.parse(savedSeats);
-      // Verificar si los asientos guardados son diferentes a los seleccionados actualmente
-      if (this.selectedSeats.length === 0 || !this.areArraysEqual(this.selectedSeats, storedSeats)) {
-        // Si los asientos seleccionados han cambiado, actualizar el sessionStorage
-        this.selectedSeats = storedSeats;
-        this.updateSeatForms(); // Actualizar los formularios con los nuevos asientos seleccionados
+    previousPassenger() {
+      if (this.currentPassengerIndex > 0) {
+        this.currentPassengerIndex--;
+      }
+    }
+
+    registerPassenger(index: number): void {
+      const passenger = this.pasajeros[index];
+    
+      // Verificamos si los datos del pasajero son válidos
+      if (passenger.firstName && passenger.lastName && passenger.documentType && passenger.documentNumber && passenger.phoneNumber && passenger.email) {
+        // Asignar el idAsiento correspondiente al pasajero
+        passenger.idAsiento = this.asientos[index].primaryKey; // Asumiendo que los asientos tienen una propiedad `idAsiento`
+    
+        // Eliminar el pasajero de la reserva si ya está registrado
+        const passengerIndexInReserva = this.reserva.pasajeros.findIndex(p => p.idAsiento === passenger.idAsiento);
+        if (passengerIndexInReserva !== -1) {
+          // Si lo encuentra, lo elimina de la lista de pasajeros
+          this.reserva.pasajeros.splice(passengerIndexInReserva, 1);
+          this.reserva.pasajeros.push(passenger);
+          this.calculateTotalCost();
+          this.showCustomAlert('Datos del pasajero actualizados correctamente', 'success');
+        }else{
+          // Agregar nuevamente el pasajero (ya sea para actualizar o registrar)
+          passenger.registered = true; // Marca al pasajero como registrado
+          this.reserva.pasajeros.push(passenger); // Agrega el pasajero al arreglo de pasajeros de la reserva, usando una copia para evitar cambios en la referencia
+          this.calculateTotalCost();
+	  this.showCustomAlert('Pasajero registrado exitosamente', 'success');
+        }
+
       } else {
-        // Si no han cambiado, solo cargar los formularios guardados
-        this.loadSeatForms();
+        this.showCustomAlert('Por favor, completa todos los campos', 'error');
       }
-    } else {
-      // Si no hay datos de asientos en sessionStorage, simplemente inicializamos los asientos seleccionados
-      this.updateSeatForms();
     }
-  }
-
-  // Compara dos arrays (para verificar si los asientos seleccionados han cambiado)
-  areArraysEqual(arr1: number[], arr2: number[]): boolean {
-    if (arr1.length !== arr2.length) return false;
-    for (let i = 0; i < arr1.length; i++) {
-      if (arr1[i] !== arr2[i]) return false;
+    
+ 
+    isPassengerRegistered(index: number): boolean {
+      return this.pasajeros[index]?.registered || false;
     }
-    return true;
-  }
-
-  // Actualizar los formularios de los asientos
-  updateSeatForms(): void {
-    this.seatForms = this.selectedSeats.map(seatId => ({
-      seatId,
-      formData: { fullName: '', docType: '', docNumber: '', birthDate: '', gender: '', email: '', phoneNumber: '' },
-      isDataSaved: false
-    }));
-    sessionStorage.setItem('selectedSeats', JSON.stringify(this.selectedSeats));
-    sessionStorage.setItem('seatForms', JSON.stringify(this.seatForms));
-  }
-
-  // Cargar los formularios de los asientos desde sessionStorage
-  loadSeatForms(): void {
-    const savedSeatForms = sessionStorage.getItem('seatForms');
-    if (savedSeatForms) {
-      this.seatForms = JSON.parse(savedSeatForms);
+    
+    areAllPassengersRegistered(): boolean {
+      return this.pasajeros.every(pasajero => this.isPassengerRegistered(this.pasajeros.indexOf(pasajero)));
     }
-  }
 
-  // Función para validar el número de celular
-  isPhoneNumberValid(phoneNumber: string): boolean {
-    const phonePattern = /^\d{9}$/;
-    return phonePattern.test(phoneNumber);
-  }
-
-  saveSeatData(seatId: number, formData: any, form: any): void {
-    const formIndex = this.seatForms.findIndex(form => form.seatId === seatId);
-
-    if (formIndex !== -1) {
-      // Verificar si algún campo está vacío o si el número de celular no es válido
-      const allFieldsValid = Object.values(formData).every(value => value) && this.isPhoneNumberValid(formData.phoneNumber);
-      
-      if (!allFieldsValid) {
-        form.submitted = true;  // Activar la validación al enviar
-        return;
+    async reserveSeats() {
+      // Lógica para realizar la reserva
+      const response = await this.reservaService.create(this.reserva);
+      if(response && typeof response === 'object' && response.primaryKey){
+        this.showCustomAlert('Se creo correctamente el Bus.', 'success');
+        this.router.navigate(['/reservas']);
+      }else{
+        this.showCustomAlert('Error al crear el Bus.', "error");
       }
-
-      // Si los datos están guardados, cambiar a modo edición
-      if (this.seatForms[formIndex].isDataSaved) {
-        this.seatForms[formIndex].isDataSaved = false;  // Permitir edición
-      } else {
-        this.seatForms[formIndex].formData = formData;  // Guardar los datos
-        this.seatForms[formIndex].isDataSaved = true;    // Marcar como guardado
-      }
-
-      sessionStorage.setItem('seatForms', JSON.stringify(this.seatForms));
-      form.submitted = false;  // Resetear el estado de la validación después de guardar
     }
-  }
 
-  goToPayment(): void {
-    sessionStorage.setItem('seatForms', JSON.stringify(this.seatForms));
-    this.router.navigate(['/pago-detalle']);
+calculateTotalCost() {
+  if (this.reserva.costoUnitario && this.reserva.pasajeros.length > 0) {
+    const subtotal = this.reserva.costoUnitario * this.reserva.pasajeros.length;
+    const descuento = (subtotal * (this.reserva.descuentoPorcentaje || 0)) / 100;
+    this.reserva.costoTotal = subtotal - descuento;
+  } else {
+    this.reserva.costoTotal = 0;
   }
+}
+
 }

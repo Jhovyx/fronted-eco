@@ -4,20 +4,18 @@ import { RouterModule, Routes } from '@angular/router';
 // User Components
 import { HomeComponent } from './pages/usuario/home/home.component';
 import { NosotrosComponent } from './pages/usuario/nosotros/nosotros.component';
-import { PromocionesListComponent } from './pages/usuario/promociones/promociones.component';
 import { TripComponent } from './pages/usuario/trips/trip.component';
 import { BoletaComponent } from './pages/usuario/boleta/boleta.component';
-import { TripDetailComponent } from './pages/usuario/trip-details/trip-detail.component';
 import { PaymentDetailComponent } from './pages/usuario/payment/payment-detail.component';
 import { AsientosComponent } from './pages/usuario/asientos/asientos.component';
 
 // Admin Components
 import { AdminUsersComponent } from './pages/admin/admin-users/admin-users.component';
-import { ReservationManagementComponent } from './pages/admin/reservation-management/reservation-management.component';
 import { AdminDashComponent } from './pages/admin/admin-dash/admin-dash.component';
 import { AminBusesComponent } from './pages/admin/admin-buses/buses.component';
 import { AdminEstacionesComponent } from './pages/admin/admin-estaciones/estaciones.component';
 import { ViajesComponent } from './pages/admin/admin-viajes/viajes.component';
+import { ReservationManagementComponent } from './pages/admin/reserva-management/reserva-management.component';
 
 // Guards
 import { adminGuard } from './guards/admin.guard';
@@ -35,7 +33,6 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [clienteNoAuthGuard] }, // Home for unauthenticated users
   { path: 'nosotros', component: NosotrosComponent, canActivate: [clienteNoAuthGuard] }, // About Us
   { path: 'destinos', component: TripComponent, canActivate: [clienteNoAuthGuard] }, // Destinations list
-  { path: 'promociones-list', component: PromocionesListComponent, canActivate: [clienteNoAuthGuard] }, // Promotions
 
   // Admin Routes (only accessible by authenticated admins)
   { path: 'admin-user', component: AdminUsersComponent, canActivate: [adminGuard] }, // Admin User Management
@@ -47,7 +44,6 @@ const routes: Routes = [
   // Client Routes (only accessible by authenticated clients)
   { path: 'profile', component: ProfileComponent, canActivate: [clienteGuard] }, // User Profile
   { path: 'pago-detalle', component: PaymentDetailComponent, canActivate: [clienteGuard] }, // Payment Details
-  { path: 'trip-detail', component: TripDetailComponent, canActivate: [clienteNoAuthGuard] }, // Trip Details
   { path: 'boleta', component: BoletaComponent, canActivate: [clienteGuard] }, // Ticket (Boleta)
   { path: 'asientos', component: AsientosComponent, canActivate: [clienteGuard] }, // Seat selection form
 
