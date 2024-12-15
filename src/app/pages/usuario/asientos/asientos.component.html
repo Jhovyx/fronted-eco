@@ -1,123 +1,82 @@
 <div class="container py-5">
-    <h2 class="text-center mb-5 text-primary animate__animated animate__fadeIn animate__delay-1s">Formulario de Pasajeros</h2>
 
-    <!-- Iteración sobre los asientos seleccionados -->
-    <div *ngFor="let seatForm of seatForms" class="card mb-4 shadow-lg border-0 animate__animated animate__fadeIn">
-        <div class="card-header bg-primary text-white rounded-top">
-            <strong>Asiento {{ ('0' + seatForm.seatId).slice(-2) }}</strong>
-        </div>
+    <div *ngIf="asientos.length > 0" class="card mb-4 shadow-lg border-0 animate__animated animate__fadeIn animate__delay-1s" style="max-width: 800px; margin: 0 auto;">
+        <div class="card-body">
+            <h5 class="card-title text-center mb-4">
+                <i class="bi bi-person-circle"></i> Información del Pasajero - <strong>Asiento {{asientos[currentPassengerIndex].numero}}</strong>
+            </h5>
 
-        <div class="card-body bg-light p-4 rounded-bottom">
-            <form #form="ngForm" (ngSubmit)="saveSeatData(seatForm.seatId, seatForm.formData, form)">
-                
-                <!-- Nombre Completo -->
-                <div class="mb-3">
-                    <label for="fullName" class="form-label text-secondary">
-                        <i class="fas fa-user"></i> Nombres Completos
+            <form>
+                <div class="form-group mb-1">
+                    <label for="name" class="form-label">
+                        <i class="bi bi-person-fill"></i> Nombre
                     </label>
-                    <input type="text" id="fullName" class="form-control shadow-sm" [(ngModel)]="seatForm.formData.fullName" name="fullName" required placeholder="Ingresa tu nombre completo" [readonly]="seatForm.isDataSaved" [class.opacity-50]="seatForm.isDataSaved" />
-                    <div *ngIf="!seatForm.formData.fullName && form.submitted" class="text-danger">
-                        Este campo es obligatorio.
+                    <input type="text" class="form-control" id="name" [(ngModel)]="pasajeros[currentPassengerIndex].firstName" name="name"
+                        required>
+                </div>
+                <div class="form-group mb-1">
+                    <label for="surname" class="form-label">
+                        <i class="bi bi-person-lines-fill"></i> Apellidos
+                    </label>
+                    <input type="text" class="form-control" id="surname" [(ngModel)]="pasajeros[currentPassengerIndex].lastName" name="surname"
+                        required>
+                </div>
+                <div class="mb-1">
+                    <div class="row">
+                        <div class="col-12 col-md-6 mb-1">
+                            <label for="inputDocumentType" class="form-label">
+                                <i class="bi bi-card-text"></i> Tipo de Documento
+                            </label>
+                            <select class="form-select" id="inputDocumentType" [(ngModel)]="pasajeros[currentPassengerIndex].documentType" name="document_type"
+                                >
+                                <option value="DNI">DNI</option>
+                                <option value="PASAPORTE">PASAPORTE</option>
+                                <option value="RUC">RUC</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-6 mb-1">
+                            <label for="inputDocumentNumber" class="form-label">
+                                <i class="bi bi-file-earmark-person"></i> N° de Documento
+                            </label>
+                            <input type="text" class="form-control" id="inputDocumentNumber" [(ngModel)]="pasajeros[currentPassengerIndex].documentNumber" name="document_number"
+                                required>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-1">
+                    <div class="row">
+                        <div class="col-12 col-md-6 mb-1">
+                            <label for="phone" class="form-label">
+                                <i class="bi bi-telephone-fill"></i> Teléfono
+                            </label>
+                            <input type="text" class="form-control" id="phone" [(ngModel)]="pasajeros[currentPassengerIndex].phoneNumber" name="phone_number"
+                                required>
+                        </div>
+                        <div class="col-12 col-md-6 mb-1">
+                            <label for="mail" class="form-label">
+                                <i class="bi bi-envelope-fill"></i> Correo
+                            </label>
+                            <input type="email" class="form-control" id="mail" [(ngModel)]="pasajeros[currentPassengerIndex].email" name="email"
+                                required>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Tipo de Documento -->
-                <div class="mb-3">
-                    <label for="docType" class="form-label text-secondary">
-                        <i class="fas fa-id-card"></i> Tipo de Documento
-                    </label>
-                    <select id="docType" class="form-control shadow-sm" [(ngModel)]="seatForm.formData.docType" name="docType" required [disabled]="seatForm.isDataSaved" [class.opacity-50]="seatForm.isDataSaved">
-                        <option value="" disabled selected>Selecciona el tipo de documento</option>
-                        <option value="DNI">DNI</option>
-                        <option value="Pasaporte">Pasaporte</option>
-                        <option value="Extranjería">Carnet de Extranjería</option>
-                    </select>
-                    <div *ngIf="!seatForm.formData.docType && form.submitted" class="text-danger">
-                        Este campo es obligatorio.
-                    </div>
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="button" class="btn btn-secondary" (click)="previousPassenger()" [disabled]="currentPassengerIndex === 0">
+                        <i class="bi bi-arrow-left-circle"></i> Anterior
+                    </button>
+                    <button type="button" class="btn btn-primary w-50 mx-auto " (click)="registerPassenger(currentPassengerIndex)">
+                        {{ pasajeros[currentPassengerIndex].registered ? 'Actualizar Datos' : 'Guardar Pasajero' }}                    </button>
+                    <button type="button" class="btn btn-secondary" (click)="nextPassenger()" [disabled]="currentPassengerIndex === pasajeros.length - 1">
+                        Siguiente <i class="bi bi-arrow-right-circle"></i>
+                    </button>
                 </div>
-
-                <!-- Número de Documento -->
-                <div class="mb-3">
-                    <label for="docNumber" class="form-label text-secondary">
-                        <i class="fas fa-clipboard-list"></i> Número de Documento
-                    </label>
-                    <input type="text" id="docNumber" class="form-control shadow-sm" [(ngModel)]="seatForm.formData.docNumber" name="docNumber" required [readonly]="seatForm.isDataSaved" [class.opacity-50]="seatForm.isDataSaved" placeholder="Ingresa el número de documento" />
-                    <div *ngIf="!seatForm.formData.docNumber && form.submitted" class="text-danger">
-                        Este campo es obligatorio.
-                    </div>
-                </div>
-
-                <!-- Fecha de Nacimiento -->
-                <div class="mb-3">
-                    <label for="birthDate" class="form-label text-secondary">
-                        <i class="fas fa-calendar-alt"></i> Fecha de Nacimiento
-                    </label>
-                    <input type="date" id="birthDate" class="form-control shadow-sm" [(ngModel)]="seatForm.formData.birthDate" name="birthDate" required [readonly]="seatForm.isDataSaved" [class.opacity-50]="seatForm.isDataSaved" />
-                    <div *ngIf="!seatForm.formData.birthDate && form.submitted" class="text-danger">
-                        Este campo es obligatorio.
-                    </div>
-                </div>
-
-                <!-- Sexo -->
-<div class="mb-3">
-    <label for="gender" class="form-label text-secondary">
-        Sexo
-    </label>
-    <select id="gender" class="form-control shadow-sm" [(ngModel)]="seatForm.formData.gender" name="gender" required [disabled]="seatForm.isDataSaved" [class.opacity-50]="seatForm.isDataSaved">
-        <!-- Opción placeholder -->
-        <option value="" disabled selected>Selecciona tu sexo</option>
-        <option value="M">Masculino</option>
-        <option value="F">Femenino</option>
-        <option value="O">Otro</option>
-    </select>
-    <div *ngIf="!seatForm.formData.gender && form.submitted" class="text-danger">
-        Este campo es obligatorio.
-    </div>
-</div>
-
-                <!-- Correo Electrónico -->
-                <div class="mb-3">
-                    <label for="email" class="form-label text-secondary">
-                        <i class="fas fa-envelope"></i> Correo Electrónico
-                    </label>
-                    <input type="email" id="email" class="form-control shadow-sm" [(ngModel)]="seatForm.formData.email" name="email" required [readonly]="seatForm.isDataSaved" [class.opacity-50]="seatForm.isDataSaved" placeholder="Ingresa tu correo electrónico" />
-                    <div *ngIf="!seatForm.formData.email && form.submitted" class="text-danger">
-                        Este campo es obligatorio.
-                    </div>
-                </div>
-<!-- Número de Celular -->
-<div class="mb-3">
-    <label for="phoneNumber" class="form-label text-secondary">
-        <i class="fas fa-phone-alt"></i> Número de Celular
-    </label>
-    <input type="tel" id="phoneNumber" class="form-control shadow-sm" [(ngModel)]="seatForm.formData.phoneNumber" name="phoneNumber" required [readonly]="seatForm.isDataSaved" [class.opacity-50]="seatForm.isDataSaved" placeholder="Ingresa tu número de celular (9 dígitos)" />
-    
-    <div *ngIf="seatForm.formData.phoneNumber && !isPhoneNumberValid(seatForm.formData.phoneNumber)" class="text-danger">
-        El número de celular debe contener solo 9 dígitos numéricos.
-    </div>
-
-    <div *ngIf="!seatForm.formData.phoneNumber && form.submitted" class="text-danger">
-        Este campo es obligatorio.
-    </div>
-</div>
-
-
-                <!-- Botón Guardar -->
-                <button type="submit" class="btn btn-success w-100 shadow-lg">
-                    <i class="fas" [ngClass]="{'fa-save': !seatForm.isDataSaved, 'fa-edit': seatForm.isDataSaved}"></i> 
-                    {{ seatForm.isDataSaved ? 'Editar' : 'Guardar' }}
-                </button>
             </form>
         </div>
     </div>
-
-    <!-- Botón para ir al pago -->
-    <div class="row mb-4">
-        <div class="col-12 text-center">
-            <button (click)="goToPayment()" class="btn btn-primary btn-lg w-50 mt-4 shadow-lg animate__animated animate__fadeIn animate__delay-1s">
-                <i class="fas fa-credit-card"></i> Continuar al Pago
-            </button>
-        </div>
+    <!-- Botón de reservar que solo se muestra cuando todos los pasajeros están registrados -->
+    <div class="d-flex justify-content-center">
+        <button class="btn btn-success w-50 p-2 mt-4" (click)="reserveSeats()" [disabled]="!areAllPassengersRegistered()">Reservar Asientos</button>
     </div>
 </div>

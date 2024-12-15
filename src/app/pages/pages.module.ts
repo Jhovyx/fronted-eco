@@ -5,12 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { AdminDashComponent } from './admin/admin-dash/admin-dash.component';
 import { RouterModule } from '@angular/router';
 import { AdminUsersComponent } from './admin/admin-users/admin-users.component';
-import { ReservationManagementComponent } from './admin/reservation-management/reservation-management.component';
 import { ProfileComponent } from './profile/profile.component';
 import { NosotrosComponent } from './usuario/nosotros/nosotros.component';
-import { PromocionesListComponent } from './usuario/promociones/promociones.component';
-import { TripDetailComponent } from './usuario/trip-details/trip-detail.component';
-import { PromocionesDetailComponent } from './usuario/promociones/details-promocion/promociones.component';
 import { TripComponent } from './usuario/trips/trip.component';
 import { AuthModule } from '../auth/auth.module';
 import { PaymentDetailComponent } from './usuario/payment/payment-detail.component';
@@ -21,19 +17,17 @@ import { ViajesComponent } from './admin/admin-viajes/viajes.component';
 import { BoletaComponent } from './usuario/boleta/boleta.component';
 import { AsientosComponent } from './usuario/asientos/asientos.component';
 import { ReservaComponent } from './usuario/reserva/reserva.component';
+import { ReservationManagementComponent } from './admin/reserva-management/reserva-management.component';
 
 @NgModule({
   declarations: [
     HomeComponent,
     AdminDashComponent,
     AdminUsersComponent,
-    ReservationManagementComponent,
     ProfileComponent,
-    PromocionesListComponent,
     NosotrosComponent,
     TripComponent,
-    TripDetailComponent,
-    PromocionesDetailComponent,
+    ReservationManagementComponent,
     PaymentDetailComponent,
     AminBusesComponent,
     AdminEstacionesComponent,
@@ -55,10 +49,8 @@ import { ReservaComponent } from './usuario/reserva/reserva.component';
     AdminUsersComponent,
     ReservationManagementComponent,
     ProfileComponent,
-    PromocionesListComponent,
     NosotrosComponent,
     TripComponent,
-    PromocionesDetailComponent,
     PaymentDetailComponent,
     AminBusesComponent,
     AdminEstacionesComponent,

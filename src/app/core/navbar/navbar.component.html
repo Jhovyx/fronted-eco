@@ -15,10 +15,6 @@
       <i class="bi bi-geo-alt"></i><span class="underline"></span>
       Destinos
     </a>
-    <a *ngIf="userRol === 'cliente' || !userRol " [routerLink]="['/promociones-list']" class="d-none d-lg-flex nav-link link-underline-opacity-0 text-white fs-5 m-1 d-flex flex-column align-items-center">
-      <i class="bi bi-gift"></i><span class="underline"></span>
-      Promociones
-    </a>
     <!--admin-->
     <a *ngIf="userRol === 'admin'" [routerLink]="['/admin-viajes']" class="d-none d-lg-flex nav-link link-underline-opacity-0 text-white fs-5 m-1 d-flex flex-column align-items-center">
       <i class="bi bi-truck"></i>
@@ -35,10 +31,10 @@
     <span class="underline"></span>
     Admin usuarios
   </a>
-  <a *ngIf="userRol === 'admin'" [routerLink]="['/reservas']" class="d-none d-lg-flex nav-link link-underline-opacity-0 text-white fs-5 m-1 d-flex flex-column align-items-center">
+  <a *ngIf="userRol === 'admin' || userRol === 'cliente'" [routerLink]="['/reservas']" class="d-none d-lg-flex nav-link link-underline-opacity-0 text-white fs-5 m-1 d-flex flex-column align-items-center">
       <i class="bi bi-calendar-check"></i> 
       <span class="underline"></span>
-      Admin reservas
+      Reservas
     </a>
 
   <!--dropboton-->
@@ -70,12 +66,6 @@
           Destinos
         </a>
       </li>
-      <li>
-        <a *ngIf="userRol === 'cliente' || !userRol " [routerLink]="['/promociones-list']" class="nav-link link-underline-opacity-0 text-white fs-5 m-1 d-flex flex-column align-items-center">
-          <i class="bi bi-gift"></i><span class="underline"></span>
-          Promociones
-        </a>
-      </li>
       <!--admin-->
       
       <li>
@@ -100,10 +90,10 @@
         </a>
       </li>
       <li>
-        <a *ngIf="userRol === 'admin'" [routerLink]="['/reservas']" class="nav-link link-underline-opacity-0 text-white fs-5 m-1 d-flex flex-column align-items-center">
+        <a *ngIf="userRol === 'admin' || userRol === 'cliente'" [routerLink]="['/reservas']" class="nav-link link-underline-opacity-0 text-white fs-5 m-1 d-flex flex-column align-items-center">
           <i class="bi bi-calendar-check"></i> 
           <span class="underline"></span>
-          Admin reservas
+          Reservas
         </a>
       </li>
       
