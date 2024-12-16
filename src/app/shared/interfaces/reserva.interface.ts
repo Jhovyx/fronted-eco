@@ -10,6 +10,8 @@ export interface Reserva {
     costoUnitario?: number; // Costo por pasajero o asiento
     costoTotal?: number; // Costo total de la reserva
     descuentoPorcentaje?: number; // Porcentaje de descuento (0-100)
+    createdAt?: string;
+    updatedAt?: number;
   }
   
   export enum EstadoReserva {
