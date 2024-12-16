@@ -76,7 +76,7 @@ export class PaymentDetailComponent implements OnInit {
             const response = await this.pagosService.create(pago);
     
             if (response && typeof response === 'object' && response.primaryKey) {
-                sessionStorage.setItem('pago', JSON.stringify(pago));
+                sessionStorage.setItem('pago', JSON.stringify(response));
                 this.showCustomAlert('Se realizó con éxito el pago.', 'success');
                 this.router.navigate(['/boleta']);
             } else {
