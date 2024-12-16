@@ -12,7 +12,6 @@
     gap: 20px; /* Espacio entre las filas y columnas */
     animation: fadeInUp 1s ease-out; /* Animación de entrada para el contenedor */
     transform: translateY(10px); /* Desplazamiento inicial para la animación */
-    opacity: 0; /* Desaparece al principio */
     transition: all 0.5s ease-out; /* Transición suave */
 }
 
@@ -166,46 +165,4 @@ button.btn-success {
 button.btn-success:hover {
     background-color: #059669;
     transform: translateY(-3px); /* Efecto de desplazamiento */
-}
-
-/* Agregar espacio entre filas */
-.mb-3 {
-    margin-bottom: 25px; /* Espacio inferior mayor */
-}
-
-/* Información de usuario y viaje */
-.row p {
-    font-size: 1rem;
-    color: #6B7280;
-    margin: 0;
-}
-
-/* Información en los bloques de datos (nombre, correo, etc.) */
-.row .col-6 {
-    padding-right: 20px;
-}
-
-strong {
-    font-weight: 600;
-    color: #333;
-}
-
-/* Animación de entrada de los campos */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Fondo general */
-body {
-    background-color: #F3F4F6; /* Fondo gris claro */
-    font-family: 'Arial', sans-serif;
-    color: #333;
-    padding: 40px;
 }

@@ -1,101 +1,82 @@
-<div class="d-flex align-items-center justify-content-center mt-5">
-    <div id="comprobante" class="shadow-lg p-4 rounded-lg bg-white w-100" style="max-width: 800px;">
-        <div class="row mb-4">
-            <div class="col-12 text-center">
-                <h1 class="animate__animated animate__fadeIn text-primary">Detalles del Pago</h1>
-            </div>
+
+
+<form #paymentForm="ngForm" (ngSubmit)="pagar(pago)">
+    <div class="container">
+        <!-- N° de tarjeta -->
+        <div class="mb-3">
+            <label for="numeroTarjeta" class="form-label">N° de tarjeta:</label>
+            <input type="text" id="numeroTarjeta" name="numeroTarjeta" class="form-control" placeholder="N° de tarjeta" required maxlength="16" pattern="^\d{16}$" [(ngModel)]="pago.numeroTarjeta" #numeroTarjeta="ngModel">
+            <div *ngIf="numeroTarjeta.invalid && numeroTarjeta.touched" class="text-danger">El número de tarjeta es obligatorio y debe ser numérico.</div>
         </div>
 
-        <!-- Formulario de pago -->
-        <form (ngSubmit)="handleSubmit()" #paymentForm="ngForm">
-            <div class="container">
-                <!-- N° de tarjeta -->
-                <div class="mb-3">
-                    <label for="numeroTarjeta" class="form-label">N° de tarjeta:</label>
-                    <input type="text" id="numeroTarjeta" name="numeroTarjeta" class="form-control" placeholder="N° de tarjeta" required maxlength="16" pattern="^\d{16}$" ngModel #numeroTarjeta="ngModel">
-                    <div *ngIf="numeroTarjeta.invalid && numeroTarjeta.touched" class="text-danger">El número de tarjeta es obligatorio y debe ser numérico.</div>
-                </div>
+        <!-- Selección del tipo de tarjeta -->
+        <div class="mb-3">
+            <label for="tipoTarjeta" class="form-label">Tipo de tarjeta:</label>
+            <select id="tipoTarjeta" name="tipoTarjeta" class="form-control" required [(ngModel)]="pago.tipoTarjeta" #tipoTarjeta="ngModel">
+                <option value="">Selecciona el tipo de tarjeta</option>
+                <option value="visa">Visa</option>
+                <option value="mastercard">Mastercard</option>
+                <option value="americanexpress">American Express</option>
+                <option value="bcp">BCP</option>
+                <option value="interbank">Interbank</option>
+            </select>
+            <div *ngIf="tipoTarjeta.invalid && tipoTarjeta.touched" class="text-danger">Selecciona un tipo de tarjeta.</div>
+        </div>
 
-                <!-- Selección del tipo de tarjeta -->
-                <div class="mb-3">
-                    <label for="tipoTarjeta" class="form-label">Tipo de tarjeta:</label>
-                    <select id="tipoTarjeta" name="tipoTarjeta" class="form-control" required ngModel #tipoTarjeta="ngModel">
-                        <option value="">Selecciona el tipo de tarjeta</option>
-                        <option value="visa">Visa</option>
-                        <option value="mastercard">Mastercard</option>
-                        <option value="americanexpress">American Express</option>
-                        <option value="bcp">BCP</option>
-                        <option value="interbank">Interbank</option>
-                    </select>
-                    <div *ngIf="tipoTarjeta.invalid && tipoTarjeta.touched" class="text-danger">Selecciona un tipo de tarjeta.</div>
-                </div>
+        <!-- Fecha de vencimiento -->
+        <div class="mb-3">
+            <label for="fechaVencimiento" class="form-label">Fecha de Vencimiento:</label>
+            <input type="date" id="fechaVencimiento" name="fechaVencimiento" class="form-control" [min]="minDate" required [(ngModel)]="pago.fechaVencimiento" #fechaVencimiento="ngModel">
+            <div *ngIf="fechaVencimiento.invalid && fechaVencimiento.touched" class="text-danger">Selecciona una fecha de vencimiento válida.</div>
+        </div>
 
-                <!-- Fecha de vencimiento -->
-                <div class="mb-3">
-                    <label for="fechaVencimiento" class="form-label">Fecha de Vencimiento:</label>
-                    <input type="date" id="fechaVencimiento" name="fechaVencimiento" class="form-control" [min]="minDate" required ngModel #fechaVencimiento="ngModel">
-                    <div *ngIf="fechaVencimiento.invalid && fechaVencimiento.touched" class="text-danger">Selecciona una fecha de vencimiento válida.</div>
-                </div>
+        <!-- Código de seguridad -->
+        <div class="mb-3">
+            <label for="codigoSeguridad" class="form-label">Código de Seguridad:</label>
+            <input type="text" id="codigoSeguridad" name="codigoSeguridad" class="form-control" placeholder="Código de Seguridad" required maxlength="4" pattern="^\d{3,4}$" [(ngModel)]="pago.codigoSeguridad" #codigoSeguridad="ngModel">
+            <div *ngIf="codigoSeguridad.invalid && codigoSeguridad.touched" class="text-danger">El código de seguridad es obligatorio.</div>
+        </div>
 
-                <!-- Código de seguridad -->
-                <div class="mb-3">
-                    <label for="codigoSeguridad" class="form-label">Código de Seguridad:</label>
-                    <input type="text" id="codigoSeguridad" name="codigoSeguridad" class="form-control" placeholder="Código de Seguridad" required maxlength="4" pattern="^\d{3,4}$" ngModel #codigoSeguridad="ngModel">
-                    <div *ngIf="codigoSeguridad.invalid && codigoSeguridad.touched" class="text-danger">El código de seguridad es obligatorio.</div>
-                </div>
-
-                <!-- Mostrar datos de los pasajeros -->
-                <div class="row mb-3">
-                    <div class="col-12">
-                        <strong>Pasajeros:</strong>
-                        <ul>
-                            <li *ngFor="let seatForm of seatForms">
-                                {{ seatForm.formData.fullName }} - {{ seatForm.formData.email }}
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="row mb-3">
-                    <div class="col-6">
-                        <strong>Estación de Destino:</strong>
-                        <p>{{ trip?.nombreEstacionDestino }}</p>
-                    </div>
-                    <div class="col-6">
-                        <strong>Asientos:</strong>
-                        <p>{{ selectedSeats.length }} Asientos seleccionados</p>
-                    </div>
-                </div>
-
-                <div class="row mb-3">
-                    <div class="col-6">
-                        <strong>Fecha de Partida:</strong>
-                        <p>{{ trip?.fechaHoraSalida | date:'fullDate' }}</p>
-                    </div>
-                    <div class="col-6">
-                        <strong>Fecha de Llegada:</strong>
-                        <p>{{ trip?.fechaHoraLlegada | date:'fullDate' }}</p>
-                    </div>
-                </div>
-
-                <div class="row mb-3">
-                    <div class="col-6">
-                        <strong>Costo por Unidad:</strong>
-                        <p>{{ trip?.costo | currency }}</p>
-                    </div>
-                    <div class="col-6">
-                        <strong>Costo total:</strong>
-                        <p>{{ (trip?.costo * selectedSeats.length) | currency }}</p>
-                    </div>
-                </div>
-
-                <!-- Botón de pago -->
-                <div class="row mb-3 d-flex justify-content-center">
-                    <div class="col-12">
-                        <button type="submit" class="btn btn-success btn-lg w-75 shadow-lg transition-all hover:bg-green-600" [disabled]="paymentForm.invalid">Pagar</button>
-                    </div>
-                </div>
-            </div>
-        </form>
+        
+<div class="row mb-3">
+    <div class="col-12">
+        <strong>Pasajeros:</strong>
+        <ul>
+            <li *ngFor="let pasajero of reserva.pasajeros">
+                {{ pasajero.firstName }} {{ pasajero.lastName }}
+            </li>
+        </ul>
     </div>
 </div>
+
+<div class="row mb-3">
+    <div class="col-6">
+        <strong>Costo por Unidad:</strong>
+        <p>{{ reserva.costoUnitario }}</p>
+    </div>
+    <div class="col-6">
+        <strong>Descuento:</strong>
+        <p>{{ reserva.descuentoPorcentaje }}%</p>
+    </div>
+    <div class="col-6">
+        <strong>Costo total:</strong>
+        <p>{{ reserva.costoTotal }}</p>
+    </div>
+</div>
+
+        <!-- Botón de pago -->
+        <div class="mb-3 d-flex justify-content-center align-items-center">
+            <div class="w-50">
+                <button type="submit" class="btn btn-success btn-lg w-75 shadow-lg transition-all hover:bg-green-600" [disabled]="paymentForm.invalid || isProcessing">
+                    <span *ngIf="isProcessing">
+                        <!-- Spinner de Bootstrap -->
+                        <div class="spinner-border spinner-border-sm" role="status">
+                            <span class="visually-hidden">Cargando...</span>
+                        </div> Procesando...
+                    </span>
+                    <span *ngIf="!isProcessing">Pagar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
