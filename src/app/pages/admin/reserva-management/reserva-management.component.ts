@@ -1,10 +1,13 @@
 import { Component, OnInit } from "@angular/core";
-import { Reserva } from "../../../shared/interfaces/reserva.interface";
+import { EstadoReserva, Reserva } from "../../../shared/interfaces/reserva.interface";
 import { ReservaService } from "../../../shared/services/reseva.service";
 import { Router } from "@angular/router";
 import { UserService } from "../../../shared/services/user.service";
 import { User } from "../../../shared/interfaces/user.interface";
 import { ViajesService } from "../../../shared/services/viajes.service";
+declare var bootstrap: any;
+
+
 @Component({
   selector: 'app-reserva-management',
   templateUrl: './reserva-management.component.html',
@@ -14,6 +17,7 @@ export class ReservationManagementComponent implements OnInit {
 
   user!: User
   userRol!: string
+  reserva: Reserva = {idUsuario: '',pasajeros: [],idViaje: '',estado: EstadoReserva.CONFIRMADA,fechaViaje: 0,}
 
   ngOnInit(): void {
     this.loadUser();
@@ -44,6 +48,15 @@ export class ReservationManagementComponent implements OnInit {
           viajeNombre: (await this.viajesService.findById(reserva.idViaje))?.nombre || 'Desconocido',
         }))
       );
+    }
+  }
+
+  detail(reserva: Reserva){
+    this.reserva = reserva
+    const loginModalElement = document.getElementById('modalDetailReserve');
+    if (loginModalElement) {
+      const loginModal = new bootstrap.Modal(loginModalElement);
+      loginModal.show();
     }
   }
   

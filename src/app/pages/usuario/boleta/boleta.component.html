@@ -1,12 +1,10 @@
 <div class="d-flex align-items-center justify-content-center mt-5">
+    <div style="    border: 1px solid #ddd; border-radius: 10px;">
     <div id="comprobante">
         <div class="row mb-4">
-            <div class="col-4 header-logo">
-                <img src="https://i.ibb.co/wCTNS9F/ecoru.png" style="width:180px; height: auto;" alt="Ecorú">
-            </div>
-            <div class="col-4 header-title">
-                <h4>EXPLORA EL MUNDO CON<br><b>ECORÚ. SAC</b></h4>
-                <p>Av. España - Trujillo - Perú<br>ecoru&commat;gmail.com<br>921258815</p>
+            <div class="col-8 header-title">
+                <h4>EXPLORA EL MUNDO CON<b>ECORÚ. SAC</b></h4>
+                <p>Av. España - Trujillo - Perú<br>ecoru&commat;gmail.com <strong>|</strong> 921258815</p>
             </div>
             <div class="col-4 text-end">
                 <div class="border p-2">
@@ -17,119 +15,79 @@
         </div>
 
         <!-- Datos del cliente -->
-        <table class="table table-bordered mb-4 table-striped table-sm">
+        <table class="table mb-4 table-sm">
             <tbody>
                 <tr>
-                    <td><strong>RAZON SOCIAL</strong></td>
-                    <td id="razonSocial">{{ user ? user.firstName + ' ' + user.lastName : 'Cargando...' }}</td>
-                    <td><strong>FECHA EMISIÓN</strong></td>
-                    <td id="fecha">{{ fechaEmision }}</td>
+                    <td class="border-0 m-0 p-2"><strong>RAZON SOCIAL</strong></td>
+                    <td class="border-0 m-0 p-2" id="razonSocial">{{ usuario.firstName }} {{ usuario.lastName }} </td>
+                    <td class="border-0 m-0 p-2"><strong>FECHA EMISIÓN</strong></td>
+                    <td class="border-0 m-0 p-2" id="fecha">{{ fechaEmision }}</td>
                 </tr>
                 <tr>
-                    <td><strong>RUC/DNI</strong></td>
-                    <td id="nDoc">{{ user ? user.dni : 'Cargando...' }}</td>
-                    <td><strong>MÉTODO DE PAGO</strong></td>
-                    <td id="metodoPago">{{ metodoPago }}</td>
+                    <td class="border-0 m-0 p-2"><strong> {{ usuario.documentType }} </strong></td>
+                    <td class="border-0 m-0 p-2" id="nDoc">{{ usuario.documentNumber }}</td>
+                    <td class="border-0 m-0 p-2"><strong>MÉTODO DE PAGO</strong></td>
+                    <td class="border-0 m-0 p-2" id="metodoPago">{{ metodoPago }}</td>
                 </tr>
                 <tr>
-                    <td><strong>TELÉFONO</strong></td>
-                    <td id="telefono">{{ user ? user.phone : 'Cargando...' }}</td>
-                    <td><strong>CORREO</strong></td>
-                    <td id="correo">{{ user ? user.email : 'Cargando...' }}</td>
-                </tr>
-                <tr>
-                    <td><strong>DIRECCIÓN</strong></td>
-                    <td id="direccion" colspan="3">{{ user ? user.address : 'Cargando...' }}</td>
+                    <td class="border-0 m-0 p-2"><strong>TELÉFONO</strong></td>
+                    <td class="border-0 m-0 p-2" id="telefono">{{ usuario.phoneNumber }}</td>
+                    <td class="border-0 m-0 p-2"><strong>CORREO</strong></td>
+                    <td class="border-0 m-0 p-2" id="correo">{{ usuario.email }}</td>
                 </tr>
             </tbody>
         </table>
 
-     <!-- Sección Extra con los datos de los pasajeros -->
-<div class="extra-info">
-    <h5>{{ selectedSeats.length === 1 ? 'Datos del pasajero:' : 'Datos de los pasajeros:' }}</h5>
-    <table class="table table-bordered mb-4 table-striped table-sm">
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>DNI</th>
-                <th>Teléfono</th>
-                <th>Correo</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let passenger of seatForms">
-                <td>{{ passenger.formData.fullName }}</td>
-                <td>{{ passenger.formData.docNumber }}</td>
-                <td>{{ passenger.formData.phoneNumber }}</td>
-                <td>{{ passenger.formData.email }}</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
-        <!-- Detalles de los productos -->
-        <table class="table table-bordered mb-4">
-            <thead>
-                <tr>
-                    <th class="text-center">ITEM</th>
-                    <th class="text-center">DESCRIPCIÓN</th>
-                    <th class="text-center">PASAJEROS</th>
-                    <th class="text-center">PRECIO U</th>
-                    <th class="text-center">TOTAL</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1.00</td>
-                    <td>{{ trip ? trip.descripcion : 'Cargando...' }}</td>
-                    <td>{{ selectedSeats.length }}</td>
-                    <td>S/. {{ trip ? (trip.costo) : 'Cargando...' }}</td>
-                    <td>S/. {{ (total) }}</td>
-                </tr>
-            </tbody>
-        </table>
+        <!-- Sección Extra con los datos de los pasajeros -->
+        <div class="extra-info">
+            <h5>{{ reserva.pasajeros.length === 1 ? 'Datos del pasajero:' : 'Datos de los pasajeros:' }}</h5>
+            <table class="table table-bordered mb-4 table-striped table-sm">
+                <thead>
+                    <tr>
+                        <th class="m-0 p-2">Nombre</th>
+                        <th class="m-0 p-2">Documento</th>
+                        <th class="m-0 p-2">Teléfono</th>
+                        <th class="m-0 p-2">Correo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let passenger of reserva.pasajeros">
+                        <td class="m-0 p-1">{{ passenger.firstName }}</td>
+                        <td class="m-0 p-1">{{ passenger.documentType }}</td>
+                        <td class="m-0 p-1">{{ passenger.phoneNumber }}</td>
+                        <td class="m-0 p-1">{{ passenger.email }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
         <!-- Totales -->
         <div class="row">
-            <div class="col-6 footer-note">
-                <p>Nuestros precios incluyen IGV.</p>
+            <div class="col-8 footer-note">
+                <p class="text-center">Nuestros precios incluyen IGV.</p>
             </div>
-            <div class="col-6 footer-table">
-                <table class="table table-bordered">
+            <div class="col-4 footer-table">
+                <table class="table">
                     <tfoot>
-                        <tr>
-                            <td>SUBTOTAL</td>
-                            <td id="subtotal" class="text-end">S/. {{ subtotal}}</td>
+                        <tr class="boder-0">
+                            <td class=" m-0 p-0 border-0">SUBTOTAL</td>
+                            <td id="subtotal" class="text-end m-0 p-0 border-0">S/. {{pago.monto - pago.monto * 0.18}} </td>
                         </tr>
-                        <tr>
-                            <td>IGV (18%)</td>
-                            <td id="igv" class="text-end">S/. {{ igv }}</td>
+                        <tr class="boder-0">
+                            <td class=" m-0 p-0 border-0">IGV (18%)</td>
+                            <td id="igv" class="text-end m-0 p-0 border-0">S/. {{ (pago.monto * 0.18) }} </td>
                         </tr>
-                        <tr>
-                            <td>TOTAL</td>
-                            <td id="total" class="text-end">S/. {{ total }}</td>
+                        <tr class="boder-0">
+                            <td class=" m-0 p-0 border-0">TOTAL</td>
+                            <td id="total" class="text-end m-0 p-0 border-0">S/. {{pago.monto}} </td>
                         </tr>
                     </tfoot>
                 </table>
             </div>
         </div>
-
-        <!-- QR code -->
-        <!--div class="row mt-4">
-            <div class="col-12 text-center qr-code">
-                <img src="https://th.bing.com/th/id/OIP.AzGsz6YA4Aup3paQ_poIAwHaHa?w=1160&h=1160&rs=1&pid=ImgDetMain" alt="QR Code">
-            </div>
-        </div>
-    </div>
-</div-->
-<!-- Aquí va el contenido del comprobante -->
-<div class="row mt-4">
-    <div class="col-12 text-center">
-        <img *ngIf="qrCodeUrl" [src]="qrCodeUrl" alt="QR Code">
     </div>
 </div>
-
-
+</div>
 <!-- Botones -->
 <div class="d-flex align-items-center justify-content-center mt-4">
     <button type="button" class="btn btn-primary m-2" (click)="Descargar()">Descargar</button>

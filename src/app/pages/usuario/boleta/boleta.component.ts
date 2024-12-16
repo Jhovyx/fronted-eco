@@ -2,6 +2,11 @@ import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { User } from "../../../shared/interfaces/user.interface";
+import { EstadoReserva, Reserva } from "../../../shared/interfaces/reserva.interface";
+import { Pago } from "../../../shared/interfaces/pago.inetrface";
+import { ReservaService } from "../../../shared/services/reseva.service";
+import { UserService } from "../../../shared/services/user.service";
 
 @Component({
     selector: 'app-boleta',
@@ -10,91 +15,75 @@ import jsPDF from 'jspdf';
 })
 
 export class BoletaComponent implements OnInit {
-    // Variables para los detalles del pago
-    user: any = null;
-    trip: any = null;
-    selectedSeats: any[] = [];
-    seatForms: any[] = [];  // Asegúrate de definir esta propiedad
-    fechaEmision: string = new Date().toLocaleDateString();
+    
+    usuario: User = {primaryKey: '',firstName: '',lastName: '',documentNumber: '',documentType: '',email: '',phoneNumber: '',profilePictureUrl: '',userType: '',};
+    reserva: Reserva = {idUsuario: '',pasajeros: [],idViaje: '',estado: EstadoReserva.CONFIRMADA,fechaViaje: 0,}
+    pago: Pago = {primaryKey: '',numeroTarjeta: '',tipoTarjeta: '',fechaVencimiento: '',codigoSeguridad: '',monto: 0, idReserva: '',idUsuario: ''};
     metodoPago: string = "TARJETA";  // Suponiendo que es tarjeta siempre
+    fechaEmision: string = new Date().toLocaleDateString();
 
-    // Totales
-    subtotal: number = 0;
-    igv: number = 0;
-    total: number = 0;
-     // Variables para el QR
-     qrCodeUrl: string = ''; // Variable para almacenar la URL de la imagen QR
-     constructor(private router: Router) {}  // Inyectar Router para redirigir
-  
+    constructor(
+            private reservaService: ReservaService,
+            private router: Router,
+                private userService: UserService,
+    ){}
 
     ngOnInit(): void {
-       // Recuperar los datos del sessionStorage
-  const paymentDetails = JSON.parse(sessionStorage.getItem('paymentDetails') || '{}');
-  const seatForms = JSON.parse(sessionStorage.getItem('seatForms') || '[]');
-  const storedSelectedSeats = JSON.parse(sessionStorage.getItem('selectedSeats') || '[]');
+        this.loadPago();
+        this.loadUser();
+    }
 
-        this.user = paymentDetails.user;
-        this.trip = paymentDetails.trip;
-        this.selectedSeats = storedSelectedSeats.length > 0 ? storedSelectedSeats : paymentDetails.selectedSeats;
-        this.seatForms = seatForms;  // Cargar la información de los pasajeros
-// Calcular los totales
-if (this.trip && this.selectedSeats.length > 0) {
-    const costPerSeatWithIgv = this.trip.costo;  // El precio que ya incluye el IGV
-    const igvPercentage = 0.18;  // 18% de IGV
+    loadPago(){
+        const data = sessionStorage.getItem('pago');
+        if(data){
+            this.pago = JSON.parse(data);
+            this.loadReserva(this.pago.idReserva);
+        }
+    }
 
-    // Subtotal: Precio unitario dividido entre (1 + IGV) para obtener el valor sin IGV
-    this.subtotal = +(costPerSeatWithIgv / (1 + igvPercentage) * this.selectedSeats.length).toFixed(2);
+    async loadReserva(id: string){
+        const data = await this.reservaService.findById(id);
+        if(data){
+            this.reserva = data;
+        }
+    }
 
-    // El IGV es la diferencia entre el precio total y el subtotal (sin IGV)
-    this.igv = +(costPerSeatWithIgv * this.selectedSeats.length - this.subtotal).toFixed(2);
+    loadUser(){
+        const data = this.userService.getCookie('user');
+        if(data){
+            this.usuario = data
+        }
+    }
 
-    // Total: Precio total por los asientos seleccionados (que ya incluye IGV)
-    this.total = +(costPerSeatWithIgv * this.selectedSeats.length).toFixed(2);
+
+//descargar
+Descargar() {
+    const element = document.getElementById('comprobante');
+    if (element) {
+        html2canvas(element).then(canvas => {
+            const imgData = canvas.toDataURL('image/png');
+            const doc = new jsPDF();
+            const imgWidth = 210; // Ancho en mm para un documento A4
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+            doc.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+            doc.save('comprobante.pdf');
+        });
+    } else {
+        console.error('Element comprobante not found');
+    }
 }
-
-
-
-  }
-
-
-    // Función para descargar el comprobante de cada pasajero
-    Descargar() {
-        this.seatForms.forEach(passenger => {
-            const element = document.getElementById('comprobante');
-            if (element) {
-                // Modificar los datos del pasajero en la plantilla para reflejar el nombre de cada uno
-                const passengerElement = element.cloneNode(true) as HTMLElement;
-                passengerElement.querySelector('#pasajeroNombre')!.textContent = passenger.formData.fullName;  // Aquí asumes que has agregado un lugar para mostrar el nombre del pasajero.
-
-                html2canvas(passengerElement).then(canvas => {
-                    const imgData = canvas.toDataURL('image/png');
-                    const doc = new jsPDF();
-                    const imgWidth = 210; // Ancho en mm para un documento A4
-                    const imgHeight = (canvas.height * imgWidth) / canvas.width;
-                    doc.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-                    doc.save(`${passenger.formData.fullName}_boleta.pdf`);
-                });
-            }
-        });
+//imprimir 
+Imprimir() {
+    const printContents = document.getElementById('comprobante')?.innerHTML;
+    const originalContents = document.body.innerHTML;
+    if (printContents) {
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+    } else {
+        console.error('Element comprobante not found');
     }
-
-    // Función para imprimir la boleta para cada pasajero
-    Imprimir() {
-        this.seatForms.forEach(passenger => {
-            const element = document.getElementById('comprobante');
-            if (element) {
-                // Modificar los datos del pasajero en la plantilla
-                const passengerElement = element.cloneNode(true) as HTMLElement;
-                passengerElement.querySelector('#pasajeroNombre')!.textContent = passenger.formData.fullName; // Colocar el nombre del pasajero.
-
-                const printContents = passengerElement.innerHTML;
-                const originalContents = document.body.innerHTML;
-                document.body.innerHTML = printContents;
-                window.print();
-                document.body.innerHTML = originalContents;
-            }
-        });
-    }
+}
 
     Aceptar() {
         // Aquí puedes limpiar el sessionStorage si lo deseas
