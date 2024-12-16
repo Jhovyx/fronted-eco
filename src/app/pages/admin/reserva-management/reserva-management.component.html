@@ -31,7 +31,7 @@
         </td>
         <td class="text-center align-middle">
           <div class="btn-group" role="group" aria-label="Acciones">
-            <button *ngIf="reserva.estado === 'CONFIRMADA' || reserva.estado === 'CANCELADA' || userRol === 'admin'" class="btn btn-primary btn-sm m-1">
+            <button (click)="detail(reserva)" *ngIf="reserva.estado === 'CONFIRMADA' || reserva.estado === 'CANCELADA' || userRol === 'admin'" class="btn btn-primary btn-sm m-1">
               <i class="fas fa-eye"></i> DETALLES
             </button>
             <button *ngIf="reserva.estado === 'PENDIENTE' && userRol !== 'admin'" (click)="camcelar(reserva)" class="btn btn-danger btn-sm m-1">
@@ -49,3 +49,40 @@
 
 
 </div>
+
+
+<!-- Modal Agregar/Actualizar estacion -->
+<div class="modal fade" id="modalDetailReserve" tabindex="-1" aria-labelledby="addEstacionModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content border-0 rounded-4 shadow-lg">
+      
+      <!-- Modal Header -->
+      <div class="modal-header bg-primary text-white rounded-top animate__animated animate__fadeIn">
+        <h5 class="modal-title minor-margin" id="addEstacionModalLabel">
+          Detalles de la reserva
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <p><strong>Viaje:</strong> {{ reserva.viajeNombre }}</p>
+        <p><strong>Fecha:</strong> {{ reserva.fechaViaje | date: 'dd/MM/yyyy HH:mm' }}</p>
+        <p><strong>Cantidad de Asientos:</strong> {{ reserva.pasajeros.length }}</p>
+        <p><strong>Estado:</strong> {{ reserva.estado }}</p>
+        <p><strong>Pasajeros:</strong></p>
+        <ul>
+          <li *ngFor="let pasajero of reserva.pasajeros">
+            {{ pasajero.firstName }} ({{ pasajero.documentType }} - {{pasajero.documentNumber}})
+          </li>
+        </ul>
+      </div>            
+      
+      <!-- Modal Footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+      
+    </div> <!-- Cierre de .modal-content -->
+  </div> <!-- Cierre de .modal-dialog -->
+</div> <!-- Cierre de .modal -->
