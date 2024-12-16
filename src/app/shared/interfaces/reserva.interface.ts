@@ -12,6 +12,7 @@ export interface Reserva {
     descuentoPorcentaje?: number; // Porcentaje de descuento (0-100)
     createdAt?: string;
     updatedAt?: number;
+    viajeNombre?: string;
   }
   
   export enum EstadoReserva {

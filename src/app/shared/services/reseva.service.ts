@@ -35,6 +35,6 @@ export class ReservaService {
   
       //ACTUALIZAR
       async update(id: string, reserva: Partial<Reserva>){
-        return await this.http.patch<Reserva>(`${this.apiBackend}/reservas/${id}`, reserva, { withCredentials: true }).toPromise()
+        return await this.http.patch<Reserva>(`${this.apiBackend}/reservas/reserva/${id}`, reserva, { withCredentials: true }).toPromise()
       }
 }
